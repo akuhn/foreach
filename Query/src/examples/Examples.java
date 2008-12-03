@@ -1,4 +1,4 @@
-package sandbox;
+package examples;
 
 import java.util.ArrayList;
 import java.util.Collection;

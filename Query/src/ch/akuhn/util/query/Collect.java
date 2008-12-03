@@ -1,36 +1,38 @@
+//  Copyright (c) 2008 Adrian Kuhn <akuhn(a)iam.unibe.ch>
+//  
+//  This file is part of "ForEach".
+//  
+//  "ForEach" is free software: you can redistribute it and/or modify it under
+//	the terms of the GNU Lesser General Public License as published by the Free
+//  Software Foundation, either version 3 of the License, or (at your option)
+//  any later version.
+//  
+//  "ForEach" is distributed in the hope that it will be useful, but WITHOUT ANY
+//  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+//  FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+//  details.
+//  
+//  You should have received a copy of the GNU Lesser General Public License
+//  along with "ForEach". If not, see <http://www.gnu.org/licenses/>.
+//  
 package ch.akuhn.util.query;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
-import sandbox.Examples;
 
-public class Collect<A,T> extends For.Each<T> {
 
-	public T value;
+public class Collect<A,E> extends For.Each<E> {
+
+	public E value;
 	public A yield;
 	
-	private static Collection<?> $result;
-	
-	static void offer(Collection<?> result) {
-		if ($result != null) throw new AssertionError();
-		$result = result;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static <T> Collection<T> result() {
-		Object result = $result;
-		$result = null;
-		return (Collection<T>) result;
-	}
-	
-	private static class Query<A,E> extends For<E,Collect<A,E>> {
+	static class Query<A,E> extends For<E,Collect<A,E>> {
 	
 		protected Collect<A,E> each;
 		private ArrayList<A> result;
 	
-		public Query(Collection<E> source) {
+		private Query(Collection<E> source) {
 			super(source);
 		}
 
@@ -53,25 +55,13 @@ public class Collect<A,T> extends For.Each<T> {
 		}
 
 		@Override
-		protected void offerResult() {
-			Collect.offer(result);
+		protected Object getResult() {
+			return result;
 		}
 			
 	}
 	
-	public static void main(String[] args) {
-		
-		Collection<String> in = Examples.sample();
-		
-		for (Collect<Integer,String> each : Collect.from(Integer.class,in)) {
-			each.yield = each.value.length();
-		}
-		Collection<String> out = Collect.result();
-
-		System.out.println(out);
-	}
-
-	private static <A,E> Query<A,E> from(Class<A> type, Collection<E> sample) {
+	public static <A,E> Query<A,E> query(Class<A> type, Collection<E> sample) {
 		return new Query<A,E>(sample);
 	}
 	

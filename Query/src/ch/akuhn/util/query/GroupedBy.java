@@ -1,3 +1,20 @@
+//  Copyright (c) 2008 Adrian Kuhn <akuhn(a)iam.unibe.ch>
+//  
+//  This file is part of "ForEach".
+//  
+//  "ForEach" is free software: you can redistribute it and/or modify it under
+//	the terms of the GNU Lesser General Public License as published by the Free
+//  Software Foundation, either version 3 of the License, or (at your option)
+//  any later version.
+//  
+//  "ForEach" is distributed in the hope that it will be useful, but WITHOUT ANY
+//  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+//  FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+//  details.
+//  
+//  You should have received a copy of the GNU Lesser General Public License
+//  along with "ForEach". If not, see <http://www.gnu.org/licenses/>.
+//  
 package ch.akuhn.util.query;
 
 import java.util.Collection;
@@ -5,33 +22,18 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import sandbox.Examples;
 
-public class GroupedBy<A,T> extends For.Each<T> {
+public class GroupedBy<A,E> extends For.Each<E> {
 
-	public T value;
+	public E value;
 	public A yield;
 	
-	private static Map<?,?> $result;
-	
-	static void offer(Map<?,?> result) {
-		if ($result != null) throw new AssertionError();
-		$result = result;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static <A,E> Map<A,Collection<E>> result() {
-		Object result = $result;
-		$result = null;
-		return (Map<A,Collection<E>>) result;
-	}
-	
-	private static class Query<A,E> extends For<E,GroupedBy<A,E>> {
+	static class Query<A,E> extends For<E,GroupedBy<A,E>> {
 	
 		protected GroupedBy<A,E> each;
 		private Map<A,Collection<E>> result;
 	
-		public Query(Collection<E> source) {
+		private Query(Collection<E> source) {
 			super(source);
 		}
 
@@ -59,25 +61,13 @@ public class GroupedBy<A,T> extends For.Each<T> {
 		}
 
 		@Override
-		protected void offerResult() {
-			GroupedBy.offer(result);
+		protected Object getResult() {
+			return result;
 		}
 			
 	}
 	
-	public static void main(String[] args) {
-		
-		Collection<String> in = Examples.sample();
-		
-		for (GroupedBy<Integer,String> each : GroupedBy.from(Integer.class,in)) {
-			each.yield = each.value.length();
-		}
-		Map<Integer,Collection<String>> out = GroupedBy.result();
-
-		System.out.println(out);
-	}
-
-	private static <A,E> Query<A,E> from(Class<A> type, Collection<E> sample) {
+	public static <A,E> Query<A,E> query(Class<A> type, Collection<E> sample) {
 		return new Query<A,E>(sample);
 	}
 	
