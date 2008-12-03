@@ -20,35 +20,45 @@ package ch.akuhn.util.query;
 import java.util.Collection;
 
 
-public class InjectInto<V,E> extends For.Each<E> {
+public class IndexOf<E> extends For.Each<E> {
 
 	public E value;
-	public V yield;
+	public boolean yield;
 	
-	public static class Query<V,E> extends For<E,InjectInto<V,E>> {
+	public static <E> Query<E> query(Collection<E> collection) {
+		return new Query<E>(collection);
+	}
 	
-		protected InjectInto<V,E> each;
-		private V result;
+	public static class Query<E> extends For<E,IndexOf<E>> {
 	
-		private Query(V value, Collection<E> source) {
+		protected IndexOf<E> each;
+		private int index;
+		private int result;
+	
+		private Query(Collection<E> source) {
 			super(source);
-			this.result = value;
 		}
 
 		@Override
 		public void apply() {
-			this.result = each.yield; 
+			index++;
+			if (each.yield) {
+				result = index;
+				this.abort();
+			}
 		}
 
 		@Override
 		protected void initialize() {
-			each = new InjectInto<V,E>();
+			each = new IndexOf<E>();
+			index = 0;
+			result = -1;
 		}
 
 		@Override
-		protected InjectInto<V,E> nextEach(E next) {
+		protected IndexOf<E> nextEach(E next) {
 			each.value = next;
-			each.yield = result;
+			each.yield = false;
 			return each;
 		}
 
@@ -56,12 +66,7 @@ public class InjectInto<V,E> extends For.Each<E> {
 		protected Object getResult() {
 			return result;
 		}
-	
 		
-	}
-	
-	public static <V,E> Query<V,E> query(V value, Collection<E> sample) {
-		return new Query<V,E>(value, sample);
 	}
 	
 }
