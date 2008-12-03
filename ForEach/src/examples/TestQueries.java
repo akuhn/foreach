@@ -11,6 +11,7 @@ import org.junit.Test;
 import ch.akuhn.util.query.AllSatisfy;
 import ch.akuhn.util.query.AnySatisfy;
 import ch.akuhn.util.query.Collect;
+import ch.akuhn.util.query.Count;
 import ch.akuhn.util.query.CutPieces;
 import ch.akuhn.util.query.Detect;
 import ch.akuhn.util.query.GroupedBy;
@@ -36,6 +37,7 @@ public class TestQueries {
 		eg.exampleAnySatisfy2();
 		eg.exampleCollect();
 		eg.exampleCollect2();
+		eg.exampleCount();
 		eg.exampleCutPieces();
 		eg.exampleDetect();
 		eg.exampleDetect2();
@@ -91,6 +93,15 @@ public class TestQueries {
 		}
 		puts($result());
 		assertEquals("[3, 5, 5, 3, 5, 4, 3, 4, 3]",$result().toString());
+	}
+
+	@Test
+	public void exampleCount() {
+		for (Count<String> each : count($fox)) {
+			each.yield = each.value.length();
+		}
+		puts($result());
+		assertEquals(3,$result());
 	}
 
 	@Test

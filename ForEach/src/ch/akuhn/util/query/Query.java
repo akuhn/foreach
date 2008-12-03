@@ -46,6 +46,10 @@ public class Query {
 		return Collect.query(type, collection);
 	}
 	
+	public static <T> Count.Query<T> count(Collection<T> collection) {
+		return Count.query(collection);
+	}
+
 	public static <T> Detect.Query<T> detect(Collection<T> collection) {
 		return Detect.query(collection);
 	}
