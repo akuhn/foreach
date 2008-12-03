@@ -28,7 +28,7 @@ public class GroupedBy<A,E> extends For.Each<E> {
 	public E value;
 	public A yield;
 	
-	static class Query<A,E> extends For<E,GroupedBy<A,E>> {
+	public static class Query<A,E> extends For<E,GroupedBy<A,E>> {
 	
 		protected GroupedBy<A,E> each;
 		private Map<A,Collection<E>> result;

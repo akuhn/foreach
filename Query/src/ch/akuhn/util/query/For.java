@@ -19,13 +19,14 @@ package ch.akuhn.util.query;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import ch.akuhn.util.query.For.Each;
 
 public abstract class For<E,X extends Each<E>> 
 		implements Iterator<X>, Iterable<X> {
 	
-	private enum State { UNUSED, READY, NEXT, DEAD }
+	private enum State { UNUSED, READY, NEXT, DEAD, ABORT }
 	
 	public static class Each<T> {
 		
@@ -44,8 +45,14 @@ public abstract class For<E,X extends Each<E>>
 	@Override
 	public boolean hasNext() {
 		assert state != State.UNUSED;
+		if (state == State.DEAD) return false;
 		if (state == State.NEXT) {
 			this.apply();
+			if (state == State.ABORT) {
+				Query.offer(this.getResult());
+				state = State.DEAD;
+				return false;
+			}
 			state = State.READY;
 		}
 		boolean hasNext = iter.hasNext();
@@ -66,6 +73,7 @@ public abstract class For<E,X extends Each<E>>
 	@Override
 	public X next() {
 		assert state == State.READY;
+		if (state == State.DEAD) throw new NoSuchElementException();
 		each = nextEach(iter.next());
 		state = State.NEXT;
 		return each;
@@ -84,4 +92,8 @@ public abstract class For<E,X extends Each<E>>
 		
 	public abstract void apply();
 			
+	public void abort() {
+		state = State.ABORT;
+	}
+	
 }

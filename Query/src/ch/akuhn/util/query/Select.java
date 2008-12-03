@@ -31,7 +31,7 @@ public class Select<E> extends For.Each<E> {
 		return new Query<E>(collection);
 	}
 	
-	static class Query<E> extends For<E,Select<E>> {
+	public static class Query<E> extends For<E,Select<E>> {
 	
 		protected Select<E> each;
 		private ArrayList<E> result;
