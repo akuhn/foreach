@@ -3,7 +3,7 @@
 //  This file is part of "ForEach".
 //  
 //  "ForEach" is free software: you can redistribute it and/or modify it under
-//  the terms of the GNU Lesser General Public License as published by the Free
+//	the terms of the GNU Lesser General Public License as published by the Free
 //  Software Foundation, either version 3 of the License, or (at your option)
 //  any later version.
 //  
@@ -17,88 +17,62 @@
 //  
 package ch.akuhn.util.query;
 
-/**
- * Static methods to create queries and poll results.
- * 
- * @author akuhn
- * 
- */
+import java.util.Collection;
+
 public class Query {
 
-    private static ThreadLocal<Object> result = new ThreadLocal<Object>();
+	private static Object $result;
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T $result() {
+		return (T) $result;
+	}
+	
+	public static <T> AllSatisfy.Query<T> allSatisfy(Collection<T> collection) {
+		return AllSatisfy.query(collection);
+	}	
+	
+	public static <T> AnySatisfy.Query<T> anySatisfy(Collection<T> collection) {
+		return AnySatisfy.query(collection);
+	}
+	
+	public static <A,T> Collect.Query<A,T> collect(Class<A> type, Collection<T> collection) {
+		return Collect.query(type, collection);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> Collect.Query<T,T> collect(Collection<T> collection) {
+		Class<T> type = (Class<T>) collection.iterator().next().getClass();
+		return Collect.query(type, collection);
+	}
+	
+	public static <T> Detect.Query<T> detect(Collection<T> collection) {
+		return Detect.query(collection);
+	}
+	
+	public static <A,T> GroupedBy.Query<A,T> groupedBy(Class<A> type, Collection<T> collection) {
+		return GroupedBy.query(type, collection);
+	}
 
-    @SuppressWarnings("unchecked")
-    public static <T> T $result() {
-        return (T) result.get();
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> T result() {
-        return (T) result.get();
-    }
-    
-    public static <T> AllSatisfy<T> allSatisfy(Iterable<T> elements) {
-        return new AllSatisfy<T>().with(elements);
-    }
-
-    public static <T> AnySatisfy<T> anySatisfy(Iterable<T> elements) {
-        return new AnySatisfy<T>().with(elements);
-    }
-
-    public static <T> Cardinal<T> cardinal(Iterable<T> elements) {
-        return new Cardinal<T>().with(elements);
-    }
-
-    public static <T> Collect<T> collect(Iterable<T> elements) {
-        return new Collect<T>().with(elements);
-    }
-
-    public static <T,R> Collect2<T,R> collect(Iterable<T> elements, Class<R> type) {
-        return new Collect2<T,R>().with(elements);
-    }
-
-    public static <T> Count<T> count(Iterable<T> elements) {
-        return new Count<T>().with(elements);
-    }
-
-    public static <T> CutPieces<T> cutPieces(Iterable<T> elements) {
-        return new CutPieces<T>().with(elements);
-    }
-
-    public static <T> Detect<T> detect(Iterable<T> elements) {
-        return new Detect<T>().with(elements);
-    }
-
-    public static <T> Fold<T> fold(Iterable<T> elements) {
-        return new Fold<T>().with(elements);
-    }
-
-    public static <T> GroupedBy<T> groupedBy(Iterable<T> elements) {
-        return new GroupedBy<T>().with(elements);
-    }
-
-    public static <T> IndexOf<T> indexOf(Iterable<T> elements) {
-        return new IndexOf<T>().with(elements);
-    }
-
-    public static <T,R> Inject<T,R> inject(Iterable<T> elements, R value) {
-        return new Inject<T,R>().with(elements).initial(value);
-    }
-
-    /*default*/ static void offerResult(Object value) {
-        result.set(value);
-    }
-
-    public static <T> Reject<T> reject(Iterable<T> elements) {
-        return new Reject<T>().with(elements);
-    }
-
-    public static <T> Select<T> select(Iterable<T> elements) {
-        return new Select<T>().with(elements);
-    }
-
-    public static <T> Sum<T> sum(Iterable<T> elements) {
-        return new Sum<T>().with(elements);
-    }
-
+	public static <T> IndexOf.Query<T> indexOf(Collection<T> collection) {
+		return IndexOf.query(collection);
+	}
+	
+	public static <A,T> InjectInto.Query<A,T> injectInto(A value, Collection<T> collection) {
+		return InjectInto.query(value, collection);
+	}
+	
+	static void offer(Object result) {
+		$result = result;
+	}
+	
+	public static <T> Reject.Query<T> reject(Collection<T> collection) {
+		return Reject.query(collection);
+	}
+	
+	public static <T> Select.Query<T> select(Collection<T> collection) {
+		return Select.query(collection);
+	}
+	
+	
 }

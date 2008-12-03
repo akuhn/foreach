@@ -3,7 +3,7 @@
 //  This file is part of "ForEach".
 //  
 //  "ForEach" is free software: you can redistribute it and/or modify it under
-//  the terms of the GNU Lesser General Public License as published by the Free
+//	the terms of the GNU Lesser General Public License as published by the Free
 //  Software Foundation, either version 3 of the License, or (at your option)
 //  any later version.
 //  
@@ -17,76 +17,83 @@
 //  
 package ch.akuhn.util.query;
 
-import static ch.akuhn.util.query.State.EACH;
-import static ch.akuhn.util.query.State.FIRST;
-import static ch.akuhn.util.query.State.STOPPED;
-
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-/*default*/ enum State {
-    STOPPED, EACH, FIRST
-}
+import ch.akuhn.util.query.For.Each;
 
-/**
- * Superclass of single-element queries.
- * 
- * @author Adrian Kuhn
- * 
- */
-@SuppressWarnings("unchecked")
-public abstract class For<Each,This extends For<Each,This>> implements Iterable<This> {
+public abstract class For<E,X extends Each<E>> 
+		implements Iterator<X>, Iterable<X> {
+	
+	private enum State { UNUSED, READY, NEXT, DEAD, ABORT }
+	
+	public static class Each<T> {
+		
+	}
+	
+	protected X each;
+	private final Iterator<E> iter;
+	private State state = State.UNUSED;
+	
+	public For(Collection<E> source) {
+		this.iter = source.iterator();
+		this.state = State.UNUSED;
+		this.initialize();
+	}
+	
+	@Override
+	public boolean hasNext() {
+		assert state != State.UNUSED;
+		if (state == State.DEAD) return false;
+		if (state == State.NEXT) {
+			this.apply();
+			if (state == State.ABORT) {
+				Query.offer(this.getResult());
+				state = State.DEAD;
+				return false;
+			}
+			state = State.READY;
+		}
+		boolean hasNext = iter.hasNext();
+		if (!hasNext && state != State.DEAD) {
+			Query.offer(this.getResult());
+			state = State.DEAD;
+		}
+		return hasNext;
+	}
 
-    private final class Iter implements Iterator<This> {
+	@Override
+	public Iterator<X> iterator() {
+		assert state == State.UNUSED;
+		state = State.READY;
+		return this;
+	}
 
-        private Iterator<? extends Each> iterator = elements.iterator();
-        
-        //@Override
-        public boolean hasNext() {
-            if (state == FIRST) state = EACH;
-            else For.this.afterEach();
-            if (state != STOPPED && iterator.hasNext()) return true;
-            Query.offerResult(For.this.afterLoop());
-            return false;
-        }
+	@Override
+	public X next() {
+		assert state == State.READY;
+		if (state == State.DEAD) throw new NoSuchElementException();
+		each = nextEach(iter.next());
+		state = State.NEXT;
+		return each;
+	}
 
-        //@Override
-        public This next() {
-            beforeEach(iterator.next());
-            return (This) For.this;
-        }
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
+	}
 
-        //@Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
+	protected abstract void initialize();
 
-    }
+	protected abstract X nextEach(E next);
 
-    private Iterable<? extends Each> elements;
-    private State state = FIRST;
-
-    protected final void abort() {
-        state = STOPPED;
-    }
-
-    protected abstract void afterEach();
-
-    protected abstract Object afterLoop();
-
-    protected abstract void beforeEach(Each each);
-
-    protected abstract void beforeLoop();
-
-    protected This with(Iterable<? extends Each> elements) {
-        this.elements = elements;
-        return (This) this;
-    }
-
-    //@Override
-    public Iterator<This> iterator() {
-        state = FIRST;
-        For.this.beforeLoop();
-        return new Iter();
-    }
-
+	protected abstract Object getResult();
+		
+	public abstract void apply();
+			
+	public void abort() {
+		state = State.ABORT;
+	}
+	
 }

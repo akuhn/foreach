@@ -3,7 +3,7 @@
 //  This file is part of "ForEach".
 //  
 //  "ForEach" is free software: you can redistribute it and/or modify it under
-//  the terms of the GNU Lesser General Public License as published by the Free
+//	the terms of the GNU Lesser General Public License as published by the Free
 //  Software Foundation, either version 3 of the License, or (at your option)
 //  any later version.
 //  
@@ -17,69 +17,53 @@
 //  
 package ch.akuhn.util.query;
 
+import java.util.Collection;
 
-/**
- * Checks if a predicate yields `true` for at least one element. This class is
- * to be used in a for-each loop as follows:
- * 
- * <pre>
- * for (AnySatisfy&lt;E&gt; each: Query.anySatisfy(elements)) {
- *     each.yield = &amp;hellip each.value &amp;hellip;
- * }
- * boolean result = Query.$result();
- * </pre>
- * <p>
- * The body of the loop should implement a predicate. The current element is
- * provided in `each.value`. The result of the predicate must be stored to
- * `each.yield`. The body of the loop is evaluated for each element of the
- * collection. The result of the entire loop is stored in $result, a thread
- * local variable.
- * <ul>
- * <li>If an elements yields `true`, the loop stops and results `true`.
- * <li>If all element yield `false` or nothing, the loop results `false`.
- * </ul>
- * <p>
- * 
- * @param value
- *            (in) current element of the collection. No effect if assigned.
- * @param yield
- *            (out) result of the predicate. Defaults to `false` if not
- *            assigned.
- *            <p>
- * @author Adrian Kuhn
- * 
- */
-public class AnySatisfy<Each> extends For<Each,AnySatisfy<Each>> {
 
-    public Each element;
-    public boolean yield;
+public class AnySatisfy<E> extends For.Each<E> {
 
-    @Override
-    protected void afterEach() {
-        if (yield) this.abort();
-    }
-
-    @Override
-    protected Object afterLoop() {
-        return yield;
-    }
-
-    @Override
-    protected void beforeEach(Each each) {
-        element = each;
-        yield = false;
-    }
-
-    @Override
-    protected void beforeLoop() {
-    }
-
-	public static <T> AnySatisfy<T> from(Iterable<? extends T> elements) {
-		return new AnySatisfy<T>().with(elements);
+	public E value;
+	public boolean yield;
+	
+	public static <E> Query<E> query(Collection<E> collection) {
+		return new Query<E>(collection);
 	}
+	
+	public static class Query<E> extends For<E,AnySatisfy<E>> {
+	
+		protected AnySatisfy<E> each;
+		private Boolean result;
+	
+		private Query(Collection<E> source) {
+			super(source);
+		}
 
-	public boolean result() {
-		return yield;
+		@Override
+		public void apply() {
+			if (each.yield) {
+				result = Boolean.TRUE;
+				this.abort();
+			}
+		}
+
+		@Override
+		protected void initialize() {
+			each = new AnySatisfy<E>();
+			result = Boolean.FALSE;
+		}
+
+		@Override
+		protected AnySatisfy<E> nextEach(E next) {
+			each.value = next;
+			each.yield = false;
+			return each;
+		}
+
+		@Override
+		protected Object getResult() {
+			return result;
+		}
+		
 	}
-
+	
 }

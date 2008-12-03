@@ -3,7 +3,7 @@
 //  This file is part of "ForEach".
 //  
 //  "ForEach" is free software: you can redistribute it and/or modify it under
-//  the terms of the GNU Lesser General Public License as published by the Free
+//	the terms of the GNU Lesser General Public License as published by the Free
 //  Software Foundation, either version 3 of the License, or (at your option)
 //  any later version.
 //  
@@ -17,31 +17,56 @@
 //  
 package ch.akuhn.util.query;
 
-public class IndexOf<Each> extends For<Each,IndexOf<Each>> {
+import java.util.Collection;
 
-    public Each element;
-    private int index;
-    public boolean yield;
 
-    @Override
-    protected void afterEach() {
-        if (yield) this.abort();
-    }
+public class IndexOf<E> extends For.Each<E> {
 
-    @Override
-    protected Object afterLoop() {
-        return yield ? index : -1;
-    }
+	public E value;
+	public boolean yield;
+	
+	public static <E> Query<E> query(Collection<E> collection) {
+		return new Query<E>(collection);
+	}
+	
+	public static class Query<E> extends For<E,IndexOf<E>> {
+	
+		protected IndexOf<E> each;
+		private int index;
+		private int result;
+	
+		private Query(Collection<E> source) {
+			super(source);
+		}
 
-    @Override
-    protected void beforeEach(Each each) {
-        element = each;
-        yield = false;
-        index++;
-    }
+		@Override
+		public void apply() {
+			index++;
+			if (each.yield) {
+				result = index;
+				this.abort();
+			}
+		}
 
-    @Override
-    protected void beforeLoop() {
-    }
+		@Override
+		protected void initialize() {
+			each = new IndexOf<E>();
+			index = 0;
+			result = -1;
+		}
 
+		@Override
+		protected IndexOf<E> nextEach(E next) {
+			each.value = next;
+			each.yield = false;
+			return each;
+		}
+
+		@Override
+		protected Object getResult() {
+			return result;
+		}
+		
+	}
+	
 }

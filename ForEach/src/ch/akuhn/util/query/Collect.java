@@ -3,7 +3,7 @@
 //  This file is part of "ForEach".
 //  
 //  "ForEach" is free software: you can redistribute it and/or modify it under
-//  the terms of the GNU Lesser General Public License as published by the Free
+//	the terms of the GNU Lesser General Public License as published by the Free
 //  Software Foundation, either version 3 of the License, or (at your option)
 //  any later version.
 //  
@@ -20,68 +20,49 @@ package ch.akuhn.util.query;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
- * Evaluates an expression for each element of a collection, returning a new
- * collection containing the values yielded by the expression. This class is to
- * be used in a for-each loop as follows:
- * 
- * <pre>
- * for (Collect&lt;E,T&gt; each: Query.collect(elements, T.class)) {
- *     each.yield = &amp;hellip each.value &amp;hellip;
- * }
- * Collection&lt;T&gt; copy = Query.$result();
- * </pre>
- * <p>
- * The body of the loop should implement an expression. The current element is
- * provided in `each.value`. The result of the expression must be stored to
- * `each.yield`. The body of the loop is evaluated for each element of the
- * collection. The entire loop results in a new collection containing the values
- * yielded by the expression. Upon termination of the loop the new collection is
- * assigned to $result (a thread local variable).
- * <p>
- * 
- * @param value
- *            (in) current element of the collection.
- * @param yield
- *            (out) result of the expression. Defaults to `null` if not
- *            assigned.
- *            <p>
- * @author Adrian Kuhn
- * 
- */
-public class Collect<Each> extends For<Each,Collect<Each>> {
 
-    private Collection<Each> copy;
-    public Each element;
-    public Each yield;
 
-    @Override
-    protected void afterEach() {
-        copy.add(yield);
-    }
+public class Collect<A,E> extends For.Each<E> {
 
-    @Override
-    protected Object afterLoop() {
-        return copy;
-    }
+	public E value;
+	public A yield;
+	
+	public static class Query<A,E> extends For<E,Collect<A,E>> {
+	
+		protected Collect<A,E> each;
+		private ArrayList<A> result;
+	
+		private Query(Collection<E> source) {
+			super(source);
+		}
 
-    @Override
-    protected void beforeEach(Each each) {
-        element = each;
-        yield = each;
-    }
+		@Override
+		public void apply() {
+			result.add(each.yield);
+		}
 
-    @Override
-    protected void beforeLoop() {
-        copy = new ArrayList<Each>();
-    }
+		@Override
+		protected void initialize() {
+			each = new Collect<A,E>();
+			result = new ArrayList<A>();
+		}
 
-    public static <T> Collect<T> from(Iterable<? extends T> elements) {
-        return new Collect<T>().with(elements);
-    }
+		@Override
+		protected Collect<A,E> nextEach(E next) {
+			each.value = next;
+			each.yield = null;
+			return each;
+		}
 
-    public Collection<Each> result() {
-        return copy;
-    }
-
+		@Override
+		protected Object getResult() {
+			return result;
+		}
+			
+	}
+	
+	public static <A,E> Query<A,E> query(Class<A> type, Collection<E> sample) {
+		return new Query<A,E>(sample);
+	}
+	
 }

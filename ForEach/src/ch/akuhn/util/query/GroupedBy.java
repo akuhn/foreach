@@ -3,7 +3,7 @@
 //  This file is part of "ForEach".
 //  
 //  "ForEach" is free software: you can redistribute it and/or modify it under
-//  the terms of the GNU Lesser General Public License as published by the Free
+//	the terms of the GNU Lesser General Public License as published by the Free
 //  Software Foundation, either version 3 of the License, or (at your option)
 //  any later version.
 //  
@@ -17,49 +17,58 @@
 //  
 package ch.akuhn.util.query;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
-public class GroupedBy<Each> extends For<Each,GroupedBy<Each>> {
 
-    public Each element;
-    private Map<Object,Collection<Each>> groups;
-    public Object yield;
+public class GroupedBy<A,E> extends For.Each<E> {
 
-    @Override
-    protected void afterEach() {
-        Collection<Each> group = groups.get(yield);
-        if (group == null) {
-            group = new ArrayList<Each>();
-            groups.put(yield, group);
-        }
-        group.add(element);
-    }
+	public E value;
+	public A yield;
+	
+	public static class Query<A,E> extends For<E,GroupedBy<A,E>> {
+	
+		protected GroupedBy<A,E> each;
+		private Map<A,Collection<E>> result;
+	
+		private Query(Collection<E> source) {
+			super(source);
+		}
 
-    @Override
-    protected Object afterLoop() {
-        return groups;
-    }
+		@Override
+		public void apply() {
+			Collection<E> group = result.get(each.yield);
+			if (group == null) {
+				group = new LinkedList<E>();
+				result.put(each.yield, group);
+			}
+			group.add(each.value);
+		}
 
-    @Override
-    protected void beforeEach(Each each) {
-        element = each;
-        yield = null;
-    }
+		@Override
+		protected void initialize() {
+			each = new GroupedBy<A,E>();
+			result = new HashMap<A,Collection<E>>();
+		}
 
-    @Override
-    protected void beforeLoop() {
-        groups = new HashMap<Object,Collection<Each>>();
-    }
+		@Override
+		protected GroupedBy<A,E> nextEach(E next) {
+			each.value = next;
+			each.yield = null;
+			return each;
+		}
 
-    public static <T> GroupedBy<T> from(Iterable<? extends T> elements) {
-        return new GroupedBy<T>().with(elements);
-    }
-
-    public Map<Object,Collection<Each>> result() {
-        return groups;
-    }
-
+		@Override
+		protected Object getResult() {
+			return result;
+		}
+			
+	}
+	
+	public static <A,E> Query<A,E> query(Class<A> type, Collection<E> sample) {
+		return new Query<A,E>(sample);
+	}
+	
 }
