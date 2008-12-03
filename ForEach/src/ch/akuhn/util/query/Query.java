@@ -74,5 +74,9 @@ public class Query {
 		return Select.query(collection);
 	}
 	
+	public static <T> CutPieces.Query<T> cutPieces(Collection<T> collection) {
+		return CutPieces.query(collection);
+	}
+	
 	
 }

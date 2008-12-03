@@ -21,25 +21,27 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import ch.akuhn.util.query.For.Each;
+import ch.akuhn.util.query.ForEach.Pair;
 
-public abstract class For<E,X extends Each<E>> 
+public abstract class ForEach<E,X extends Pair<E>> 
 		implements Iterator<X>, Iterable<X> {
 	
 	private enum State { UNUSED, READY, NEXT, DEAD, ABORT }
 	
-	public static class Each<T> {
+	public static class Pair<T> {
 		
 	}
 	
 	protected X each;
 	private final Iterator<E> iter;
 	private State state = State.UNUSED;
+	private E previous;
 	
-	public For(Collection<E> source) {
+	public ForEach(Collection<E> source) {
 		this.iter = source.iterator();
+		if (iter.hasNext()) previous = iter.next();
 		this.state = State.UNUSED;
-		this.initialize();
+		this.initialize(previous);
 	}
 	
 	@Override
@@ -74,7 +76,7 @@ public abstract class For<E,X extends Each<E>>
 	public X next() {
 		if (state == State.DEAD) throw new NoSuchElementException();
 		assert state == State.READY;
-		each = nextEach(iter.next());
+		each = nextPair(previous, previous = iter.next());
 		state = State.NEXT;
 		return each;
 	}
@@ -84,9 +86,9 @@ public abstract class For<E,X extends Each<E>>
 		throw new UnsupportedOperationException();
 	}
 
-	protected abstract void initialize();
+	protected abstract void initialize(E frist);
 
-	protected abstract X nextEach(E next);
+	protected abstract X nextPair(E previous, E next);
 
 	protected abstract Object getResult();
 		

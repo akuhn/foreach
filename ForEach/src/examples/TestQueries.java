@@ -11,6 +11,7 @@ import org.junit.Test;
 import ch.akuhn.util.query.AllSatisfy;
 import ch.akuhn.util.query.AnySatisfy;
 import ch.akuhn.util.query.Collect;
+import ch.akuhn.util.query.CutPieces;
 import ch.akuhn.util.query.Detect;
 import ch.akuhn.util.query.GroupedBy;
 import ch.akuhn.util.query.IndexOf;
@@ -21,7 +22,7 @@ import ch.akuhn.util.query.Select;
 @SuppressWarnings("serial")
 public class TestQueries {
 
-	public static final Collection<String> FOX = new ArrayList<String>() {{
+	public static final Collection<String> $fox = new ArrayList<String>() {{
 		add("The");add("quick");add("brown");add("fox");add("jumps");
 		add("over");add("the");add("lazy");add("dog");
 	}};
@@ -35,6 +36,7 @@ public class TestQueries {
 		eg.exampleAnySatisfy2();
 		eg.exampleCollect();
 		eg.exampleCollect2();
+		eg.exampleCutPieces();
 		eg.exampleDetect();
 		eg.exampleDetect2();
 		eg.exampleIndexOf();
@@ -48,7 +50,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleAllSatisfy() {
-		for (AllSatisfy<String> each : allSatisfy(FOX)) {
+		for (AllSatisfy<String> each : allSatisfy($fox)) {
 			each.yield = each.value.length() > 2;
 		}
 		puts($result());
@@ -57,7 +59,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleAllSatisfy2() {
-		for (AllSatisfy<String> each : allSatisfy(FOX)) {
+		for (AllSatisfy<String> each : allSatisfy($fox)) {
 			each.yield = each.value.length() > 3;
 		}
 		puts($result());
@@ -66,7 +68,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleAnySatisfy() {
-		for (AnySatisfy<String> each : anySatisfy(FOX)) {
+		for (AnySatisfy<String> each : anySatisfy($fox)) {
 			each.yield = each.value.length() == 4;
 		}
 		puts($result());
@@ -75,7 +77,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleAnySatisfy2() {
-		for (AnySatisfy<String> each : anySatisfy(FOX)) {
+		for (AnySatisfy<String> each : anySatisfy($fox)) {
 			each.yield = each.value.length() == 2;
 		}
 		puts($result());
@@ -84,7 +86,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleCollect() {
-		for (Collect<Integer,String> each : collect(Integer.class, FOX)) {
+		for (Collect<Integer,String> each : collect(Integer.class, $fox)) {
 			each.yield = each.value.length();
 		}
 		puts($result());
@@ -93,7 +95,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleCollect2() {
-		for (Collect<String,String> each : collect(FOX)) {
+		for (Collect<String,String> each : collect($fox)) {
 			each.yield = each.value.toUpperCase();
 		}
 		puts($result());
@@ -102,7 +104,7 @@ public class TestQueries {
 	
 	@Test
 	public void exampleDetect() {
-		for (Detect<String> each : detect(FOX)) {
+		for (Detect<String> each : detect($fox)) {
 			each.yield = each.value.length() == 4;
 		}
 		puts($result());
@@ -111,7 +113,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleDetect2() {
-		for (Detect<String> each : detect(FOX)) {
+		for (Detect<String> each : detect($fox)) {
 			each.yield = each.value.length() == 2;
 		}
 		puts($result());
@@ -120,7 +122,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleInjectInto() {
-		for (InjectInto<Integer,String> each : injectInto(0, FOX)) {
+		for (InjectInto<Integer,String> each : injectInto(0, $fox)) {
 			each.yield = each.yield + each.value.length();
 		}
 		puts($result());
@@ -129,7 +131,7 @@ public class TestQueries {
 	
 	@Test
 	public void exampleIndexOf() {
-		for (IndexOf<String> each : indexOf(FOX)) {
+		for (IndexOf<String> each : indexOf($fox)) {
 			each.yield = each.value.length() == 4;
 		}
 		puts($result());
@@ -138,7 +140,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleIndexOf2() {
-		for (IndexOf<String> each : indexOf(FOX)) {
+		for (IndexOf<String> each : indexOf($fox)) {
 			each.yield = each.value.length() == 2;
 		}
 		puts($result());
@@ -146,8 +148,18 @@ public class TestQueries {
 	}
 
 	@Test
+	public void exampleCutPieces() {
+		for (CutPieces<String> each : cutPieces($fox)) {
+			each.yield = each.value.length() > each.next.length();
+		}
+		puts($result());
+		assertEquals("[[The, quick, brown], [fox, jumps], [over], [the, lazy], [dog]]",
+				$result().toString());
+	}
+		
+	@Test
 	public void exampleReject() {
-		for (Reject<String> each : reject(FOX)) {
+		for (Reject<String> each : reject($fox)) {
 			each.yield = each.value.length() > 3;
 		}
 		puts($result());
@@ -156,7 +168,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleGroupedBy() {
-		for (GroupedBy<Integer,String> each : groupedBy(Integer.class, FOX)) {
+		for (GroupedBy<Integer,String> each : groupedBy(Integer.class, $fox)) {
 			each.yield = each.value.length();
 		}
 		puts($result());
@@ -166,7 +178,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleSelect() {
-		for (Select<String> each : select(FOX)) {
+		for (Select<String> each : select($fox)) {
 			each.yield = each.value.length() > 3;
 		}
 		puts($result());
