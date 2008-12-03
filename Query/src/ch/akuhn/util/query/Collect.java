@@ -27,7 +27,7 @@ public class Collect<A,E> extends For.Each<E> {
 	public E value;
 	public A yield;
 	
-	static class Query<A,E> extends For<E,Collect<A,E>> {
+	public static class Query<A,E> extends For<E,Collect<A,E>> {
 	
 		protected Collect<A,E> each;
 		private ArrayList<A> result;
