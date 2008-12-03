@@ -6,22 +6,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import ch.akuhn.util.query.Each;
-import ch.akuhn.util.query.Filter;
-import ch.akuhn.util.query.Query;
-import ch.akuhn.util.query.Select;
-import ch.akuhn.util.query.Both;
-import ch.akuhn.util.query.Sum;
-
 public class Examples {
 
-	public static void main(String[] args) {
-		System.out.println(newInjectInto());
-		System.out.println(newCollect());
-		System.out.println(newSelect());
-		System.out.println(newGroupedBy());
-	}
-	
 	public static Collection<String> sample() {
 		Collection<String> $ = new ArrayList<String>();
 		$.add("A");
@@ -71,33 +57,5 @@ public class Examples {
 		System.out.println(groups);
 	}
 	
-	static Map<Integer,Collection<String>> newGroupedBy() {
-		for (Both<Integer,String> word : Query.groupedBy(Integer.class, sample())) {
-			word.yield = word.each.length();
-		}
-		return Query.result();
-	}
-	
-	static Collection<String> newSelect() {
-		for (Filter<String> word : Select.from(sample())) {
-			word.yield = word.each.length() > 3;
-		}
-		return Query.result();
-	}
-
-	static Collection<String> newCollect() {
-		for (Each<String> word : Query.collect(sample())) {
-			word.yield = word.each.length();
-		}
-		return Query.result();
-	}
-
-	static Collection<String> newInjectInto() {
-		for (Sum<String,String> word : Query.injectInto("String:", sample())) {
-			word.yield = word.value + " " + word.each;
-		}
-		return Query.result();
-	}
-
 }
 
