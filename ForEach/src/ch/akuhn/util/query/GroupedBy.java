@@ -23,20 +23,16 @@ import java.util.LinkedList;
 import java.util.Map;
 
 
-public class GroupedBy<A,E> extends For.Each<E> {
+public class GroupedBy<R,E> extends For.Each<E> {
 
 	public E value;
-	public A yield;
+	public R yield;
 	
-	public static class Query<A,E> extends For<E,GroupedBy<A,E>> {
+	public static class Query<R,E> extends For<GroupedBy<R,E>,E> {
 	
-		protected GroupedBy<A,E> each;
-		private Map<A,Collection<E>> result;
+		protected GroupedBy<R,E> each;
+		private Map<R,Collection<E>> result;
 	
-		private Query(Collection<E> source) {
-			super(source);
-		}
-
 		@Override
 		public void apply() {
 			Collection<E> group = result.get(each.yield);
@@ -49,12 +45,12 @@ public class GroupedBy<A,E> extends For.Each<E> {
 
 		@Override
 		protected void initialize() {
-			each = new GroupedBy<A,E>();
-			result = new HashMap<A,Collection<E>>();
+			each = new GroupedBy<R,E>();
+			result = new HashMap<R,Collection<E>>();
 		}
 
 		@Override
-		protected GroupedBy<A,E> nextEach(E next) {
+		protected GroupedBy<R,E> nextEach(E next) {
 			each.value = next;
 			each.yield = null;
 			return each;
@@ -65,10 +61,6 @@ public class GroupedBy<A,E> extends For.Each<E> {
 			return result;
 		}
 			
-	}
-	
-	public static <A,E> Query<A,E> query(Class<A> type, Collection<E> sample) {
-		return new Query<A,E>(sample);
 	}
 	
 }

@@ -18,24 +18,39 @@
 package ch.akuhn.util.query;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
-
-
-public class Collect<A,E> extends For.Each<E> {
+/** Evaluates an expression for each element of a collection, returning a new
+ * collection containing the values yielded by the expression.
+ * This class is to be used in a for-each loop as follows:
+ * <pre>
+ * for (Collect&lt;E,T&gt; each: Query.collect(elements, T.class)) {
+ *     each.yield = &hellip; each.value &hellip;;
+ * }
+ * Collection&lt;T&gt; copy = Query.$result();</pre>
+ * <p>
+ * The body of the loop should implement an expression.
+ * The current element is provided in `each.value`.
+ * The result of the expression must be stored to `each.yield`.
+ * The body of the loop is evaluated for each element of the collection.
+ * The entire loop results in a new collection containing the values yielded by the expression.
+ * Upon termination of the loop the new collection is assigned to $result (a thread local variable).
+ * <p>
+ * @param value (in) current element of the collection.
+ * @param yield (out) result of the expression. Defaults to `null` if not assigned.
+ * <p>
+ * @author Adrian Kuhn
+ *
+ */
+public class Collect<R,E> extends For.Each<E> {
 
 	public E value;
-	public A yield;
+	public R yield;
 	
-	public static class Query<A,E> extends For<E,Collect<A,E>> {
+	public static class Query<R,E> extends For<Collect<R,E>,E> {
 	
-		protected Collect<A,E> each;
-		private ArrayList<A> result;
+		protected Collect<R,E> each;
+		private ArrayList<R> result;
 	
-		private Query(Collection<E> source) {
-			super(source);
-		}
-
 		@Override
 		public void apply() {
 			result.add(each.yield);
@@ -43,12 +58,12 @@ public class Collect<A,E> extends For.Each<E> {
 
 		@Override
 		protected void initialize() {
-			each = new Collect<A,E>();
-			result = new ArrayList<A>();
+			each = new Collect<R,E>();
+			result = new ArrayList<R>();
 		}
 
 		@Override
-		protected Collect<A,E> nextEach(E next) {
+		protected Collect<R,E> nextEach(E next) {
 			each.value = next;
 			each.yield = null;
 			return each;
@@ -59,10 +74,6 @@ public class Collect<A,E> extends For.Each<E> {
 			return result;
 		}
 			
-	}
-	
-	public static <A,E> Query<A,E> query(Class<A> type, Collection<E> sample) {
-		return new Query<A,E>(sample);
 	}
 	
 }

@@ -17,26 +17,17 @@
 //  
 package ch.akuhn.util.query;
 
-import java.util.Collection;
 
-public class Fold<E> extends ForEach.Pair<E> {
+public class Fold<E> extends ForPair.Each<E> {
 
 	public E value;
 	public E yield;
 	
-	public static <E> Query<E> query(Collection<E> collection) {
-		return new Query<E>(collection);
-	}
-	
-	public static class Query<E> extends ForEach<E,Fold<E>> {
+	public static class Query<E> extends ForPair<Fold<E>,E> {
 	
 		protected Fold<E> each;
 		private E result;
 	
-		private Query(Collection<E> source) {
-			super(source);
-		}
-
 		@Override
 		public void apply() {
 			result = each.yield;

@@ -17,73 +17,102 @@
 //  
 package ch.akuhn.util.query;
 
-import java.util.Collection;
 
+/** Static methods to create queries and poll results. 
+ * 
+ * @author akuhn
+ *
+ */
+@SuppressWarnings("unchecked")
 public class Query {
 
-	private static Object $result;
+	private static ThreadLocal result = new ThreadLocal();
 	
-	@SuppressWarnings("unchecked")
-	public static <T> T $result() {
-		return (T) $result;
+	static void offer(Object value) {
+		result.set(value);
 	}
 	
-	public static <T> AllSatisfy.Query<T> allSatisfy(Collection<T> collection) {
-		return AllSatisfy.query(collection);
+	public static <T> T $result() {
+		return (T) result.get();
+	}
+	
+	public static <T> AllSatisfy.Query<T> allSatisfy(Iterable<T> iter) {
+		AllSatisfy.Query query = new AllSatisfy.Query();
+		query.with(iter);
+		return query;
 	}	
 	
-	public static <T> AnySatisfy.Query<T> anySatisfy(Collection<T> collection) {
-		return AnySatisfy.query(collection);
+	public static <T> AnySatisfy.Query<T> anySatisfy(Iterable<T> iter) {
+		AnySatisfy.Query query = new AnySatisfy.Query();
+		query.with(iter);
+		return query;
 	}
 	
-	public static <A,T> Collect.Query<A,T> collect(Class<A> type, Collection<T> collection) {
-		return Collect.query(type, collection);
+	public static <A,T> Collect.Query<A,T> collect(Class<A> type, Iterable<T> iter) {
+		Collect.Query query = new Collect.Query();
+		query.with(iter);
+		return query;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static <T> Collect.Query<T,T> collect(Collection<T> collection) {
-		Class<T> type = (Class<T>) collection.iterator().next().getClass();
-		return Collect.query(type, collection);
+	public static <T> Collect.Query<T,T> collect(Iterable<T> iter) {
+		Collect.Query query = new Collect.Query();
+		query.with(iter);
+		return query;
 	}
 	
-	public static <T> Count.Query<T> count(Collection<T> collection) {
-		return Count.query(collection);
+	public static <T> Count.Query<T> count(Iterable<T> iter) {
+		Count.Query query = new Count.Query();
+		query.with(iter);
+		return query;
 	}
 
-	public static <T> Detect.Query<T> detect(Collection<T> collection) {
-		return Detect.query(collection);
+	public static <T> Detect.Query<T> detect(Iterable<T> iter) {
+		Detect.Query query = new Detect.Query();
+		query.with(iter);
+		return query;
 	}
 	
-	public static <A,T> GroupedBy.Query<A,T> groupedBy(Class<A> type, Collection<T> collection) {
-		return GroupedBy.query(type, collection);
+	public static <A,T> GroupedBy.Query<A,T> groupedBy(Class<A> type, Iterable<T> iter) {
+		GroupedBy.Query query = new GroupedBy.Query();
+		query.with(iter);
+		return query;
 	}
 
-	public static <T> IndexOf.Query<T> indexOf(Collection<T> collection) {
-		return IndexOf.query(collection);
+	public static <T> IndexOf.Query<T> indexOf(Iterable<T> iter) {
+		IndexOf.Query query = new IndexOf.Query();
+		query.with(iter);
+		return query;
 	}
 	
-	public static <A,T> InjectInto.Query<A,T> injectInto(A value, Collection<T> collection) {
-		return InjectInto.query(value, collection);
+	public static <A,T> InjectInto.Query<A,T> injectInto(A value, Iterable<T> iter) {
+		InjectInto.Query query = new InjectInto.Query();
+		query.with(iter);
+		query.initalValue(value);
+		return query;
 	}
 	
-	static void offer(Object result) {
-		$result = result;
+	public static <T> Reject.Query<T> reject(Iterable<T> iter) {
+		Reject.Query query = new Reject.Query();
+		query.with(iter);
+		return query;
 	}
 	
-	public static <T> Reject.Query<T> reject(Collection<T> collection) {
-		return Reject.query(collection);
+	public static <T> Select.Query<T> select(Iterable<T> iter) {
+		Select.Query query = new Select.Query();
+		query.with(iter);
+		return query;
 	}
 	
-	public static <T> Select.Query<T> select(Collection<T> collection) {
-		return Select.query(collection);
+	public static <T> CutPieces.Query<T> cutPieces(Iterable<T> iter) {
+		CutPieces.Query query = new CutPieces.Query();
+		query.with(iter);
+		return query;
 	}
 	
-	public static <T> CutPieces.Query<T> cutPieces(Collection<T> collection) {
-		return CutPieces.query(collection);
-	}
-	
-	public static <T> Fold.Query<T> fold(Collection<T> collection) {
-		return Fold.query(collection);
+	public static <T> Fold.Query<T> fold(Iterable<T> iter) {
+		Fold.Query query = new Fold.Query();
+		query.with(iter);
+		return query;
 	}
 	
 }

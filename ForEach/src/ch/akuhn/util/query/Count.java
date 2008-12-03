@@ -17,7 +17,6 @@
 //  
 package ch.akuhn.util.query;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,15 +26,11 @@ public class Count<E> extends For.Each<E> {
 	public E value;
 	public Object yield;
 	
-	public static class Query<E> extends For<E,Count<E>> {
+	public static class Query<E> extends For<Count<E>,E> {
 	
 		protected Count<E> each;
 		private Set<Object> result;
 	
-		private Query(Collection<E> source) {
-			super(source);
-		}
-
 		@Override
 		public void apply() {
 			result.add(each.yield);
@@ -59,10 +54,6 @@ public class Count<E> extends For.Each<E> {
 			return result.size();
 		}
 			
-	}
-	
-	public static <E> Query<E> query(Collection<E> sample) {
-		return new Query<E>(sample);
 	}
 	
 }

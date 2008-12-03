@@ -17,24 +17,22 @@
 //  
 package ch.akuhn.util.query;
 
-import java.util.Collection;
 
 
-public class InjectInto<V,E> extends For.Each<E> {
+public class InjectInto<R,E> extends For.Each<E> {
 
 	public E value;
-	public V yield;
+	public R yield;
 	
-	public static class Query<V,E> extends For<E,InjectInto<V,E>> {
+	public static class Query<R,E> extends For<InjectInto<R,E>,E> {
 	
-		protected InjectInto<V,E> each;
-		private V result;
+		protected InjectInto<R,E> each;
+		private R result;
 	
-		private Query(V value, Collection<E> source) {
-			super(source);
+		/*default*/ void initalValue(R value) {
 			this.result = value;
 		}
-
+		
 		@Override
 		public void apply() {
 			this.result = each.yield; 
@@ -42,11 +40,11 @@ public class InjectInto<V,E> extends For.Each<E> {
 
 		@Override
 		protected void initialize() {
-			each = new InjectInto<V,E>();
+			each = new InjectInto<R,E>();
 		}
 
 		@Override
-		protected InjectInto<V,E> nextEach(E next) {
+		protected InjectInto<R,E> nextEach(E next) {
 			each.value = next;
 			each.yield = result;
 			return each;
@@ -58,10 +56,6 @@ public class InjectInto<V,E> extends For.Each<E> {
 		}
 	
 		
-	}
-	
-	public static <V,E> Query<V,E> query(V value, Collection<E> sample) {
-		return new Query<V,E>(value, sample);
 	}
 	
 }

@@ -17,67 +17,75 @@
 //  
 package ch.akuhn.util.query;
 
-import java.util.Collection;
+import static ch.akuhn.util.query.State.*;
+
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
-import ch.akuhn.util.query.ForEach.Pair;
+import ch.akuhn.util.query.ForPair.Each;
 
-public abstract class ForEach<E,X extends Pair<E>> 
-		implements Iterator<X>, Iterable<X> {
+/** Superclass of pairwise queries. 
+ * 
+ * @author Adrian Kuhn
+ *
+ * @param <E>
+ */
+public abstract class ForPair<Loop extends Each<E>,E> 
+		implements Iterator<Loop>, Iterable<Loop> {
 	
-	private enum State { UNUSED, READY, NEXT, DEAD, ABORT }
-	
-	public static class Pair<T> {
+	public static class Each<T> {
 		
 	}
 	
-	protected X each;
-	private final Iterator<E> iter;
-	private State state = State.UNUSED;
+	protected Loop each;
+	private Iterator<E> iter;
+	private State state = NEW;
 	private E previous;
 	
-	public ForEach(Collection<E> source) {
-		this.iter = source.iterator();
+	/*default*/ void with(Iterable<E> iterable) {
+		assertState(NEW);
+		this.iter = iterable.iterator();
 		if (iter.hasNext()) previous = iter.next();
-		this.state = State.UNUSED;
 		this.initialize(previous);
+		this.state = INIT;
 	}
+	
+	private void assertState(State valid) {
+		if (state == valid) return;
+		throw new IllegalStateException();
+	}	
 	
 	@Override
 	public boolean hasNext() {
-		assert state != State.UNUSED;
-		if (state == State.DEAD) return false;
-		if (state == State.NEXT) {
+		if (state != FIRST) {
+			assertState(HASNEXT);
 			this.apply();
-			if (state == State.ABORT) {
+			if (state == ABORT) {
 				Query.offer(this.getResult());
-				state = State.DEAD;
+				state = DEAD;
 				return false;
 			}
-			state = State.READY;
 		}
-		boolean hasNext = iter.hasNext();
-		if (!hasNext && state != State.DEAD) {
-			Query.offer(this.getResult());
-			state = State.DEAD;
+		if (iter.hasNext()) {
+			state = NEXT;
+			return true;
 		}
-		return hasNext;
+		Query.offer(this.getResult());
+		state = DEAD;
+		return false;
 	}
 
 	@Override
-	public Iterator<X> iterator() {
-		assert state == State.UNUSED;
-		state = State.READY;
+	public Iterator<Loop> iterator() {
+		assertState(INIT);
+		state = FIRST;
 		return this;
 	}
 
 	@Override
-	public X next() {
-		if (state == State.DEAD) throw new NoSuchElementException();
-		assert state == State.READY;
+	public Loop next() {
+		assertState(NEXT);
 		each = nextPair(previous, previous = iter.next());
-		state = State.NEXT;
+		state = HASNEXT;
 		return each;
 	}
 
@@ -88,7 +96,7 @@ public abstract class ForEach<E,X extends Pair<E>>
 
 	protected abstract void initialize(E frist);
 
-	protected abstract X nextPair(E previous, E next);
+	protected abstract Loop nextPair(E previous, E next);
 
 	protected abstract Object getResult();
 		

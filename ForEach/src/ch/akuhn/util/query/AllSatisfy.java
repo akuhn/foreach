@@ -17,27 +17,40 @@
 //  
 package ch.akuhn.util.query;
 
-import java.util.Collection;
-
-
+/** Checks if a predicate yields `true` for all elements. This class is to be used
+ * in a for-each loop as follows:
+ * <pre>
+ * for (AllSatisfy&lt;E&gt; each: Query.satisfy(elements)) {
+ *     each.yield = &hellip; each.value &hellip;;
+ * }
+ * boolean result = Query.$result();</pre>
+ * <p>
+ * The body of the loop should implement a predicate.
+ * The current element is provided in `each.value`.
+ * The result of the predicate must be stored to `each.yield`.
+ * The body of the loop is evaluated for each element of the collection.
+ * The result of the entire loop is stored in $result, a thread local variable.
+ * <ul>
+ * <li>If all elements yield `true`, the loop results `true`.
+ * <li>If an element yields `false` or nothing, the loop stops and results `false`.
+ * </ul>
+ * <p>
+ * @param value (in) current element of the collection. No effect if assigned.
+ * @param yield (out) result of the predicate. Defaults to `false` if not assigned.
+ * <p>
+ * @author Adrian Kuhn
+ *
+ */
 public class AllSatisfy<E> extends For.Each<E> {
 
 	public E value;
 	public boolean yield;
 	
-	public static <E> Query<E> query(Collection<E> collection) {
-		return new Query<E>(collection);
-	}
-	
-	public static class Query<E> extends For<E,AllSatisfy<E>> {
+	public static class Query<E> extends For<AllSatisfy<E>,E> {
 	
 		protected AllSatisfy<E> each;
 		private Boolean result;
 	
-		private Query(Collection<E> source) {
-			super(source);
-		}
-
 		@Override
 		public void apply() {
 			if (!each.yield) {

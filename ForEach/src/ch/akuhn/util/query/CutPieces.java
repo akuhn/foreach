@@ -21,27 +21,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
-
-public class CutPieces<E> extends ForEach.Pair<E> {
+public class CutPieces<E> extends ForPair.Each<E> {
 
 	public E value;
 	public E next;
 	public boolean yield;
 	
-	public static <E> Query<E> query(Collection<E> collection) {
-		return new Query<E>(collection);
-	}
-	
-	public static class Query<E> extends ForEach<E,CutPieces<E>> {
+	public static class Query<E> extends ForPair<CutPieces<E>,E> {
 	
 		protected CutPieces<E> each;
 		private Collection<Collection<E>> result;
 		private Collection<E> current;
 	
-		private Query(Collection<E> source) {
-			super(source);
-		}
-
 		@Override
 		public void apply() {
 			if (each.yield) {

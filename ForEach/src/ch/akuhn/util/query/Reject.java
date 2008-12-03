@@ -18,28 +18,43 @@
 package ch.akuhn.util.query;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
-
-
+/** Evaluates a predicate for element of a collection, returning a copy
+ * containing those elements for which the predicate yields `false` or nothing.
+ * This class is to be used in a for-each loop as follows:
+ * <pre>
+ * for (Reject&lt;E&gt; each: Query.reject(elements)) {
+ *     each.yield = &hellip; each.value &hellip;;
+ * }
+ * Collection&lt;E&gt; copy = Query.$result();</pre>
+ * <p>
+ * The body of the loop should implement a predicate.
+ * The current element is provided in `each.value`.
+ * The result of the predicate must be stored to `each.yield`.
+ * The body of the loop is evaluated for each element of the collection.
+ * The entire loop results in a copy of elements, which is populated as follows:
+ * <ul>
+ * <li>If an element yields `true`, omit that element.
+ * <li>If an element yields `false` or nothing, append `each.value` to the result.
+ * </ul>
+ * Upon termination of the loop the resulting collection is stored in $result (a thread local variable).
+ * <p>
+ * @param value (in/out) current element of the collection. Is added to the result, if yield is assigned `false`.
+ * @param yield (out) result of the predicate. Defaults to `false` if not assigned.
+ * <p>
+ * @author Adrian Kuhn
+ *
+ */
 public class Reject<E> extends For.Each<E> {
 
 	public E value;
 	public boolean yield;
 	
-	public static <E> Query<E> query(Collection<E> collection) {
-		return new Query<E>(collection);
-	}
-	
-	public static class Query<E> extends For<E,Reject<E>> {
+	public static class Query<E> extends For<Reject<E>,E> {
 	
 		protected Reject<E> each;
 		private ArrayList<E> result;
 	
-		private Query(Collection<E> source) {
-			super(source);
-		}
-
 		@Override
 		public void apply() {
 			if (!each.yield) result.add(each.value);

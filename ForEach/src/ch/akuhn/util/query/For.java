@@ -17,65 +17,72 @@
 //  
 package ch.akuhn.util.query;
 
-import java.util.Collection;
+import static ch.akuhn.util.query.State.*;
+
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 import ch.akuhn.util.query.For.Each;
 
-public abstract class For<E,X extends Each<E>> 
-		implements Iterator<X>, Iterable<X> {
-	
-	private enum State { UNUSED, READY, NEXT, DEAD, ABORT }
+/** Superclass of single-element queries. 
+ * 
+ * @author Adrian Kuhn
+ *
+ */
+public abstract class For<Loop extends Each<E>,E> 
+		implements Iterator<Loop>, Iterable<Loop> {
 	
 	public static class Each<T> {
 		
 	}
 	
-	protected X each;
-	private final Iterator<E> iter;
-	private State state = State.UNUSED;
+	protected Loop each;
+	private Iterator<E> iter;
+	private State state = NEW;
 	
-	public For(Collection<E> source) {
-		this.iter = source.iterator();
-		this.state = State.UNUSED;
+	/*default*/ void with(Iterable<E> iterable) {
+		assertState(NEW);
+		this.iter = iterable.iterator();
 		this.initialize();
+		this.state = State.INIT;
 	}
 	
-	@Override
-	public boolean hasNext() {
-		assert state != State.UNUSED;
-		if (state == State.DEAD) return false;
-		if (state == State.NEXT) {
-			this.apply();
-			if (state == State.ABORT) {
-				Query.offer(this.getResult());
-				state = State.DEAD;
-				return false;
-			}
-			state = State.READY;
-		}
-		boolean hasNext = iter.hasNext();
-		if (!hasNext && state != State.DEAD) {
-			Query.offer(this.getResult());
-			state = State.DEAD;
-		}
-		return hasNext;
+	private void assertState(State valid) {
+		if (state == valid) return;
+		throw new IllegalStateException();
 	}
 
 	@Override
-	public Iterator<X> iterator() {
-		assert state == State.UNUSED;
-		state = State.READY;
+	public boolean hasNext() {
+		if (state != FIRST) {
+			assertState(HASNEXT);
+			this.apply();
+			if (state == ABORT) {
+				Query.offer(this.getResult());
+				state = DEAD;
+				return false;
+			}
+		}
+		if (iter.hasNext()) {
+			state = NEXT;
+			return true;
+		}
+		Query.offer(this.getResult());
+		state = DEAD;
+		return false;
+	}
+
+	@Override
+	public Iterator<Loop> iterator() {
+		assertState(INIT);
+		state = FIRST;
 		return this;
 	}
 
 	@Override
-	public X next() {
-		if (state == State.DEAD) throw new NoSuchElementException();
-		assert state == State.READY;
+	public Loop next() {
+		assertState(NEXT);
 		each = nextEach(iter.next());
-		state = State.NEXT;
+		state = HASNEXT;
 		return each;
 	}
 
@@ -86,14 +93,14 @@ public abstract class For<E,X extends Each<E>>
 
 	protected abstract void initialize();
 
-	protected abstract X nextEach(E next);
+	protected abstract Loop nextEach(E next);
 
 	protected abstract Object getResult();
 		
 	public abstract void apply();
 			
 	public void abort() {
-		state = State.ABORT;
+		state = ABORT;
 	}
 	
 }

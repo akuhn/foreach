@@ -17,27 +17,40 @@
 //  
 package ch.akuhn.util.query;
 
-import java.util.Collection;
-
-
+/** Returns the first elements for which a predicate yields true. This class is
+ * to be used in a for-each loop as follows:
+ * <pre>
+ * for (Detect&lt;E&gt; each: Query.detect(elements)) {
+ *     each.yield = &hellip; each.value &hellip;;
+ * }
+ * T found = Query.$result();</pre>
+ * <p>
+ * The body of the loop should implement a predicate.
+ * The current element is provided in `each.value`.
+ * The result of the predicate must be stored to `each.yield`.
+ * The body of the loop is evaluated for each element of the collection.
+ * The result of the entire loop is stored in $result, a thread local variable.
+ * <ul>
+ * <li>If an elements yields `true`, the loop stops and results that element.
+ * <li>If all element yield `false` or nothing, the loop results `null`.
+ * </ul>
+ * <p>
+ * @param value (in/out) current element of the collection. Is used as the loop's result, if yield is assigned `true`.
+ * @param yield (out) result of the predicate. If assigned `true` the loop stops and results the current value. Defaults to `false` if not assigned.
+ * <p>
+ * @author Adrian Kuhn
+ *
+ */
 public class Detect<E> extends For.Each<E> {
 
 	public E value;
 	public boolean yield;
 	
-	public static <E> Query<E> query(Collection<E> collection) {
-		return new Query<E>(collection);
-	}
-	
-	public static class Query<E> extends For<E,Detect<E>> {
+	public static class Query<E> extends For<Detect<E>,E> {
 	
 		protected Detect<E> each;
 		private E result;
 	
-		private Query(Collection<E> source) {
-			super(source);
-		}
-
 		@Override
 		public void apply() {
 			if (each.yield) {
