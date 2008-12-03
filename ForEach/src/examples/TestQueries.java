@@ -14,6 +14,7 @@ import ch.akuhn.util.query.Collect;
 import ch.akuhn.util.query.Count;
 import ch.akuhn.util.query.CutPieces;
 import ch.akuhn.util.query.Detect;
+import ch.akuhn.util.query.Fold;
 import ch.akuhn.util.query.GroupedBy;
 import ch.akuhn.util.query.IndexOf;
 import ch.akuhn.util.query.InjectInto;
@@ -41,6 +42,7 @@ public class TestQueries {
 		eg.exampleCutPieces();
 		eg.exampleDetect();
 		eg.exampleDetect2();
+		eg.exampleFold();
 		eg.exampleIndexOf();
 		eg.exampleIndexOf2();
 		eg.exampleInjectInto();
@@ -189,11 +191,20 @@ public class TestQueries {
 
 	@Test
 	public void exampleSelect() {
-		for (Select<String> each : select($fox)) {
+		for (Select<String> each: select($fox)) {
 			each.yield = each.value.length() > 3;
 		}
 		puts($result());
 		assertEquals("[quick, brown, jumps, over, lazy]",$result().toString());
+	}
+	
+	@Test
+	public void exampleFold() {
+		for (Fold<String> each: fold($fox)) {
+			each.yield = each.yield + " " + each.value;
+		}
+		puts($result());
+		assertEquals("The quick brown fox jumps over the lazy dog",$result());
 	}
 
 	private void puts(Object object) {

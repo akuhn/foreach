@@ -82,5 +82,8 @@ public class Query {
 		return CutPieces.query(collection);
 	}
 	
+	public static <T> Fold.Query<T> fold(Collection<T> collection) {
+		return Fold.query(collection);
+	}
 	
 }
