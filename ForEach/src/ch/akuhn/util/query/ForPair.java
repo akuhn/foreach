@@ -7,14 +7,14 @@ import static ch.akuhn.util.query.State.EACH;
 import java.util.Iterator;
 
 @SuppressWarnings("unchecked")
-public abstract class ForPair<E,This extends ForPair<E,This>> {
+public abstract class ForPair<Each,This extends ForPair<Each,This>> {
 
-	private Iterator<E> iterator;
+	private Iterator<Each> iterator;
 	private State state = FIRST;
-	private E previous;
+	private Each previous;
 	
 	
-	protected This with(Iterable<E> elements) {
+	protected This with(Iterable<Each> elements) {
 		this.iterator = elements.iterator();
 		return (This) this;
 	}
@@ -23,9 +23,9 @@ public abstract class ForPair<E,This extends ForPair<E,This>> {
 		state = ABORTED;
 	}
 	
-	protected abstract void beforeLoop(E first);
+	protected abstract void beforeLoop(Each first);
 	
-	protected abstract void beforeEach(E previous, E element);
+	protected abstract void beforeEach(Each previous, Each element);
 	
 	protected abstract void afterEach();
 	

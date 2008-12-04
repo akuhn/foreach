@@ -23,17 +23,17 @@ import java.util.ArrayList;
 import java.util.Map;
 
 
-public class GroupedBy<E> extends For<E,GroupedBy<E>> {
+public class GroupedBy<Each> extends For<Each,GroupedBy<Each>> {
 
-	public E value;
+	public Each value;
 	public Object yield;
-	private Map<Object,Collection<E>> groups;
+	private Map<Object,Collection<Each>> groups;
 	
 	@Override
 	protected void afterEach() {
-		Collection<E> group = groups.get(yield);
+		Collection<Each> group = groups.get(yield);
 		if (group == null) {
-			group = new ArrayList<E>();
+			group = new ArrayList<Each>();
 			groups.put(yield, group);
 		}
 		group.add(value);
@@ -46,11 +46,11 @@ public class GroupedBy<E> extends For<E,GroupedBy<E>> {
 
 	@Override
 	protected void beforeLoop() {
-		groups = new HashMap<Object,Collection<E>>();
+		groups = new HashMap<Object,Collection<Each>>();
 	}
 	
 	@Override
-	protected void beforeEach(E element) {
+	protected void beforeEach(Each element) {
 		value = element;
 		yield = null;
 	}

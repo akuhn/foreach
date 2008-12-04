@@ -18,10 +18,10 @@
 package ch.akuhn.util.query;
 
 
-public class Fold<E> extends ForPair<E,Fold<E>> {
+public class Fold<Each> extends ForPair<Each,Fold<Each>> {
 
-	public E value;
-	public E yield;
+	public Each value;
+	public Each yield;
 	
 	@Override
 	protected void afterEach() {
@@ -33,12 +33,12 @@ public class Fold<E> extends ForPair<E,Fold<E>> {
 	}
 
 	@Override
-	protected void beforeEach(E previous, E element) {
+	protected void beforeEach(Each previous, Each element) {
 		value = element;
 	}
 
 	@Override
-	protected void beforeLoop(E first) {
+	protected void beforeLoop(Each first) {
 		yield = first;
 	}
 	

@@ -42,9 +42,9 @@ import java.util.Collection;
  * @author Adrian Kuhn
  *
  */
-public class Collect<E,R> extends For<E,Collect<E,R>> {
+public class Collect<Each,R> extends For<Each,Collect<Each,R>> {
 
-	public E value;
+	public Each value;
 	public R yield;
 	private Collection<R> copy;
 	
@@ -63,7 +63,7 @@ public class Collect<E,R> extends For<E,Collect<E,R>> {
 	}
 	
 	@Override
-	protected void beforeEach(E element) {
+	protected void beforeEach(Each element) {
 		value = element;
 		yield = null;
 	}

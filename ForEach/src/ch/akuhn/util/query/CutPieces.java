@@ -58,19 +58,19 @@ import java.util.LinkedList;
  * @author Adrian Kuhn
  *
  */
-public class CutPieces<E> extends ForPair<E,CutPieces<E>> {
+public class CutPieces<Each> extends ForPair<Each,CutPieces<Each>> {
 
-	public E prev;
-	public E next;
+	public Each prev;
+	public Each next;
 	public boolean yield;
 
-	private Collection<Collection<E>> result;
-	private Collection<E> current;
+	private Collection<Collection<Each>> result;
+	private Collection<Each> current;
 	
 	@Override
 	protected void afterEach() {
 		if (yield) {
-			current = new ArrayList<E>();
+			current = new ArrayList<Each>();
 			result.add(current);
 		}
 		current.add(next);
@@ -82,16 +82,16 @@ public class CutPieces<E> extends ForPair<E,CutPieces<E>> {
 	}
 
 	@Override
-	protected void beforeEach(E previous, E element) {
+	protected void beforeEach(Each previous, Each element) {
 		prev = previous;
 		next = element;
 		yield = false;
 	}
 
 	@Override
-	protected void beforeLoop(E first) {
-		result = new LinkedList<Collection<E>>();
-		current = new ArrayList<E>();
+	protected void beforeLoop(Each first) {
+		result = new LinkedList<Collection<Each>>();
+		current = new ArrayList<Each>();
 		result.add(current);
 		current.add(first);
 	}

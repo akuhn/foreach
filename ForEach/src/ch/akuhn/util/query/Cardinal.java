@@ -21,9 +21,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public class Cardinal<E> extends For<E,Cardinal<E>> {
+public class Cardinal<Each> extends For<Each,Cardinal<Each>> {
 
-	public E value;
+	public Each value;
 	public Object yield;
 	private Set<Object> count;
 	
@@ -42,7 +42,7 @@ public class Cardinal<E> extends For<E,Cardinal<E>> {
 	}
 	
 	@Override
-	protected void beforeEach(E element) {
+	protected void beforeEach(Each element) {
 		value = element;
 		yield = null;
 	}

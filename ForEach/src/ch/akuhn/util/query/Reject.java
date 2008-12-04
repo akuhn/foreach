@@ -46,11 +46,11 @@ import java.util.Collection;
  * @author Adrian Kuhn
  *
  */
-public class Reject<E> extends For<E,Reject<E>> {
+public class Reject<Each> extends For<Each,Reject<Each>> {
 
-	public E value;
+	public Each value;
 	public boolean yield;
-	private Collection<E> copy;
+	private Collection<Each> copy;
 	
 	@Override
 	protected void afterEach() {
@@ -63,11 +63,11 @@ public class Reject<E> extends For<E,Reject<E>> {
 	}
 	@Override
 	protected void beforeLoop() {
-		copy = new ArrayList<E>();
+		copy = new ArrayList<Each>();
 	}
 	
 	@Override
-	protected void beforeEach(E element) {
+	protected void beforeEach(Each element) {
 		value = element;
 		yield = false;
 	}

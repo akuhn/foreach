@@ -46,11 +46,11 @@ import java.util.Collection;
  * @author Adrian Kuhn
  *
  */
-public class Select<E> extends For<E,Select<E>> {
+public class Select<Each> extends For<Each,Select<Each>> {
 
-	public E value;
+	public Each value;
 	public boolean yield;
-	private Collection<E> copy;
+	private Collection<Each> copy;
 	
 	@Override
 	protected void afterEach() {
@@ -63,11 +63,11 @@ public class Select<E> extends For<E,Select<E>> {
 	}
 	@Override
 	protected void beforeLoop() {
-		copy = new ArrayList<E>();
+		copy = new ArrayList<Each>();
 	}
 	
 	@Override
-	protected void beforeEach(E element) {
+	protected void beforeEach(Each element) {
 		value = element;
 		yield = false;
 	}

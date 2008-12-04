@@ -41,9 +41,9 @@ package ch.akuhn.util.query;
  * @author Adrian Kuhn
  *
  */
-public class AllSatisfy<E> extends For<E,AllSatisfy<E>> {
+public class AllSatisfy<Each> extends For<Each,AllSatisfy<Each>> {
 
-	public E value;
+	public Each value;
 	public boolean yield;
 	
 	@Override
@@ -61,7 +61,7 @@ public class AllSatisfy<E> extends For<E,AllSatisfy<E>> {
 	}
 	
 	@Override
-	protected void beforeEach(E element) {
+	protected void beforeEach(Each element) {
 		value = element;
 		yield = false;
 	}

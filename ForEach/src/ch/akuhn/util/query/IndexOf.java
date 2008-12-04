@@ -19,9 +19,9 @@ package ch.akuhn.util.query;
 
 
 
-public class IndexOf<E> extends For<E,IndexOf<E>> {
+public class IndexOf<Each> extends For<Each,IndexOf<Each>> {
 
-	public E value;
+	public Each value;
 	public boolean yield;
 	private int index;
 	
@@ -40,7 +40,7 @@ public class IndexOf<E> extends For<E,IndexOf<E>> {
 	}
 	
 	@Override
-	protected void beforeEach(E element) {
+	protected void beforeEach(Each element) {
 		value = element;
 		yield = false;
 		index++;

@@ -41,9 +41,9 @@ package ch.akuhn.util.query;
  * @author Adrian Kuhn
  *
  */
-public class Detect<E> extends For<E,Detect<E>> {
+public class Detect<Each> extends For<Each,Detect<Each>> {
 
-	public E value;
+	public Each value;
 	public boolean yield;
 	
 	@Override
@@ -61,7 +61,7 @@ public class Detect<E> extends For<E,Detect<E>> {
 	}
 	
 	@Override
-	protected void beforeEach(E element) {
+	protected void beforeEach(Each element) {
 		value = element;
 		yield = false;
 	}

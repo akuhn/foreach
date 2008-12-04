@@ -19,12 +19,12 @@ package ch.akuhn.util.query;
 
 
 
-public class Inject<E,R> extends For<E,Inject<E,R>> {
+public class Inject<Each,R> extends For<Each,Inject<Each,R>> {
 
-	public E value;
+	public Each value;
 	public R yield;
 
-	protected Inject<E,R> initial(R value) {
+	protected Inject<Each,R> initial(R value) {
 		yield = value;
 		return this;
 	}
@@ -43,7 +43,7 @@ public class Inject<E,R> extends For<E,Inject<E,R>> {
 	}
 	
 	@Override
-	protected void beforeEach(E element) {
+	protected void beforeEach(Each element) {
 		value = element;
 	}
 	

@@ -26,12 +26,12 @@ import java.util.Iterator;
 *
 */
 @SuppressWarnings("unchecked")
-public abstract class For<E,This extends For<E,This>> {
+public abstract class For<Each,This extends For<Each,This>> {
 
-	private Iterator<E> iterator;
+	private Iterator<Each> iterator;
 	private State state = FIRST;
 	
-	protected This with(Iterable<E> elements) {
+	protected This with(Iterable<Each> elements) {
 		this.iterator = elements.iterator();
 		return (This) this;
 	}
@@ -42,7 +42,7 @@ public abstract class For<E,This extends For<E,This>> {
 	
 	protected abstract void beforeLoop();
 	
-	protected abstract void beforeEach(E element);
+	protected abstract void beforeEach(Each element);
 	
 	protected abstract void afterEach();
 	
