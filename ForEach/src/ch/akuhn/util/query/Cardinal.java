@@ -21,37 +21,37 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public class Count<E> extends For.Each<E> {
+public class Cardinal<E> extends For.Each<E> {
 
 	public E value;
-	public boolean yield;
+	public Object yield;
 	
-	public static class Query<E> extends For<Count<E>,E> {
+	public static class Query<E> extends For<Cardinal<E>,E> {
 	
-		protected Count<E> each;
-		private int result;
+		protected Cardinal<E> each;
+		private Set<Object> result;
 	
 		@Override
 		public void apply() {
-			if (each.yield) result++;
+			result.add(each.yield);
 		}
 
 		@Override
 		protected void initialize() {
-			each = new Count<E>();
-			result = 0;
+			each = new Cardinal<E>();
+			result = new HashSet<Object>();
 		}
 
 		@Override
-		protected Count<E> nextEach(E next) {
+		protected Cardinal<E> nextEach(E next) {
 			each.value = next;
-			each.yield = false;
+			each.yield = null;
 			return each;
 		}
 
 		@Override
 		protected Object getResult() {
-			return result;
+			return result.size();
 		}
 			
 	}

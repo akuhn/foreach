@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import ch.akuhn.util.query.AllSatisfy;
 import ch.akuhn.util.query.AnySatisfy;
+import ch.akuhn.util.query.Cardinal;
 import ch.akuhn.util.query.Collect;
 import ch.akuhn.util.query.Count;
 import ch.akuhn.util.query.CutPieces;
@@ -98,12 +99,21 @@ public class TestQueries {
 	}
 
 	@Test
-	public void exampleCount() {
-		for (Count<String> each : count($fox)) {
+	public void exampleCardinal() {
+		for (Cardinal<String> each : cardinal($fox)) {
 			each.yield = each.value.length();
 		}
 		puts($result());
 		assertEquals(3,$result());
+	}
+
+	@Test
+	public void exampleCount() {
+		for (Count<String> each : count($fox)) {
+			each.yield = each.value.length() == 3;
+		}
+		puts($result());
+		assertEquals(4,$result());
 	}
 
 	@Test

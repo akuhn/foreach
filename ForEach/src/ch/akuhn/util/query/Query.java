@@ -66,6 +66,12 @@ public class Query {
 		return query;
 	}
 
+	public static <T> Cardinal.Query<T> cardinal(Iterable<T> iter) {
+		Cardinal.Query query = new Cardinal.Query();
+		query.with(iter);
+		return query;
+	}
+
 	public static <T> Detect.Query<T> detect(Iterable<T> iter) {
 		Detect.Query query = new Detect.Query();
 		query.with(iter);

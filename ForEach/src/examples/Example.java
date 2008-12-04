@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import static ch.akuhn.util.query.Query.*;
+import ch.akuhn.util.query.Cardinal;
 import ch.akuhn.util.query.Count;
 import ch.akuhn.util.query.CutPieces;
 import ch.akuhn.util.query.GroupedBy;
@@ -36,7 +37,7 @@ public class Example {
 				each.yield = each.value.week() != each.next.week();
 			Collection<Collection<FileVersion>> weeks = $result();
 			for (GroupedBy<Integer,Collection<FileVersion>> week : groupedBy(Integer.class, weeks)) {
-				for (Count<FileVersion> each : count(week.value)) 
+				for (Cardinal<FileVersion> each : cardinal(week.value)) 
 					each.yield = each.value.author();
 				week.yield = $result();
 			}
