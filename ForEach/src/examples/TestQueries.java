@@ -173,7 +173,7 @@ public class TestQueries {
 	@Test
 	public void exampleCutPieces() {
 		for (CutPieces<String> each : cutPieces($fox)) {
-			each.yield = each.value.length() > each.next.length();
+			each.cutIf = each.value.length() > each.next.length();
 		}
 		puts($result());
 		assertEquals("[[The, quick, brown], [fox, jumps], [over], [the, lazy], [dog]]",

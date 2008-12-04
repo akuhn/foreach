@@ -36,7 +36,7 @@ package ch.akuhn.util.query;
  * </ul>
  * <p>
  * @param value (in) current element of the collection. No effect if assigned.
- * @param yield (out) result of the predicate. Defaults to `false` if not assigned.
+ * @param cut_if (out) result of the predicate. Defaults to `false` if not assigned.
  * <p>
  * @author Adrian Kuhn
  *

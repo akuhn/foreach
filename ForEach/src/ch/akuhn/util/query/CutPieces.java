@@ -26,14 +26,14 @@ import java.util.LinkedList;
  * elements where the loop yields `true`. Returns a list of those pieces. 
  * To be used in a foreach loop as follows:
  * <pre>
- * for (CutPieces<T> each: cutPieces(elements)) {
- *     each.yield = &hellip; each.value &hellip; each.next &hellip; ;
+ * for (CutPieces&lt;T&gt; each: cutPieces(elements)) {
+ *     each.cutIf = &hellip; each.value &hellip; each.next &hellip; ;
  * }
- * List<Collection<T>> pieces = $result;</pre>
+ * List&lt;Collection&lt;T&gt;&gt; pieces = $result;</pre>
  * <p>
  * The body of the loop should implement a predicate.
  * The current pair of elements is provided in `each.value` and `each.next`.
- * The result of the predicate must be stored to `each.yield`.
+ * The result of the predicate must be stored to `each.cut_if`.
  * The body of the loop is evaluated for consecutive pairs of the collection.
  * The loop cuts the collection into pieces and returns those.
  * <ul>
@@ -41,9 +41,18 @@ import java.util.LinkedList;
  * <li>If a pair yields `false` or nothing, no cut happens.
  * </ul>
  * <p>
+ * <i>Example:</i> splitting a series of events into clusters that are no more
+ * than 2 minutes apart.
+ * <pre>
+ * SortedList&lt;Events&gt; events = &hellip; ;
+ * for (CutPieces&lt;Event&gt; $: cutPieces(events)) {
+ *     $.cutIf = ($.next.time() - $.value.time()) &gt; 120000;
+ * }
+ * List&lt;List&lt;Event&gt;&gt; clusters = $result;</pre>
+ * <p>
  * @param value (in) first element of the current pair. No effect if assigned.
  * @param next (in/out) second element of the current pair. If assigned, the new value is used in the resulting pieces. 
- * @param yield (out) result of the predicate. If `true` the collection is cut 
+ * @param cutIf (out) result of the predicate. If `true` the collection is cut 
  * between the elements of the current pair. Defaults to `false` if not assigned.
  * <P>
  * @author Adrian Kuhn
@@ -53,7 +62,7 @@ public class CutPieces<E> extends ForPair.Each<E> {
 
 	public E value;
 	public E next;
-	public boolean yield;
+	public boolean cutIf;
 	
 	public static class Query<E> extends ForPair<CutPieces<E>,E> {
 	
@@ -63,7 +72,7 @@ public class CutPieces<E> extends ForPair.Each<E> {
 	
 		@Override
 		public void apply() {
-			if (each.yield) {
+			if (each.cutIf) {
 				current = new ArrayList<E>();
 				result.add(current);
 			}
@@ -83,7 +92,7 @@ public class CutPieces<E> extends ForPair.Each<E> {
 		protected CutPieces<E> nextPair(E previous, E next) {
 			each.value = previous;
 			each.next = next;
-			each.yield = false;
+			each.cutIf = false;
 			return each;
 		}
 

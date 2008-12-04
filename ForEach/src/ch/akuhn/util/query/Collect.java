@@ -36,7 +36,7 @@ import java.util.ArrayList;
  * Upon termination of the loop the new collection is assigned to $result (a thread local variable).
  * <p>
  * @param value (in) current element of the collection.
- * @param yield (out) result of the expression. Defaults to `null` if not assigned.
+ * @param cut_if (out) result of the expression. Defaults to `null` if not assigned.
  * <p>
  * @author Adrian Kuhn
  *

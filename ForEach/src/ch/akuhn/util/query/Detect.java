@@ -36,7 +36,7 @@ package ch.akuhn.util.query;
  * </ul>
  * <p>
  * @param value (in/out) current element of the collection. Is used as the loop's result, if yield is assigned `true`.
- * @param yield (out) result of the predicate. If assigned `true` the loop stops and results the current value. Defaults to `false` if not assigned.
+ * @param cut_if (out) result of the predicate. If assigned `true` the loop stops and results the current value. Defaults to `false` if not assigned.
  * <p>
  * @author Adrian Kuhn
  *

@@ -34,7 +34,7 @@ public class Example {
 		Bag<Integer> bag = null;
 		for(FileHistory history : project.fileHistories()) {
 			for (CutPieces<FileVersion> each : cutPieces(history.fileVersions()))
-				each.yield = each.value.week() != each.next.week();
+				each.cutIf = each.value.week() != each.next.week();
 			Collection<Collection<FileVersion>> weeks = $result();
 			for (GroupedBy<Integer,Collection<FileVersion>> week : groupedBy(Integer.class, weeks)) {
 				for (Cardinal<FileVersion> each : cardinal(week.value)) 

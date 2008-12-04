@@ -40,7 +40,7 @@ import java.util.ArrayList;
  * Upon termination of the loop the resulting collection is stored in $result (a thread local variable).
  * <p>
  * @param value (in/out) current element of the collection. Is added to the result, if yield is assigned `true`.
- * @param yield (out) result of the predicate. Defaults to `false` if not assigned.
+ * @param cut_if (out) result of the predicate. Defaults to `false` if not assigned.
  * <p>
  * @author Adrian Kuhn
  *
