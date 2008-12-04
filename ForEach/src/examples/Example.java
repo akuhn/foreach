@@ -33,7 +33,7 @@ public class Example {
 	public Bag<Integer> howManyAuthorsPerWeekAndFile(Project project) {
 		Bag<Integer> bag = null;
 		for(FileHistory history : project.fileHistories()) {
-			for (CutPieces<FileVersion> each : cut(history.fileVersions()))
+			for (CutPieces<FileVersion> each : cutPieces(history.fileVersions()))
 				each.yield = each.prev.week() != each.next.week();
 			Collection<Collection<FileVersion>> weeks = $result();
 			for (GroupedBy<Collection<FileVersion>> week : groupedBy(weeks)) {

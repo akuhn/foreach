@@ -19,7 +19,7 @@ public class TestCutPieces {
 		CutPieces<Integer> each;
 
 		elements = Arrays.asList(new Integer[] { 1, 2, 3, 4 });
-		query = Query.cut(elements).iterator();
+		query = Query.cutPieces(elements).iterator();
 		assertEquals(true,query.hasNext());
 		each = query.next();
 		assertEquals(1,each.prev);

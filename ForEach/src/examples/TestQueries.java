@@ -55,7 +55,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleAllSatisfy() {
-		for (AllSatisfy<String> each : all($fox)) {
+		for (AllSatisfy<String> each : allSatisfy($fox)) {
 			each.yield = each.value.length() > 2;
 		}
 		puts($result());
@@ -64,7 +64,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleAllSatisfy2() {
-		for (AllSatisfy<String> each : all($fox)) {
+		for (AllSatisfy<String> each : allSatisfy($fox)) {
 			each.yield = each.value.length() > 3;
 		}
 		puts($result());
@@ -73,7 +73,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleAnySatisfy() {
-		for (AnySatisfy<String> each : any($fox)) {
+		for (AnySatisfy<String> each : anySatisfy($fox)) {
 			each.yield = each.value.length() == 4;
 		}
 		puts($result());
@@ -82,7 +82,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleAnySatisfy2() {
-		for (AnySatisfy<String> each : any($fox)) {
+		for (AnySatisfy<String> each : anySatisfy($fox)) {
 			each.yield = each.value.length() == 2;
 		}
 		puts($result());
@@ -172,7 +172,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleCutPieces() {
-		for (CutPieces<String> each : cut($fox)) {
+		for (CutPieces<String> each : cutPieces($fox)) {
 			each.yield = each.prev.length() > each.next.length();
 		}
 		puts($result());

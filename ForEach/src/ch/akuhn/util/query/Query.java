@@ -36,11 +36,11 @@ public class Query {
 		return (T) result.get();
 	}
 	
-	public static <T> Iterable<AllSatisfy<T>> all(Iterable<T> elements) {
+	public static <T> Iterable<AllSatisfy<T>> allSatisfy(Iterable<T> elements) {
 		return new AllSatisfy<T>().with(elements).iterable();
 	}
 
-	public static <T> Iterable<AnySatisfy<T>> any(Iterable<T> elements) {
+	public static <T> Iterable<AnySatisfy<T>> anySatisfy(Iterable<T> elements) {
 		return new AnySatisfy<T>().with(elements).iterable();
 	}
 
@@ -60,7 +60,7 @@ public class Query {
 		return new Count<T>().with(elements).iterable();
 	}
 
-	public static <T> Iterable<CutPieces<T>> cut(Iterable<T> elements) {
+	public static <T> Iterable<CutPieces<T>> cutPieces(Iterable<T> elements) {
 		return new CutPieces<T>().with(elements).iterable();
 	}
 	
