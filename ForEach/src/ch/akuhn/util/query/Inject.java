@@ -3,7 +3,7 @@
 //  This file is part of "ForEach".
 //  
 //  "ForEach" is free software: you can redistribute it and/or modify it under
-//	the terms of the GNU Lesser General Public License as published by the Free
+//  the terms of the GNU Lesser General Public License as published by the Free
 //  Software Foundation, either version 3 of the License, or (at your option)
 //  any later version.
 //  
@@ -19,43 +19,32 @@ package ch.akuhn.util.query;
 
 
 
-public class InjectInto<R,E> extends For.Each<E> {
+public class Inject<E,R> extends For<E,Inject<E,R>> {
 
 	public E value;
 	public R yield;
-	
-	public static class Query<R,E> extends For<InjectInto<R,E>,E> {
-	
-		protected InjectInto<R,E> each;
-		private R result;
-	
-		/*default*/ void initalValue(R value) {
-			this.result = value;
-		}
-		
-		@Override
-		public void apply() {
-			this.result = each.yield; 
-		}
 
-		@Override
-		protected void initialize() {
-			each = new InjectInto<R,E>();
-		}
-
-		@Override
-		protected InjectInto<R,E> nextEach(E next) {
-			each.value = next;
-			each.yield = result;
-			return each;
-		}
-
-		@Override
-		protected Object getResult() {
-			return result;
-		}
+	protected Inject<E,R> initial(R value) {
+		yield = value;
+		return this;
+	}
 	
-		
+	@Override
+	protected void afterEach() {
+	}
+	
+	@Override
+	protected Object afterLoop() {
+		return yield;
+	}
+
+	@Override
+	protected void beforeLoop() {
+	}
+	
+	@Override
+	protected void beforeEach(E element) {
+		value = element;
 	}
 	
 }

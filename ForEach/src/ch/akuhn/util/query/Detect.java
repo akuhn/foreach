@@ -3,7 +3,7 @@
 //  This file is part of "ForEach".
 //  
 //  "ForEach" is free software: you can redistribute it and/or modify it under
-//	the terms of the GNU Lesser General Public License as published by the Free
+//  the terms of the GNU Lesser General Public License as published by the Free
 //  Software Foundation, either version 3 of the License, or (at your option)
 //  any later version.
 //  
@@ -36,47 +36,34 @@ package ch.akuhn.util.query;
  * </ul>
  * <p>
  * @param value (in/out) current element of the collection. Is used as the loop's result, if yield is assigned `true`.
- * @param cut_if (out) result of the predicate. If assigned `true` the loop stops and results the current value. Defaults to `false` if not assigned.
+ * @param yield (out) result of the predicate. If assigned `true` the loop stops and results the current value. Defaults to `false` if not assigned.
  * <p>
  * @author Adrian Kuhn
  *
  */
-public class Detect<E> extends For.Each<E> {
+public class Detect<E> extends For<E,Detect<E>> {
 
 	public E value;
 	public boolean yield;
 	
-	public static class Query<E> extends For<Detect<E>,E> {
+	@Override
+	protected void afterEach() {
+		if (yield) this.abort();
+	}
 	
-		protected Detect<E> each;
-		private E result;
+	@Override
+	protected Object afterLoop() {
+		return yield ? value : null;
+	}
 	
-		@Override
-		public void apply() {
-			if (each.yield) {
-				result = each.value;
-				this.abort();
-			}
-		}
-
-		@Override
-		protected void initialize() {
-			each = new Detect<E>();
-			result = null;
-		}
-
-		@Override
-		protected Detect<E> nextEach(E next) {
-			each.value = next;
-			each.yield = false;
-			return each;
-		}
-
-		@Override
-		protected Object getResult() {
-			return result;
-		}
-		
+	@Override
+	protected void beforeLoop() {
+	}
+	
+	@Override
+	protected void beforeEach(E element) {
+		value = element;
+		yield = false;
 	}
 	
 }

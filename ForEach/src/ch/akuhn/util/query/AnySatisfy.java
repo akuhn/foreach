@@ -3,7 +3,7 @@
 //  This file is part of "ForEach".
 //  
 //  "ForEach" is free software: you can redistribute it and/or modify it under
-//	the terms of the GNU Lesser General Public License as published by the Free
+//  the terms of the GNU Lesser General Public License as published by the Free
 //  Software Foundation, either version 3 of the License, or (at your option)
 //  any later version.
 //  
@@ -20,7 +20,7 @@ package ch.akuhn.util.query;
 /** Checks if a predicate yields `true` for at least one element. This class is to
  * be used in a for-each loop as follows:
  * <pre>
- * for (AllSatisfy&lt;E&gt; each: Query.satisfy(elements)) {
+ * for (AnySatisfy&lt;E&gt; each: Query.anySatisfy(elements)) {
  *     each.yield = &hellip; each.value &hellip;;
  * }
  * boolean result = Query.$result();</pre>
@@ -36,47 +36,34 @@ package ch.akuhn.util.query;
  * </ul>
  * <p>
  * @param value (in) current element of the collection. No effect if assigned.
- * @param cut_if (out) result of the predicate. Defaults to `false` if not assigned.
+ * @param yield (out) result of the predicate. Defaults to `false` if not assigned.
  * <p>
  * @author Adrian Kuhn
  *
  */
-public class AnySatisfy<E> extends For.Each<E> {
+public class AnySatisfy<E> extends For<E,AnySatisfy<E>> {
 
 	public E value;
 	public boolean yield;
 	
-	public static class Query<E> extends For<AnySatisfy<E>,E> {
+	@Override
+	protected void afterEach() {
+		if (yield) this.abort();
+	}
 	
-		protected AnySatisfy<E> each;
-		private Boolean result;
+	@Override
+	protected Object afterLoop() {
+		return yield;
+	}
+
+	@Override
+	protected void beforeLoop() {
+	}
 	
-		@Override
-		public void apply() {
-			if (each.yield) {
-				result = Boolean.TRUE;
-				this.abort();
-			}
-		}
-
-		@Override
-		protected void initialize() {
-			each = new AnySatisfy<E>();
-			result = Boolean.FALSE;
-		}
-
-		@Override
-		protected AnySatisfy<E> nextEach(E next) {
-			each.value = next;
-			each.yield = false;
-			return each;
-		}
-
-		@Override
-		protected Object getResult() {
-			return result;
-		}
-		
+	@Override
+	protected void beforeEach(E element) {
+		value = element;
+		yield = false;
 	}
 	
 }

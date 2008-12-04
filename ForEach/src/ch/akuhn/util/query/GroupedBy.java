@@ -3,7 +3,7 @@
 //  This file is part of "ForEach".
 //  
 //  "ForEach" is free software: you can redistribute it and/or modify it under
-//	the terms of the GNU Lesser General Public License as published by the Free
+//  the terms of the GNU Lesser General Public License as published by the Free
 //  Software Foundation, either version 3 of the License, or (at your option)
 //  any later version.
 //  
@@ -19,48 +19,40 @@ package ch.akuhn.util.query;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Map;
 
 
-public class GroupedBy<R,E> extends For.Each<E> {
+public class GroupedBy<E> extends For<E,GroupedBy<E>> {
 
 	public E value;
-	public R yield;
+	public Object yield;
+	private Map<Object,Collection<E>> groups;
 	
-	public static class Query<R,E> extends For<GroupedBy<R,E>,E> {
+	@Override
+	protected void afterEach() {
+		Collection<E> group = groups.get(yield);
+		if (group == null) {
+			group = new ArrayList<E>();
+			groups.put(yield, group);
+		}
+		group.add(value);
+	}
 	
-		protected GroupedBy<R,E> each;
-		private Map<R,Collection<E>> result;
+	@Override
+	protected Object afterLoop() {
+		return groups;
+	}
+
+	@Override
+	protected void beforeLoop() {
+		groups = new HashMap<Object,Collection<E>>();
+	}
 	
-		@Override
-		public void apply() {
-			Collection<E> group = result.get(each.yield);
-			if (group == null) {
-				group = new LinkedList<E>();
-				result.put(each.yield, group);
-			}
-			group.add(each.value);
-		}
-
-		@Override
-		protected void initialize() {
-			each = new GroupedBy<R,E>();
-			result = new HashMap<R,Collection<E>>();
-		}
-
-		@Override
-		protected GroupedBy<R,E> nextEach(E next) {
-			each.value = next;
-			each.yield = null;
-			return each;
-		}
-
-		@Override
-		protected Object getResult() {
-			return result;
-		}
-			
+	@Override
+	protected void beforeEach(E element) {
+		value = element;
+		yield = null;
 	}
 	
 }

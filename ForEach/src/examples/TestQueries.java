@@ -18,7 +18,7 @@ import ch.akuhn.util.query.Detect;
 import ch.akuhn.util.query.Fold;
 import ch.akuhn.util.query.GroupedBy;
 import ch.akuhn.util.query.IndexOf;
-import ch.akuhn.util.query.InjectInto;
+import ch.akuhn.util.query.Inject;
 import ch.akuhn.util.query.Reject;
 import ch.akuhn.util.query.Select;
 
@@ -55,7 +55,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleAllSatisfy() {
-		for (AllSatisfy<String> each : allSatisfy($fox)) {
+		for (AllSatisfy<String> each : all($fox)) {
 			each.yield = each.value.length() > 2;
 		}
 		puts($result());
@@ -64,7 +64,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleAllSatisfy2() {
-		for (AllSatisfy<String> each : allSatisfy($fox)) {
+		for (AllSatisfy<String> each : all($fox)) {
 			each.yield = each.value.length() > 3;
 		}
 		puts($result());
@@ -73,7 +73,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleAnySatisfy() {
-		for (AnySatisfy<String> each : anySatisfy($fox)) {
+		for (AnySatisfy<String> each : any($fox)) {
 			each.yield = each.value.length() == 4;
 		}
 		puts($result());
@@ -82,7 +82,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleAnySatisfy2() {
-		for (AnySatisfy<String> each : anySatisfy($fox)) {
+		for (AnySatisfy<String> each : any($fox)) {
 			each.yield = each.value.length() == 2;
 		}
 		puts($result());
@@ -91,7 +91,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleCollect() {
-		for (Collect<Integer,String> each : collect(Integer.class, $fox)) {
+		for (Collect<String,Integer> each : collect($fox,Integer.class)) {
 			each.yield = each.value.length();
 		}
 		puts($result());
@@ -145,7 +145,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleInjectInto() {
-		for (InjectInto<Integer,String> each : injectInto(0, $fox)) {
+		for (Inject<String,Integer> each : inject($fox, 0)) {
 			each.yield = each.yield + each.value.length();
 		}
 		puts($result());
@@ -172,8 +172,8 @@ public class TestQueries {
 
 	@Test
 	public void exampleCutPieces() {
-		for (CutPieces<String> each : cutPieces($fox)) {
-			each.cutIf = each.value.length() > each.next.length();
+		for (CutPieces<String> each : cut($fox)) {
+			each.yield = each.prev.length() > each.next.length();
 		}
 		puts($result());
 		assertEquals("[[The, quick, brown], [fox, jumps], [over], [the, lazy], [dog]]",
@@ -191,7 +191,7 @@ public class TestQueries {
 
 	@Test
 	public void exampleGroupedBy() {
-		for (GroupedBy<Integer,String> each : groupedBy(Integer.class, $fox)) {
+		for (GroupedBy<String> each : groupedBy($fox)) {
 			each.yield = each.value.length();
 		}
 		puts($result());

@@ -3,7 +3,7 @@
 //  This file is part of "ForEach".
 //  
 //  "ForEach" is free software: you can redistribute it and/or modify it under
-//	the terms of the GNU Lesser General Public License as published by the Free
+//  the terms of the GNU Lesser General Public License as published by the Free
 //  Software Foundation, either version 3 of the License, or (at your option)
 //  any later version.
 //  
@@ -18,39 +18,28 @@
 package ch.akuhn.util.query;
 
 
-public class Fold<E> extends ForPair.Each<E> {
+public class Fold<E> extends ForPair<E,Fold<E>> {
 
 	public E value;
 	public E yield;
 	
-	public static class Query<E> extends ForPair<Fold<E>,E> {
+	@Override
+	protected void afterEach() {
+	}
 	
-		protected Fold<E> each;
-		private E result;
-	
-		@Override
-		public void apply() {
-			result = each.yield;
-		}
+	@Override
+	protected Object afterLoop() {
+		return yield;
+	}
 
-		@Override
-		protected void initialize(E first) {
-			each = new Fold<E>();
-			result = first;
-		}
+	@Override
+	protected void beforeEach(E previous, E element) {
+		value = element;
+	}
 
-		@Override
-		protected Fold<E> nextPair(E previous, E next) {
-			each.value = next;
-			each.yield = result;
-			return each;
-		}
-
-		@Override
-		protected Object getResult() {
-			return result;
-		}
-		
+	@Override
+	protected void beforeLoop(E first) {
+		yield = first;
 	}
 	
 }

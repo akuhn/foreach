@@ -3,7 +3,7 @@
 //  This file is part of "ForEach".
 //  
 //  "ForEach" is free software: you can redistribute it and/or modify it under
-//	the terms of the GNU Lesser General Public License as published by the Free
+//  the terms of the GNU Lesser General Public License as published by the Free
 //  Software Foundation, either version 3 of the License, or (at your option)
 //  any later version.
 //  
@@ -21,39 +21,30 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public class Cardinal<E> extends For.Each<E> {
+public class Cardinal<E> extends For<E,Cardinal<E>> {
 
 	public E value;
 	public Object yield;
+	private Set<Object> count;
 	
-	public static class Query<E> extends For<Cardinal<E>,E> {
+	@Override
+	protected void afterEach() {
+		count.add(yield);
+	}
 	
-		protected Cardinal<E> each;
-		private Set<Object> result;
+	@Override
+	protected Object afterLoop() {
+		return count.size();
+	}
+	@Override
+	protected void beforeLoop() {
+		count = new HashSet<Object>();
+	}
 	
-		@Override
-		public void apply() {
-			result.add(each.yield);
-		}
-
-		@Override
-		protected void initialize() {
-			each = new Cardinal<E>();
-			result = new HashSet<Object>();
-		}
-
-		@Override
-		protected Cardinal<E> nextEach(E next) {
-			each.value = next;
-			each.yield = null;
-			return each;
-		}
-
-		@Override
-		protected Object getResult() {
-			return result.size();
-		}
-			
+	@Override
+	protected void beforeEach(E element) {
+		value = element;
+		yield = null;
 	}
 	
 }

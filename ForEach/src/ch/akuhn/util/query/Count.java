@@ -1,59 +1,29 @@
-//  Copyright (c) 2008 Adrian Kuhn <akuhn(a)iam.unibe.ch>
-//  
-//  This file is part of "ForEach".
-//  
-//  "ForEach" is free software: you can redistribute it and/or modify it under
-//	the terms of the GNU Lesser General Public License as published by the Free
-//  Software Foundation, either version 3 of the License, or (at your option)
-//  any later version.
-//  
-//  "ForEach" is distributed in the hope that it will be useful, but WITHOUT ANY
-//  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-//  FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-//  details.
-//  
-//  You should have received a copy of the GNU Lesser General Public License
-//  along with "ForEach". If not, see <http://www.gnu.org/licenses/>.
-//  
 package ch.akuhn.util.query;
 
-import java.util.HashSet;
-import java.util.Set;
-
-
-public class Count<E> extends For.Each<E> {
+public class Count<E> extends For<E,Count<E>> {
 
 	public E value;
 	public boolean yield;
+	private int count;
 	
-	public static class Query<E> extends For<Count<E>,E> {
+	@Override
+	protected void afterEach() {
+		if (yield) count++;
+	}
 	
-		protected Count<E> each;
-		private int result;
+	@Override
+	protected Object afterLoop() {
+		return count;
+	}
+	@Override
+	protected void beforeLoop() {
+		count = 0;
+	}
 	
-		@Override
-		public void apply() {
-			if (each.yield) result++;
-		}
-
-		@Override
-		protected void initialize() {
-			each = new Count<E>();
-			result = 0;
-		}
-
-		@Override
-		protected Count<E> nextEach(E next) {
-			each.value = next;
-			each.yield = false;
-			return each;
-		}
-
-		@Override
-		protected Object getResult() {
-			return result;
-		}
-			
+	@Override
+	protected void beforeEach(E element) {
+		value = element;
+		yield = false;
 	}
 	
 }

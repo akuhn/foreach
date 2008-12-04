@@ -3,7 +3,7 @@
 //  This file is part of "ForEach".
 //  
 //  "ForEach" is free software: you can redistribute it and/or modify it under
-//	the terms of the GNU Lesser General Public License as published by the Free
+//  the terms of the GNU Lesser General Public License as published by the Free
 //  Software Foundation, either version 3 of the License, or (at your option)
 //  any later version.
 //  
@@ -33,7 +33,7 @@ import java.util.LinkedList;
  * <p>
  * The body of the loop should implement a predicate.
  * The current pair of elements is provided in `each.value` and `each.next`.
- * The result of the predicate must be stored to `each.cut_if`.
+ * The result of the predicate must be stored to `each.yield`.
  * The body of the loop is evaluated for consecutive pairs of the collection.
  * The loop cuts the collection into pieces and returns those.
  * <ul>
@@ -58,49 +58,42 @@ import java.util.LinkedList;
  * @author Adrian Kuhn
  *
  */
-public class CutPieces<E> extends ForPair.Each<E> {
+public class CutPieces<E> extends ForPair<E,CutPieces<E>> {
 
-	public E value;
+	public E prev;
 	public E next;
-	public boolean cutIf;
-	
-	public static class Query<E> extends ForPair<CutPieces<E>,E> {
-	
-		protected CutPieces<E> each;
-		private Collection<Collection<E>> result;
-		private Collection<E> current;
-	
-		@Override
-		public void apply() {
-			if (each.cutIf) {
-				current = new ArrayList<E>();
-				result.add(current);
-			}
-			current.add(each.next);
-		}
+	public boolean yield;
 
-		@Override
-		protected void initialize(E first) {
-			each = new CutPieces<E>();
-			result = new LinkedList<Collection<E>>();
+	private Collection<Collection<E>> result;
+	private Collection<E> current;
+	
+	@Override
+	protected void afterEach() {
+		if (yield) {
 			current = new ArrayList<E>();
 			result.add(current);
-			current.add(first);
 		}
+		current.add(next);
+	}
 
-		@Override
-		protected CutPieces<E> nextPair(E previous, E next) {
-			each.value = previous;
-			each.next = next;
-			each.cutIf = false;
-			return each;
-		}
+	@Override
+	protected Object afterLoop() {
+		return result;
+	}
 
-		@Override
-		protected Object getResult() {
-			return result;
-		}
-		
+	@Override
+	protected void beforeEach(E previous, E element) {
+		prev = previous;
+		next = element;
+		yield = false;
+	}
+
+	@Override
+	protected void beforeLoop(E first) {
+		result = new LinkedList<Collection<E>>();
+		current = new ArrayList<E>();
+		result.add(current);
+		current.add(first);
 	}
 	
 }

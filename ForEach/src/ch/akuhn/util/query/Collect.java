@@ -3,7 +3,7 @@
 //  This file is part of "ForEach".
 //  
 //  "ForEach" is free software: you can redistribute it and/or modify it under
-//	the terms of the GNU Lesser General Public License as published by the Free
+//  the terms of the GNU Lesser General Public License as published by the Free
 //  Software Foundation, either version 3 of the License, or (at your option)
 //  any later version.
 //  
@@ -18,6 +18,7 @@
 package ch.akuhn.util.query;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /** Evaluates an expression for each element of a collection, returning a new
  * collection containing the values yielded by the expression.
@@ -36,44 +37,35 @@ import java.util.ArrayList;
  * Upon termination of the loop the new collection is assigned to $result (a thread local variable).
  * <p>
  * @param value (in) current element of the collection.
- * @param cut_if (out) result of the expression. Defaults to `null` if not assigned.
+ * @param yield (out) result of the expression. Defaults to `null` if not assigned.
  * <p>
  * @author Adrian Kuhn
  *
  */
-public class Collect<R,E> extends For.Each<E> {
+public class Collect<E,R> extends For<E,Collect<E,R>> {
 
 	public E value;
 	public R yield;
+	private Collection<R> copy;
 	
-	public static class Query<R,E> extends For<Collect<R,E>,E> {
+	@Override
+	protected void afterEach() {
+		copy.add(yield);
+	}
 	
-		protected Collect<R,E> each;
-		private ArrayList<R> result;
+	@Override
+	protected Object afterLoop() {
+		return copy;
+	}
+	@Override
+	protected void beforeLoop() {
+		copy = new ArrayList<R>();
+	}
 	
-		@Override
-		public void apply() {
-			result.add(each.yield);
-		}
-
-		@Override
-		protected void initialize() {
-			each = new Collect<R,E>();
-			result = new ArrayList<R>();
-		}
-
-		@Override
-		protected Collect<R,E> nextEach(E next) {
-			each.value = next;
-			each.yield = null;
-			return each;
-		}
-
-		@Override
-		protected Object getResult() {
-			return result;
-		}
-			
+	@Override
+	protected void beforeEach(E element) {
+		value = element;
+		yield = null;
 	}
 	
 }
