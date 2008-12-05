@@ -23,7 +23,7 @@ import java.util.Set;
 
 public class Cardinal<Each> extends For<Each,Cardinal<Each>> {
 
-	public Each value;
+	public Each element;
 	public Object yield;
 	private Set<Object> count;
 	
@@ -42,8 +42,8 @@ public class Cardinal<Each> extends For<Each,Cardinal<Each>> {
 	}
 	
 	@Override
-	protected void beforeEach(Each element) {
-		value = element;
+	protected void beforeEach(Each each) {
+	    element = each;
 		yield = null;
 	}
 	

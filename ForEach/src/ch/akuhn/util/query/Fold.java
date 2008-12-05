@@ -20,7 +20,7 @@ package ch.akuhn.util.query;
 
 public class Fold<Each> extends ForPair<Each,Fold<Each>> {
 
-	public Each value;
+	public Each element;
 	public Each yield;
 	
 	@Override
@@ -33,8 +33,8 @@ public class Fold<Each> extends ForPair<Each,Fold<Each>> {
 	}
 
 	@Override
-	protected void beforeEach(Each previous, Each element) {
-		value = element;
+	protected void beforeEach(Each previous, Each next) {
+		element = next;
 	}
 
 	@Override

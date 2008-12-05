@@ -56,7 +56,7 @@ public class TestQueries {
 	@Test
 	public void exampleAllSatisfy() {
 		for (AllSatisfy<String> each : allSatisfy($fox)) {
-			each.yield = each.value.length() > 2;
+			each.yield = each.element.length() > 2;
 		}
 		puts($result());
 		assertEquals(true,$result());
@@ -65,7 +65,7 @@ public class TestQueries {
 	@Test
 	public void exampleAllSatisfy2() {
 		for (AllSatisfy<String> each : allSatisfy($fox)) {
-			each.yield = each.value.length() > 3;
+			each.yield = each.element.length() > 3;
 		}
 		puts($result());
 		assertEquals(false,$result());
@@ -74,7 +74,7 @@ public class TestQueries {
 	@Test
 	public void exampleAnySatisfy() {
 		for (AnySatisfy<String> each : anySatisfy($fox)) {
-			each.yield = each.value.length() == 4;
+			each.yield = each.element.length() == 4;
 		}
 		puts($result());
 		assertEquals(true,$result());
@@ -83,7 +83,7 @@ public class TestQueries {
 	@Test
 	public void exampleAnySatisfy2() {
 		for (AnySatisfy<String> each : anySatisfy($fox)) {
-			each.yield = each.value.length() == 2;
+			each.yield = each.element.length() == 2;
 		}
 		puts($result());
 		assertEquals(false,$result());
@@ -92,7 +92,7 @@ public class TestQueries {
 	@Test
 	public void exampleCollect() {
 		for (Collect<String,Integer> each : collect($fox,Integer.class)) {
-			each.yield = each.value.length();
+			each.yield = each.element.length();
 		}
 		puts($result());
 		assertEquals("[3, 5, 5, 3, 5, 4, 3, 4, 3]",$result().toString());
@@ -101,7 +101,7 @@ public class TestQueries {
 	@Test
 	public void exampleCardinal() {
 		for (Cardinal<String> each : cardinal($fox)) {
-			each.yield = each.value.length();
+			each.yield = each.element.length();
 		}
 		puts($result());
 		assertEquals(3,$result());
@@ -110,7 +110,7 @@ public class TestQueries {
 	@Test
 	public void exampleCount() {
 		for (Count<String> each : count($fox)) {
-			each.yield = each.value.length() == 3;
+			each.yield = each.element.length() == 3;
 		}
 		puts($result());
 		assertEquals(4,$result());
@@ -119,7 +119,7 @@ public class TestQueries {
 	@Test
 	public void exampleCollect2() {
 		for (Collect<String,String> each : collect($fox)) {
-			each.yield = each.value.toUpperCase();
+			each.yield = each.element.toUpperCase();
 		}
 		puts($result());
 		assertEquals("[THE, QUICK, BROWN, FOX, JUMPS, OVER, THE, LAZY, DOG]",$result().toString());
@@ -128,7 +128,7 @@ public class TestQueries {
 	@Test
 	public void exampleDetect() {
 		for (Detect<String> each : detect($fox)) {
-			each.yield = each.value.length() == 4;
+			each.yield = each.element.length() == 4;
 		}
 		puts($result());
 		assertEquals("over",$result());
@@ -137,7 +137,7 @@ public class TestQueries {
 	@Test
 	public void exampleDetect2() {
 		for (Detect<String> each : detect($fox)) {
-			each.yield = each.value.length() == 2;
+			each.yield = each.element.length() == 2;
 		}
 		puts($result());
 		assertEquals(null,$result());
@@ -146,7 +146,7 @@ public class TestQueries {
 	@Test
 	public void exampleInjectInto() {
 		for (Inject<String,Integer> each : inject($fox, 0)) {
-			each.yield = each.yield + each.value.length();
+			each.yield = each.yield + each.element.length();
 		}
 		puts($result());
 		assertEquals(35,$result());
@@ -155,7 +155,7 @@ public class TestQueries {
 	@Test
 	public void exampleIndexOf() {
 		for (IndexOf<String> each : indexOf($fox)) {
-			each.yield = each.value.length() == 4;
+			each.yield = each.element.length() == 4;
 		}
 		puts($result());
 		assertEquals(6,$result());
@@ -164,7 +164,7 @@ public class TestQueries {
 	@Test
 	public void exampleIndexOf2() {
 		for (IndexOf<String> each : indexOf($fox)) {
-			each.yield = each.value.length() == 2;
+			each.yield = each.element.length() == 2;
 		}
 		puts($result());
 		assertEquals(-1,$result());
@@ -183,7 +183,7 @@ public class TestQueries {
 	@Test
 	public void exampleReject() {
 		for (Reject<String> each : reject($fox)) {
-			each.yield = each.value.length() > 3;
+			each.yield = each.element.length() > 3;
 		}
 		puts($result());
 		assertEquals("[The, fox, the, dog]",$result().toString());
@@ -192,7 +192,7 @@ public class TestQueries {
 	@Test
 	public void exampleGroupedBy() {
 		for (GroupedBy<String> each : groupedBy($fox)) {
-			each.yield = each.value.length();
+			each.yield = each.element.length();
 		}
 		puts($result());
 		assertEquals("{3=[The, fox, the, dog], 4=[over, lazy], 5=[quick, brown, jumps]}",
@@ -202,7 +202,7 @@ public class TestQueries {
 	@Test
 	public void exampleSelect() {
 		for (Select<String> each: select($fox)) {
-			each.yield = each.value.length() > 3;
+			each.yield = each.element.length() > 3;
 		}
 		puts($result());
 		assertEquals("[quick, brown, jumps, over, lazy]",$result().toString());
@@ -211,7 +211,7 @@ public class TestQueries {
 	@Test
 	public void exampleFold() {
 		for (Fold<String> each: fold($fox)) {
-			each.yield = each.yield + " " + each.value;
+			each.yield = each.yield + " " + each.element;
 		}
 		puts($result());
 		assertEquals("The quick brown fox jumps over the lazy dog",$result());

@@ -21,7 +21,7 @@ package ch.akuhn.util.query;
 
 public class Inject<Each,R> extends For<Each,Inject<Each,R>> {
 
-	public Each value;
+	public Each element;
 	public R yield;
 
 	protected Inject<Each,R> initial(R value) {
@@ -43,8 +43,8 @@ public class Inject<Each,R> extends For<Each,Inject<Each,R>> {
 	}
 	
 	@Override
-	protected void beforeEach(Each element) {
-		value = element;
+	protected void beforeEach(Each each) {
+		element = each;
 	}
 	
 }

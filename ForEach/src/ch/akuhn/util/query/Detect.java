@@ -43,7 +43,7 @@ package ch.akuhn.util.query;
  */
 public class Detect<Each> extends For<Each,Detect<Each>> {
 
-	public Each value;
+	public Each element;
 	public boolean yield;
 	
 	@Override
@@ -53,7 +53,7 @@ public class Detect<Each> extends For<Each,Detect<Each>> {
 	
 	@Override
 	protected Object afterLoop() {
-		return yield ? value : null;
+		return yield ? element : null;
 	}
 	
 	@Override
@@ -61,8 +61,8 @@ public class Detect<Each> extends For<Each,Detect<Each>> {
 	}
 	
 	@Override
-	protected void beforeEach(Each element) {
-		value = element;
+	protected void beforeEach(Each each) {
+		element = each;
 		yield = false;
 	}
 	

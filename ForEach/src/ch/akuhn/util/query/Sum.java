@@ -19,31 +19,28 @@ package ch.akuhn.util.query;
 
 
 
-public class IndexOf<Each> extends For<Each,IndexOf<Each>> {
+public class Sum<Each> extends For<Each,Sum<Each>> {
 
 	public Each element;
-	public boolean yield;
-	private int index;
-	
+	public int sum;
+
 	@Override
 	protected void afterEach() {
-		if (yield) this.abort();
 	}
 	
 	@Override
 	protected Object afterLoop() {
-		return yield ? index : -1;
+		return sum;
 	}
-	
+
 	@Override
 	protected void beforeLoop() {
+	    sum = 0;
 	}
 	
 	@Override
 	protected void beforeEach(Each each) {
-		element = each;
-		yield = false;
-		index++;
+		this.element = each;
 	}
 	
 }

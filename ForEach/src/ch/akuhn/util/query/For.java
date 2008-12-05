@@ -42,7 +42,7 @@ public abstract class For<Each,This extends For<Each,This>> {
 	
 	protected abstract void beforeLoop();
 	
-	protected abstract void beforeEach(Each element);
+	protected abstract void beforeEach(Each each);
 	
 	protected abstract void afterEach();
 	

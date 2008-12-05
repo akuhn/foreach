@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class GroupedBy<Each> extends For<Each,GroupedBy<Each>> {
 
-	public Each value;
+	public Each element;
 	public Object yield;
 	private Map<Object,Collection<Each>> groups;
 	
@@ -36,7 +36,7 @@ public class GroupedBy<Each> extends For<Each,GroupedBy<Each>> {
 			group = new ArrayList<Each>();
 			groups.put(yield, group);
 		}
-		group.add(value);
+		group.add(element);
 	}
 	
 	@Override
@@ -50,8 +50,8 @@ public class GroupedBy<Each> extends For<Each,GroupedBy<Each>> {
 	}
 	
 	@Override
-	protected void beforeEach(Each element) {
-		value = element;
+	protected void beforeEach(Each each) {
+		element = each;
 		yield = null;
 	}
 	

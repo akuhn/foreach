@@ -2,7 +2,7 @@ package ch.akuhn.util.query;
 
 public class Count<Each> extends For<Each,Count<Each>> {
 
-	public Each value;
+	public Each element;
 	public boolean yield;
 	private int count;
 	
@@ -21,8 +21,8 @@ public class Count<Each> extends For<Each,Count<Each>> {
 	}
 	
 	@Override
-	protected void beforeEach(Each element) {
-		value = element;
+	protected void beforeEach(Each each) {
+		element = each;
 		yield = false;
 	}
 	

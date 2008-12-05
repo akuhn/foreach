@@ -37,8 +37,8 @@ public class Example {
 				each.yield = each.prev.week() != each.next.week();
 			Collection<Collection<FileVersion>> weeks = $result();
 			for (GroupedBy<Collection<FileVersion>> week : groupedBy(weeks)) {
-				for (Cardinal<FileVersion> each : cardinal(week.value)) 
-					each.yield = each.value.author();
+				for (Cardinal<FileVersion> each : cardinal(week.element)) 
+					each.yield = each.element.author();
 				week.yield = $result();
 			}
 			Map<Integer,Collection<FileVersion>> groups = $result();

@@ -43,7 +43,7 @@ package ch.akuhn.util.query;
  */
 public class AllSatisfy<Each> extends For<Each,AllSatisfy<Each>> {
 
-	public Each value;
+	public Each element;
 	public boolean yield;
 	
 	@Override
@@ -61,8 +61,8 @@ public class AllSatisfy<Each> extends For<Each,AllSatisfy<Each>> {
 	}
 	
 	@Override
-	protected void beforeEach(Each element) {
-		value = element;
+	protected void beforeEach(Each each) {
+	    element = each;
 		yield = false;
 	}
 	

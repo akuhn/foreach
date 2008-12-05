@@ -44,7 +44,7 @@ import java.util.Collection;
  */
 public class Collect<Each,R> extends For<Each,Collect<Each,R>> {
 
-	public Each value;
+	public Each element;
 	public R yield;
 	private Collection<R> copy;
 	
@@ -63,8 +63,8 @@ public class Collect<Each,R> extends For<Each,Collect<Each,R>> {
 	}
 	
 	@Override
-	protected void beforeEach(Each element) {
-		value = element;
+	protected void beforeEach(Each each) {
+		element = each;
 		yield = null;
 	}
 	

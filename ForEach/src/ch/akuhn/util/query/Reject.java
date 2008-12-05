@@ -48,13 +48,13 @@ import java.util.Collection;
  */
 public class Reject<Each> extends For<Each,Reject<Each>> {
 
-	public Each value;
+	public Each element;
 	public boolean yield;
 	private Collection<Each> copy;
 	
 	@Override
 	protected void afterEach() {
-		if (!yield) copy.add(value);
+		if (!yield) copy.add(element);
 	}
 	
 	@Override
@@ -67,8 +67,8 @@ public class Reject<Each> extends For<Each,Reject<Each>> {
 	}
 	
 	@Override
-	protected void beforeEach(Each element) {
-		value = element;
+	protected void beforeEach(Each each) {
+		element = each;
 		yield = false;
 	}
 	

@@ -92,4 +92,8 @@ public class Query {
 		return new Select<T>().with(elements).iterable();
 	}
 
+    public static <T> Iterable<Sum<T>> sum(Iterable<T> elements) {
+        return new Sum<T>().with(elements).iterable();
+    }
+    
 }
