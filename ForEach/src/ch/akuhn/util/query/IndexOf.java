@@ -17,33 +17,31 @@
 //  
 package ch.akuhn.util.query;
 
-
-
 public class IndexOf<Each> extends For<Each,IndexOf<Each>> {
 
-	public Each element;
-	public boolean yield;
-	private int index;
-	
-	@Override
-	protected void afterEach() {
-		if (yield) this.abort();
-	}
-	
-	@Override
-	protected Object afterLoop() {
-		return yield ? index : -1;
-	}
-	
-	@Override
-	protected void beforeLoop() {
-	}
-	
-	@Override
-	protected void beforeEach(Each each) {
-		element = each;
-		yield = false;
-		index++;
-	}
-	
+    public Each element;
+    private int index;
+    public boolean yield;
+
+    @Override
+    protected void afterEach() {
+        if (yield) this.abort();
+    }
+
+    @Override
+    protected Object afterLoop() {
+        return yield ? index : -1;
+    }
+
+    @Override
+    protected void beforeEach(Each each) {
+        element = each;
+        yield = false;
+        index++;
+    }
+
+    @Override
+    protected void beforeLoop() {
+    }
+
 }

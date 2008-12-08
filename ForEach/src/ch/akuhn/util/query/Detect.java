@@ -17,53 +17,62 @@
 //  
 package ch.akuhn.util.query;
 
-/** Returns the first elements for which a predicate yields true. This class is
+/**
+ * Returns the first elements for which a predicate yields true. This class is
  * to be used in a for-each loop as follows:
+ * 
  * <pre>
  * for (Detect&lt;E&gt; each: Query.detect(elements)) {
- *     each.yield = &hellip; each.value &hellip;;
+ *     each.yield = &amp;hellip each.value &amp;hellip;
  * }
- * T found = Query.$result();</pre>
+ * T found = Query.$result();
+ * </pre>
  * <p>
- * The body of the loop should implement a predicate.
- * The current element is provided in `each.value`.
- * The result of the predicate must be stored to `each.yield`.
- * The body of the loop is evaluated for each element of the collection.
- * The result of the entire loop is stored in $result, a thread local variable.
+ * The body of the loop should implement a predicate. The current element is
+ * provided in `each.value`. The result of the predicate must be stored to
+ * `each.yield`. The body of the loop is evaluated for each element of the
+ * collection. The result of the entire loop is stored in $result, a thread
+ * local variable.
  * <ul>
  * <li>If an elements yields `true`, the loop stops and results that element.
  * <li>If all element yield `false` or nothing, the loop results `null`.
  * </ul>
  * <p>
- * @param value (in/out) current element of the collection. Is used as the loop's result, if yield is assigned `true`.
- * @param yield (out) result of the predicate. If assigned `true` the loop stops and results the current value. Defaults to `false` if not assigned.
- * <p>
+ * 
+ * @param value
+ *            (in/out) current element of the collection. Is used as the loop's
+ *            result, if yield is assigned `true`.
+ * @param yield
+ *            (out) result of the predicate. If assigned `true` the loop stops
+ *            and results the current value. Defaults to `false` if not
+ *            assigned.
+ *            <p>
  * @author Adrian Kuhn
- *
+ * 
  */
 public class Detect<Each> extends For<Each,Detect<Each>> {
 
-	public Each element;
-	public boolean yield;
-	
-	@Override
-	protected void afterEach() {
-		if (yield) this.abort();
-	}
-	
-	@Override
-	protected Object afterLoop() {
-		return yield ? element : null;
-	}
-	
-	@Override
-	protected void beforeLoop() {
-	}
-	
-	@Override
-	protected void beforeEach(Each each) {
-		element = each;
-		yield = false;
-	}
-	
+    public Each element;
+    public boolean yield;
+
+    @Override
+    protected void afterEach() {
+        if (yield) this.abort();
+    }
+
+    @Override
+    protected Object afterLoop() {
+        return yield ? element : null;
+    }
+
+    @Override
+    protected void beforeEach(Each each) {
+        element = each;
+        yield = false;
+    }
+
+    @Override
+    protected void beforeLoop() {
+    }
+
 }

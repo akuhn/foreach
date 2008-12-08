@@ -17,34 +17,32 @@
 //  
 package ch.akuhn.util.query;
 
-
-
 public class Inject<Each,R> extends For<Each,Inject<Each,R>> {
 
-	public Each element;
-	public R yield;
+    public Each element;
+    public R yield;
 
-	protected Inject<Each,R> initial(R value) {
-		yield = value;
-		return this;
-	}
-	
-	@Override
-	protected void afterEach() {
-	}
-	
-	@Override
-	protected Object afterLoop() {
-		return yield;
-	}
+    @Override
+    protected void afterEach() {
+    }
 
-	@Override
-	protected void beforeLoop() {
-	}
-	
-	@Override
-	protected void beforeEach(Each each) {
-		element = each;
-	}
-	
+    @Override
+    protected Object afterLoop() {
+        return yield;
+    }
+
+    @Override
+    protected void beforeEach(Each each) {
+        element = each;
+    }
+
+    @Override
+    protected void beforeLoop() {
+    }
+
+    protected Inject<Each,R> initial(R value) {
+        yield = value;
+        return this;
+    }
+
 }

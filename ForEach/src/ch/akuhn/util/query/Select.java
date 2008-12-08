@@ -20,56 +20,66 @@ package ch.akuhn.util.query;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/** Evaluates a predicate for element of a collection, returning a copy
- * containing those elements for which the predicate yields `true`.
- * This class is to be used in a for-each loop as follows:
+/**
+ * Evaluates a predicate for element of a collection, returning a copy
+ * containing those elements for which the predicate yields `true`. This class
+ * is to be used in a for-each loop as follows:
+ * 
  * <pre>
  * for (Select&lt;E&gt; each: Query.select(elements)) {
- *     each.yield = &hellip; each.value &hellip;;
+ *     each.yield = &amp;hellip each.value &amp;hellip;
  * }
- * Collection&lt;E&gt; copy = Query.$result();</pre>
+ * Collection&lt;E&gt; copy = Query.$result();
+ * </pre>
  * <p>
- * The body of the loop should implement a predicate.
- * The current element is provided in `each.value`.
- * The result of the predicate must be stored to `each.yield`.
- * The body of the loop is evaluated for each element of the collection.
- * The entire loop results in a copy of elements, which is populated as follows:
+ * The body of the loop should implement a predicate. The current element is
+ * provided in `each.value`. The result of the predicate must be stored to
+ * `each.yield`. The body of the loop is evaluated for each element of the
+ * collection. The entire loop results in a copy of elements, which is populated
+ * as follows:
  * <ul>
  * <li>If an element yields `true`, append `each.value` to the result.
  * <li>If an element yields `false` or nothing, omit that element.
  * </ul>
- * Upon termination of the loop the resulting collection is stored in $result (a thread local variable).
+ * Upon termination of the loop the resulting collection is stored in $result (a
+ * thread local variable).
  * <p>
- * @param value (in/out) current element of the collection. Is added to the result, if yield is assigned `true`.
- * @param yield (out) result of the predicate. Defaults to `false` if not assigned.
- * <p>
+ * 
+ * @param value
+ *            (in/out) current element of the collection. Is added to the
+ *            result, if yield is assigned `true`.
+ * @param yield
+ *            (out) result of the predicate. Defaults to `false` if not
+ *            assigned.
+ *            <p>
  * @author Adrian Kuhn
- *
+ * 
  */
 public class Select<Each> extends For<Each,Select<Each>> {
 
-	public Each element;
-	public boolean yield;
-	private Collection<Each> copy;
-	
-	@Override
-	protected void afterEach() {
-		if (yield) copy.add(element);
-	}
-	
-	@Override
-	protected Object afterLoop() {
-		return copy;
-	}
-	@Override
-	protected void beforeLoop() {
-		copy = new ArrayList<Each>();
-	}
-	
-	@Override
-	protected void beforeEach(Each each) {
-		element = each;
-		yield = false;
-	}
-	
+    private Collection<Each> copy;
+    public Each element;
+    public boolean yield;
+
+    @Override
+    protected void afterEach() {
+        if (yield) copy.add(element);
+    }
+
+    @Override
+    protected Object afterLoop() {
+        return copy;
+    }
+
+    @Override
+    protected void beforeEach(Each each) {
+        element = each;
+        yield = false;
+    }
+
+    @Override
+    protected void beforeLoop() {
+        copy = new ArrayList<Each>();
+    }
+
 }

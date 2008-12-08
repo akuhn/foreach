@@ -17,42 +17,41 @@
 //  
 package ch.akuhn.util.query;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.Map;
-
 
 public class GroupedBy<Each> extends For<Each,GroupedBy<Each>> {
 
-	public Each element;
-	public Object yield;
-	private Map<Object,Collection<Each>> groups;
-	
-	@Override
-	protected void afterEach() {
-		Collection<Each> group = groups.get(yield);
-		if (group == null) {
-			group = new ArrayList<Each>();
-			groups.put(yield, group);
-		}
-		group.add(element);
-	}
-	
-	@Override
-	protected Object afterLoop() {
-		return groups;
-	}
+    public Each element;
+    private Map<Object,Collection<Each>> groups;
+    public Object yield;
 
-	@Override
-	protected void beforeLoop() {
-		groups = new HashMap<Object,Collection<Each>>();
-	}
-	
-	@Override
-	protected void beforeEach(Each each) {
-		element = each;
-		yield = null;
-	}
-	
+    @Override
+    protected void afterEach() {
+        Collection<Each> group = groups.get(yield);
+        if (group == null) {
+            group = new ArrayList<Each>();
+            groups.put(yield, group);
+        }
+        group.add(element);
+    }
+
+    @Override
+    protected Object afterLoop() {
+        return groups;
+    }
+
+    @Override
+    protected void beforeEach(Each each) {
+        element = each;
+        yield = null;
+    }
+
+    @Override
+    protected void beforeLoop() {
+        groups = new HashMap<Object,Collection<Each>>();
+    }
+
 }

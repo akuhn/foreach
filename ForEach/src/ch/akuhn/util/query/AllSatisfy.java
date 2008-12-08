@@ -17,53 +17,61 @@
 //  
 package ch.akuhn.util.query;
 
-/** Checks if a predicate yields `true` for all elements. This class is to be used
- * in a for-each loop as follows:
+/**
+ * Checks if a predicate yields `true` for all elements. This class is to be
+ * used in a for-each loop as follows:
+ * 
  * <pre>
  * for (AllSatisfy&lt;E&gt; each: Query.satisfy(elements)) {
- *     each.yield = &hellip; each.value &hellip;;
+ *     each.yield = &amp;hellip each.value &amp;hellip;
  * }
- * boolean result = Query.$result();</pre>
+ * boolean result = Query.$result();
+ * </pre>
  * <p>
- * The body of the loop should implement a predicate.
- * The current element is provided in `each.value`.
- * The result of the predicate must be stored to `each.yield`.
- * The body of the loop is evaluated for each element of the collection.
- * The result of the entire loop is stored in $result, a thread local variable.
+ * The body of the loop should implement a predicate. The current element is
+ * provided in `each.value`. The result of the predicate must be stored to
+ * `each.yield`. The body of the loop is evaluated for each element of the
+ * collection. The result of the entire loop is stored in $result, a thread
+ * local variable.
  * <ul>
  * <li>If all elements yield `true`, the loop results `true`.
- * <li>If an element yields `false` or nothing, the loop stops and results `false`.
+ * <li>If an element yields `false` or nothing, the loop stops and results
+ * `false`.
  * </ul>
  * <p>
- * @param value (in) current element of the collection. No effect if assigned.
- * @param yield (out) result of the predicate. Defaults to `false` if not assigned.
- * <p>
+ * 
+ * @param value
+ *            (in) current element of the collection. No effect if assigned.
+ * @param yield
+ *            (out) result of the predicate. Defaults to `false` if not
+ *            assigned.
+ *            <p>
  * @author Adrian Kuhn
- *
+ * 
  */
 public class AllSatisfy<Each> extends For<Each,AllSatisfy<Each>> {
 
-	public Each element;
-	public boolean yield;
-	
-	@Override
-	protected void afterEach() {
-		if (!yield) this.abort();
-	}
-	
-	@Override
-	protected Object afterLoop() {
-		return yield;
-	}
+    public Each element;
+    public boolean yield;
 
-	@Override
-	protected void beforeLoop() {
-	}
-	
-	@Override
-	protected void beforeEach(Each each) {
-	    element = each;
-		yield = false;
-	}
-	
+    @Override
+    protected void afterEach() {
+        if (!yield) this.abort();
+    }
+
+    @Override
+    protected Object afterLoop() {
+        return yield;
+    }
+
+    @Override
+    protected void beforeEach(Each each) {
+        element = each;
+        yield = false;
+    }
+
+    @Override
+    protected void beforeLoop() {
+    }
+
 }

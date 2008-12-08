@@ -20,31 +20,31 @@ package ch.akuhn.util.query;
 import java.util.HashSet;
 import java.util.Set;
 
-
 public class Cardinal<Each> extends For<Each,Cardinal<Each>> {
 
-	public Each element;
-	public Object yield;
-	private Set<Object> count;
-	
-	@Override
-	protected void afterEach() {
-		count.add(yield);
-	}
-	
-	@Override
-	protected Object afterLoop() {
-		return count.size();
-	}
-	@Override
-	protected void beforeLoop() {
-		count = new HashSet<Object>();
-	}
-	
-	@Override
-	protected void beforeEach(Each each) {
-	    element = each;
-		yield = null;
-	}
-	
+    private Set<Object> count;
+    public Each element;
+    public Object yield;
+
+    @Override
+    protected void afterEach() {
+        count.add(yield);
+    }
+
+    @Override
+    protected Object afterLoop() {
+        return count.size();
+    }
+
+    @Override
+    protected void beforeEach(Each each) {
+        element = each;
+        yield = null;
+    }
+
+    @Override
+    protected void beforeLoop() {
+        count = new HashSet<Object>();
+    }
+
 }

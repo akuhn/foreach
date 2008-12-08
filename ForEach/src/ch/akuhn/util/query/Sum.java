@@ -17,30 +17,28 @@
 //  
 package ch.akuhn.util.query;
 
-
-
 public class Sum<Each> extends For<Each,Sum<Each>> {
 
-	public Each element;
-	public int sum;
+    public Each element;
+    public int sum;
 
-	@Override
-	protected void afterEach() {
-	}
-	
-	@Override
-	protected Object afterLoop() {
-		return sum;
-	}
+    @Override
+    protected void afterEach() {
+    }
 
-	@Override
-	protected void beforeLoop() {
-	    sum = 0;
-	}
-	
-	@Override
-	protected void beforeEach(Each each) {
-		this.element = each;
-	}
-	
+    @Override
+    protected Object afterLoop() {
+        return sum;
+    }
+
+    @Override
+    protected void beforeEach(Each each) {
+        this.element = each;
+    }
+
+    @Override
+    protected void beforeLoop() {
+        sum = 0;
+    }
+
 }
