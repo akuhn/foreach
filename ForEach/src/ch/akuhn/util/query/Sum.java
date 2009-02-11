@@ -22,21 +22,21 @@ public class Sum<Each> extends For<Each,Sum<Each>> {
     public Each element;
     public int sum;
 
-    //@Override
+    @Override
     protected void afterEach() {
     }
 
-    //@Override
+    @Override
     protected Object afterLoop() {
         return sum;
     }
 
-    //@Override
+    @Override
     protected void beforeEach(Each each) {
         this.element = each;
     }
 
-    //@Override
+    @Override
     protected void beforeLoop() {
         sum = 0;
     }

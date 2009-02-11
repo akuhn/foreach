@@ -17,6 +17,8 @@
 //  
 package ch.akuhn.util.query;
 
+import java.util.Collection;
+
 /**
  * Returns the first elements for which a predicate yields true. This class is
  * to be used in a for-each loop as follows:
@@ -55,24 +57,36 @@ public class Detect<Each> extends For<Each,Detect<Each>> {
     public Each element;
     public boolean yield;
 
-    //@Override
+    @Override
     protected void afterEach() {
         if (yield) this.abort();
     }
 
-    //@Override
+    @Override
     protected Object afterLoop() {
         return yield ? element : null;
     }
 
-    //@Override
+    @Override
     protected void beforeEach(Each each) {
         element = each;
         yield = false;
     }
 
-    //@Override
+    @Override
     protected void beforeLoop() {
+    }
+
+    public static <T> Detect<T> from(Collection<T> elements) {
+        return new Detect<T>().with(elements);
+    }
+
+    public Each result() {
+        return yield ? (Each) element : null;
+    }
+    
+    public Each resultIfNone(Each defaultValue) {
+        return yield ? (Each) element : defaultValue;
     }
 
 }

@@ -62,23 +62,23 @@ public class Reject<Each> extends For<Each,Reject<Each>> {
     public Each element;
     public boolean yield;
 
-    //@Override
+    @Override
     protected void afterEach() {
         if (!yield) copy.add(element);
     }
 
-    //@Override
+    @Override
     protected Object afterLoop() {
         return copy;
     }
 
-    //@Override
+    @Override
     protected void beforeEach(Each each) {
         element = each;
         yield = false;
     }
 
-    //@Override
+    @Override
     protected void beforeLoop() {
         copy = new ArrayList<Each>();
     }

@@ -3,7 +3,6 @@ package examples;
 import static ch.akuhn.util.Interval.range;
 
 import java.util.Iterator;
-import java.util.Random;
 
 
 public class EachBenchmark
@@ -144,7 +143,7 @@ public class EachBenchmark
         for (int kase: range(0,4)) {
             double total = 0;
             double sum = 0;
-        for (int _ : range(10)) {
+        for (@SuppressWarnings("unused") int _ : range(10)) {
 
             long tiem;
 

@@ -22,21 +22,21 @@ public class Fold<Each> extends ForPair<Each,Fold<Each>> {
     public Each element;
     public Each yield;
 
-    //@Override
+    @Override
     protected void afterEach() {
     }
 
-    //@Override
+    @Override
     protected Object afterLoop() {
         return yield;
     }
 
-    //@Override
+    @Override
     protected void beforeEach(Each previous, Each next) {
         element = next;
     }
 
-    //@Override
+    @Override
     protected void beforeLoop(Each first) {
         yield = first;
     }

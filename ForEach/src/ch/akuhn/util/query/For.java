@@ -80,6 +80,7 @@ public abstract class For<Each,This extends For<Each,This>> implements Iterable<
 
     //@Override
     public Iterator<This> iterator() {
+        state = FIRST;
         For.this.beforeLoop();
         return new Iter();
     }

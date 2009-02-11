@@ -22,21 +22,21 @@ public class Inject<Each,R> extends For<Each,Inject<Each,R>> {
     public Each element;
     public R yield;
 
-    //@Override
+    @Override
     protected void afterEach() {
     }
 
-    //@Override
+    @Override
     protected Object afterLoop() {
         return yield;
     }
 
-    //@Override
+    @Override
     protected void beforeEach(Each each) {
         element = each;
     }
 
-    //@Override
+    @Override
     protected void beforeLoop() {
     }
 

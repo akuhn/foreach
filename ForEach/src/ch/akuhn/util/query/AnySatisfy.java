@@ -53,23 +53,23 @@ public class AnySatisfy<Each> extends For<Each,AnySatisfy<Each>> {
     public Each element;
     public boolean yield;
 
-    //@Override
+    @Override
     protected void afterEach() {
         if (yield) this.abort();
     }
 
-    //@Override
+    @Override
     protected Object afterLoop() {
         return yield;
     }
 
-    //@Override
+    @Override
     protected void beforeEach(Each each) {
         element = each;
         yield = false;
     }
 
-    //@Override
+    @Override
     protected void beforeLoop() {
     }
 

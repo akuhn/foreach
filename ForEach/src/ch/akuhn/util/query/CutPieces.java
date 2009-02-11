@@ -78,7 +78,7 @@ public class CutPieces<Each> extends ForPair<Each,CutPieces<Each>> {
     private Collection<Collection<Each>> result;
     public boolean yield;
 
-    //@Override
+    @Override
     protected void afterEach() {
         if (yield) {
             current = new ArrayList<Each>();
@@ -87,19 +87,19 @@ public class CutPieces<Each> extends ForPair<Each,CutPieces<Each>> {
         current.add(next);
     }
 
-    //@Override
+    @Override
     protected Object afterLoop() {
         return result;
     }
 
-    //@Override
+    @Override
     protected void beforeEach(Each previous, Each element) {
         prev = previous;
         next = element;
         yield = false;
     }
 
-    //@Override
+    @Override
     protected void beforeLoop(Each first) {
         result = new LinkedList<Collection<Each>>();
         current = new ArrayList<Each>();

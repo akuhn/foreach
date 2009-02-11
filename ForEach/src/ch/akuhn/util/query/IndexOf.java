@@ -23,24 +23,24 @@ public class IndexOf<Each> extends For<Each,IndexOf<Each>> {
     private int index;
     public boolean yield;
 
-    //@Override
+    @Override
     protected void afterEach() {
         if (yield) this.abort();
     }
 
-    //@Override
+    @Override
     protected Object afterLoop() {
         return yield ? index : -1;
     }
 
-    //@Override
+    @Override
     protected void beforeEach(Each each) {
         element = each;
         yield = false;
         index++;
     }
 
-    //@Override
+    @Override
     protected void beforeLoop() {
     }
 

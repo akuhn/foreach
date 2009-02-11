@@ -26,23 +26,23 @@ public class Cardinal<Each> extends For<Each,Cardinal<Each>> {
     public Each element;
     public Object yield;
 
-    //@Override
+    @Override
     protected void afterEach() {
         count.add(yield);
     }
 
-    //@Override
+    @Override
     protected Object afterLoop() {
         return count.size();
     }
 
-    //@Override
+    @Override
     protected void beforeEach(Each each) {
         element = each;
         yield = null;
     }
 
-    //@Override
+    @Override
     protected void beforeLoop() {
         count = new HashSet<Object>();
     }

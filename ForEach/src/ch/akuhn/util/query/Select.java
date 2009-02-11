@@ -65,23 +65,23 @@ public class Select<Each> extends For<Each,Select<Each>> {
         return new Select<E>().with(elements);
     }
 
-    //@Override
+    @Override
     protected void afterEach() {
         if (yield) selection.add(element);
     }
 
-    //@Override
+    @Override
     protected Object afterLoop() {
         return selection;
     }
 
-    //@Override
+    @Override
     protected void beforeEach(Each each) {
         element = each;
         yield = false;
     }
 
-    //@Override
+    @Override
     protected void beforeLoop() {
         selection = new ArrayList<Each>();
     }
