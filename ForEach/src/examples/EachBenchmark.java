@@ -29,22 +29,22 @@ public class EachBenchmark
             this.index = 0;
         }
 
-        @Override
+        //@Override
         public boolean hasNext() {
             return array.hasNext();
         }
 
-        @Override
+        //@Override
         public Iterator<Immutable> iterator() {
             return this;
         }
 
-        @Override
+        //@Override
         public Immutable next() {
             return new Immutable(array.next(), index++);
         }
 
-        @Override
+        //@Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
@@ -76,24 +76,24 @@ public class EachBenchmark
             this.index = 0;
         }
 
-        @Override
+        //@Override
         public boolean hasNext() {
             return array.hasNext();
         }
 
-        @Override
+        //@Override
         public Iterator<Mutable> iterator() {
             return this;
         }
 
-        @Override
+        //@Override
         public Mutable next() {
             each.value = array.next();
             each.index = index++;
             return each;
         }
 
-        @Override
+        //@Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
@@ -110,22 +110,22 @@ public class EachBenchmark
             this.index = 0;
         }
 
-        @Override
+        //@Override
         public boolean hasNext() {
             return array.hasNext();
         }
 
-        @Override
+        //@Override
         public Iterator<Mutable> iterator() {
             return this;
         }
 
-        @Override
+        //@Override
         public Mutable next() {
             return new Mutable(array.next(), index++);
         }
 
-        @Override
+        //@Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
@@ -187,22 +187,22 @@ public class EachBenchmark
 
     private long n = 10*1000*1000;
 
-    @Override
+    //@Override
     public Iterator<EachBenchmark> iterator() {
         return this;
     }
 
-    @Override
+    //@Override
     public boolean hasNext() {
         return n  > 0;
     }
 
-    @Override
+    //@Override
     public EachBenchmark next() {
         n--; return this;
     }
 
-    @Override
+    //@Override
     public void remove() {
         throw new UnsupportedOperationException();
     }

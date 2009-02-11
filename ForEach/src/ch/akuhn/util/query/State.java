@@ -17,6 +17,6 @@
 //  
 package ch.akuhn.util.query;
 
-/*default*/enum State {
-    ABORTED, EACH, FIRST
+/*default*/ enum State {
+    STOPPED, EACH, FIRST
 }

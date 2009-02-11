@@ -1,39 +1,32 @@
 package ch.akuhn.util.query;
 
-import static ch.akuhn.util.query.State.ABORTED;
+import static ch.akuhn.util.query.State.STOPPED;
 import static ch.akuhn.util.query.State.EACH;
 import static ch.akuhn.util.query.State.FIRST;
 
 import java.util.Iterator;
 
 @SuppressWarnings("unchecked")
-public abstract class ForPair<Each,This extends ForPair<Each,This>> {
+public abstract class ForPair<Each,This extends ForPair<Each,This>> implements Iterable<This> {
 
-    private final class Iter implements Iterator<This>, Iterable<This> {
+    private final class Iter implements Iterator<This>  {
 
-        @Override
+        //@Override
         public boolean hasNext() {
             if (state == FIRST) state = EACH;
             else ForPair.this.afterEach();
-            if (state != ABORTED && iterator.hasNext()) return true;
-            Query.offer(ForPair.this.afterLoop());
+            if (state != STOPPED && iterator.hasNext()) return true;
+            Query.offerResult(ForPair.this.afterLoop());
             return false;
         }
 
-        @Override
-        public Iterator<This> iterator() {
-            previous = iterator.hasNext() ? iterator.next() : null;
-            ForPair.this.beforeLoop(previous);
-            return this;
-        }
-
-        @Override
+        //@Override
         public This next() {
             beforeEach(previous, previous = iterator.next());
             return (This) ForPair.this;
         }
 
-        @Override
+        //@Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
@@ -46,7 +39,7 @@ public abstract class ForPair<Each,This extends ForPair<Each,This>> {
     private State state = FIRST;
 
     protected final void abort() {
-        state = ABORTED;
+        state = STOPPED;
     }
 
     protected abstract void afterEach();
@@ -57,7 +50,10 @@ public abstract class ForPair<Each,This extends ForPair<Each,This>> {
 
     protected abstract void beforeLoop(Each first);
 
-    protected final Iterable<This> iterable() {
+    //@Override
+    public Iterator<This> iterator() {
+        previous = iterator.hasNext() ? iterator.next() : null;
+        ForPair.this.beforeLoop(previous);
         return new Iter();
     }
 

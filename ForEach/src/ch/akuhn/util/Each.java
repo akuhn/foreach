@@ -13,22 +13,22 @@ public final class Each<T> {
             this.elements = elements;
         }
 
-        @Override
+        //@Override
         public boolean hasNext() {
             return elements.hasNext();
         }
 
-        @Override
+        //@Override
         public Iterator<Each<T>> iterator() {
             return this;
         }
 
-        @Override
+        //@Override
         public Each<T> next() {
             return new Each<T>(index++, elements.next());
         }
 
-        @Override
+        //@Override
         public void remove() {
             elements.remove();
         }

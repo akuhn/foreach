@@ -27,7 +27,7 @@ import java.util.Collection;
  * 
  * <pre>
  * for (Select&lt;E&gt; each: Query.select(elements)) {
- *     each.yield = &amp;hellip each.value &amp;hellip;
+ *     each.yield = ... each.value ...
  * }
  * Collection&lt;E&gt; copy = Query.$result();
  * </pre>
@@ -57,29 +57,37 @@ import java.util.Collection;
  */
 public class Select<Each> extends For<Each,Select<Each>> {
 
-    private Collection<Each> copy;
+    private Collection<Each> selection;
     public Each element;
     public boolean yield;
 
-    @Override
+    public static <E> Select<E> from(Iterable<E> elements) {
+        return new Select<E>().with(elements);
+    }
+
+    //@Override
     protected void afterEach() {
-        if (yield) copy.add(element);
+        if (yield) selection.add(element);
     }
 
-    @Override
+    //@Override
     protected Object afterLoop() {
-        return copy;
+        return selection;
     }
 
-    @Override
+    //@Override
     protected void beforeEach(Each each) {
         element = each;
         yield = false;
     }
 
-    @Override
+    //@Override
     protected void beforeLoop() {
-        copy = new ArrayList<Each>();
+        selection = new ArrayList<Each>();
+    }
+
+    public Collection<Each> result() {
+        return selection;
     }
 
 }

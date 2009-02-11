@@ -38,7 +38,7 @@ import ch.akuhn.util.query.Select;
 @SuppressWarnings("serial")
 public class TestQueries {
 
-    public static final Collection<String> $fox = new ArrayList<String>() {
+    public static final Collection<String> FOX = new ArrayList<String>() {
         {
             add("The");
             add("quick");
@@ -52,10 +52,10 @@ public class TestQueries {
         }
     };
 
-    private static boolean $verbose = false;
+    private static boolean VERBOSE = false;
 
     public static void main(String[] args) {
-        $verbose = true;
+        VERBOSE = true;
         TestQueries eg = new TestQueries();
         eg.exampleAllSatisfy();
         eg.exampleAllSatisfy2();
@@ -77,7 +77,7 @@ public class TestQueries {
 
     @Test
     public void exampleAllSatisfy() {
-        for (AllSatisfy<String> each : allSatisfy($fox)) {
+        for (AllSatisfy<String> each : allSatisfy(FOX)) {
             each.yield = each.element.length() > 2;
         }
         puts($result());
@@ -86,7 +86,7 @@ public class TestQueries {
 
     @Test
     public void exampleAllSatisfy2() {
-        for (AllSatisfy<String> each : allSatisfy($fox)) {
+        for (AllSatisfy<String> each : allSatisfy(FOX)) {
             each.yield = each.element.length() > 3;
         }
         puts($result());
@@ -95,7 +95,7 @@ public class TestQueries {
 
     @Test
     public void exampleAnySatisfy() {
-        for (AnySatisfy<String> each : anySatisfy($fox)) {
+        for (AnySatisfy<String> each : anySatisfy(FOX)) {
             each.yield = each.element.length() == 4;
         }
         puts($result());
@@ -104,7 +104,7 @@ public class TestQueries {
 
     @Test
     public void exampleAnySatisfy2() {
-        for (AnySatisfy<String> each : anySatisfy($fox)) {
+        for (AnySatisfy<String> each : anySatisfy(FOX)) {
             each.yield = each.element.length() == 2;
         }
         puts($result());
@@ -113,7 +113,7 @@ public class TestQueries {
 
     @Test
     public void exampleCardinal() {
-        for (Cardinal<String> each : cardinal($fox)) {
+        for (Cardinal<String> each : cardinal(FOX)) {
             each.yield = each.element.length();
         }
         puts($result());
@@ -122,7 +122,7 @@ public class TestQueries {
 
     @Test
     public void exampleCollect() {
-        for (Collect<String,Integer> each : collect($fox, Integer.class)) {
+        for (Collect<String,Integer> each : collect(FOX, Integer.class)) {
             each.yield = each.element.length();
         }
         puts($result());
@@ -131,7 +131,7 @@ public class TestQueries {
 
     @Test
     public void exampleCollect2() {
-        for (Collect<String,String> each : collect($fox)) {
+        for (Collect<String,String> each : collect(FOX)) {
             each.yield = each.element.toUpperCase();
         }
         puts($result());
@@ -140,7 +140,7 @@ public class TestQueries {
 
     @Test
     public void exampleCount() {
-        for (Count<String> each : count($fox)) {
+        for (Count<String> each : count(FOX)) {
             each.yield = each.element.length() == 3;
         }
         puts($result());
@@ -149,7 +149,7 @@ public class TestQueries {
 
     @Test
     public void exampleCutPieces() {
-        for (CutPieces<String> each : cutPieces($fox)) {
+        for (CutPieces<String> each : cutPieces(FOX)) {
             each.yield = each.prev.length() > each.next.length();
         }
         puts($result());
@@ -158,7 +158,7 @@ public class TestQueries {
 
     @Test
     public void exampleDetect() {
-        for (Detect<String> each : detect($fox)) {
+        for (Detect<String> each : detect(FOX)) {
             each.yield = each.element.length() == 4;
         }
         puts($result());
@@ -167,7 +167,7 @@ public class TestQueries {
 
     @Test
     public void exampleDetect2() {
-        for (Detect<String> each : detect($fox)) {
+        for (Detect<String> each : detect(FOX)) {
             each.yield = each.element.length() == 2;
         }
         puts($result());
@@ -176,7 +176,7 @@ public class TestQueries {
 
     @Test
     public void exampleFold() {
-        for (Fold<String> each : fold($fox)) {
+        for (Fold<String> each : fold(FOX)) {
             each.yield = each.yield + " " + each.element;
         }
         puts($result());
@@ -185,7 +185,7 @@ public class TestQueries {
 
     @Test
     public void exampleGroupedBy() {
-        for (GroupedBy<String> each : groupedBy($fox)) {
+        for (GroupedBy<String> each : groupedBy(FOX)) {
             each.yield = each.element.length();
         }
         puts($result());
@@ -194,7 +194,7 @@ public class TestQueries {
 
     @Test
     public void exampleIndexOf() {
-        for (IndexOf<String> each : indexOf($fox)) {
+        for (IndexOf<String> each : indexOf(FOX)) {
             each.yield = each.element.length() == 4;
         }
         puts($result());
@@ -203,7 +203,7 @@ public class TestQueries {
 
     @Test
     public void exampleIndexOf2() {
-        for (IndexOf<String> each : indexOf($fox)) {
+        for (IndexOf<String> each : indexOf(FOX)) {
             each.yield = each.element.length() == 2;
         }
         puts($result());
@@ -212,7 +212,7 @@ public class TestQueries {
 
     @Test
     public void exampleInjectInto() {
-        for (Inject<String,Integer> each : inject($fox, 0)) {
+        for (Inject<String,Integer> each : inject(FOX, 0)) {
             each.yield = each.yield + each.element.length();
         }
         puts($result());
@@ -221,7 +221,7 @@ public class TestQueries {
 
     @Test
     public void exampleReject() {
-        for (Reject<String> each : reject($fox)) {
+        for (Reject<String> each : reject(FOX)) {
             each.yield = each.element.length() > 3;
         }
         puts($result());
@@ -230,7 +230,7 @@ public class TestQueries {
 
     @Test
     public void exampleSelect() {
-        for (Select<String> each : select($fox)) {
+        for (Select<String> each : select(FOX)) {
             each.yield = each.element.length() > 3;
         }
         puts($result());
@@ -238,7 +238,7 @@ public class TestQueries {
     }
 
     private void puts(Object object) {
-        if ($verbose) System.out.println(object);
+        if (VERBOSE) System.out.println(object);
     }
 
 }

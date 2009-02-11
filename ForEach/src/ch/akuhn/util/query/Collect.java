@@ -55,23 +55,23 @@ public class Collect<Each,R> extends For<Each,Collect<Each,R>> {
     public Each element;
     public R yield;
 
-    @Override
+    //@Override
     protected void afterEach() {
         copy.add(yield);
     }
 
-    @Override
+    //@Override
     protected Object afterLoop() {
         return copy;
     }
 
-    @Override
+    //@Override
     protected void beforeEach(Each each) {
         element = each;
         yield = null;
     }
 
-    @Override
+    //@Override
     protected void beforeLoop() {
         copy = new ArrayList<R>();
     }

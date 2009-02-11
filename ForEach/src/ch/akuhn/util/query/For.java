@@ -17,7 +17,7 @@
 //  
 package ch.akuhn.util.query;
 
-import static ch.akuhn.util.query.State.ABORTED;
+import static ch.akuhn.util.query.State.STOPPED;
 import static ch.akuhn.util.query.State.EACH;
 import static ch.akuhn.util.query.State.FIRST;
 
@@ -30,44 +30,39 @@ import java.util.Iterator;
  * 
  */
 @SuppressWarnings("unchecked")
-public abstract class For<Each,This extends For<Each,This>> {
+public abstract class For<Each,This extends For<Each,This>> implements Iterable<This> {
 
-    private final class Iter implements Iterator<This>, Iterable<This> {
+    private final class Iter implements Iterator<This> {
 
-        @Override
+        private Iterator<Each> iterator = elements.iterator();
+        
+        //@Override
         public boolean hasNext() {
             if (state == FIRST) state = EACH;
             else For.this.afterEach();
-            if (state != ABORTED && iterator.hasNext()) return true;
-            Query.offer(For.this.afterLoop());
+            if (state != STOPPED && iterator.hasNext()) return true;
+            Query.offerResult(For.this.afterLoop());
             return false;
         }
 
-        @Override
-        public Iterator<This> iterator() {
-            For.this.beforeLoop();
-            return this;
-        }
-
-        @Override
+        //@Override
         public This next() {
             beforeEach(iterator.next());
             return (This) For.this;
         }
 
-        @Override
+        //@Override
         public void remove() {
             throw new UnsupportedOperationException();
         }
 
     }
 
-    private Iterator<Each> iterator;
-
+    private Iterable<Each> elements;
     private State state = FIRST;
 
     protected final void abort() {
-        state = ABORTED;
+        state = STOPPED;
     }
 
     protected abstract void afterEach();
@@ -78,13 +73,15 @@ public abstract class For<Each,This extends For<Each,This>> {
 
     protected abstract void beforeLoop();
 
-    protected final Iterable<This> iterable() {
-        return new Iter();
+    protected This with(Iterable<Each> elements) {
+        this.elements = elements;
+        return (This) this;
     }
 
-    protected This with(Iterable<Each> elements) {
-        this.iterator = elements.iterator();
-        return (This) this;
+    //@Override
+    public Iterator<This> iterator() {
+        For.this.beforeLoop();
+        return new Iter();
     }
 
 }

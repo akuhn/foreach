@@ -6,23 +6,23 @@ public class Count<Each> extends For<Each,Count<Each>> {
     public Each element;
     public boolean yield;
 
-    @Override
+    //@Override
     protected void afterEach() {
         if (yield) count++;
     }
 
-    @Override
+    //@Override
     protected Object afterLoop() {
         return count;
     }
 
-    @Override
+    //@Override
     protected void beforeEach(Each each) {
         element = each;
         yield = false;
     }
 
-    @Override
+    //@Override
     protected void beforeLoop() {
         count = 0;
     }
