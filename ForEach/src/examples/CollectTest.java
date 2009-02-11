@@ -15,7 +15,7 @@ public class CollectTest {
         for (Collect<String,Integer> each: Query.collect(TestQueries.FOX, Integer.class)) {
             each.yield = each.element.length();
         }
-        assertEquals("[3, 5, 5, 3, 5, 4, 3, 4, 3]", Query.getResult().toString());
+        assertEquals("[3, 5, 5, 3, 5, 4, 3, 4, 3]", Query.result().toString());
     }
     
     @Test
@@ -37,14 +37,14 @@ public class CollectTest {
         }
         Collection<Integer> result1 = query.result();
         assertEquals("[3, 5, 5, 3, 5, 4, 3, 4, 3]", result1.toString());
-        assertSame(result1, Query.getResult());
+        assertSame(result1, Query.result());
         // second use of query
         for (Collect<String,Integer> each: query) {
             each.yield = (int) each.element.charAt(0);
         }
         Collection<Integer> result2 = query.result();
         assertEquals("[84, 113, 98, 102, 106, 111, 116, 108, 100]", result2.toString());
-        assertSame(result2, Query.getResult());
+        assertSame(result2, Query.result());
         assertNotSame(result2, result1);
     }
     

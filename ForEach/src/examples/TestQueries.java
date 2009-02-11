@@ -15,6 +15,7 @@ import static ch.akuhn.util.query.Query.inject;
 import static ch.akuhn.util.query.Query.reject;
 import static ch.akuhn.util.query.Query.select;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,7 +39,7 @@ import ch.akuhn.util.query.Select;
 @SuppressWarnings("serial")
 public class TestQueries {
 
-    public static final Collection<String> FOX = new ArrayList<String>() {
+    public static final Iterable<String> FOX = new ArrayList<String>() {
         {
             add("The");
             add("quick");
@@ -189,7 +190,9 @@ public class TestQueries {
             each.yield = each.element.length();
         }
         puts($result());
-        assertEquals("{3=[The, fox, the, dog], 4=[over, lazy], 5=[quick, brown, jumps]}", $result().toString());
+        assertTrue($result().toString().contains("3=[The, fox, the, dog]"));
+        assertTrue($result().toString().contains("4=[over, lazy]"));
+        assertTrue($result().toString().contains("5=[quick, brown, jumps]"));
     }
 
     @Test

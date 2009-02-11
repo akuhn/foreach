@@ -54,4 +54,12 @@ public class GroupedBy<Each> extends For<Each,GroupedBy<Each>> {
         groups = new HashMap<Object,Collection<Each>>();
     }
 
+    public static <T> GroupedBy<T> from(Iterable<T> elements) {
+        return new GroupedBy<T>().with(elements);
+    }
+
+    public Map<Object,Collection<Each>> result() {
+        return groups;
+    }
+
 }

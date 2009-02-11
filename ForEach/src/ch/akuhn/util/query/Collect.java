@@ -76,8 +76,12 @@ public class Collect<Each,R> extends For<Each,Collect<Each,R>> {
         copy = new ArrayList<R>();
     }
 
-    public static <T,R> Collect<T,R> from(Collection<T> elements, Class<R> returnType) {
+    public static <T,R> Collect<T,R> from(Iterable<T> elements, Class<R> returnType) {
         return new Collect<T,R>().with(elements);
+    }
+
+    public static <T> Collect<T,T> from(Iterable<T> elements) {
+        return new Collect<T,T>().with(elements);
     }
 
     public Collection<R> result() {

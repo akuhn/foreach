@@ -23,6 +23,10 @@ import static ch.akuhn.util.query.State.FIRST;
 
 import java.util.Iterator;
 
+/*default*/ enum State {
+    STOPPED, EACH, FIRST
+}
+
 /**
  * Superclass of single-element queries.
  * 

@@ -77,7 +77,7 @@ public class Detect<Each> extends For<Each,Detect<Each>> {
     protected void beforeLoop() {
     }
 
-    public static <T> Detect<T> from(Collection<T> elements) {
+    public static <T> Detect<T> from(Iterable<T> elements) {
         return new Detect<T>().with(elements);
     }
 

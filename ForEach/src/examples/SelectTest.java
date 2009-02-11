@@ -15,7 +15,7 @@ public class SelectTest {
         for (Select<String> each: Query.select(TestQueries.FOX)) {
             each.yield = each.element.length() == 4;
         }
-        assertEquals("[over, lazy]", Query.getResult().toString());
+        assertEquals("[over, lazy]", Query.result().toString());
     }
     
     @Test
@@ -37,14 +37,14 @@ public class SelectTest {
         }
         Collection<String> result1 = query.result();
         assertEquals("[over, lazy]", result1.toString());
-        assertSame(result1, Query.getResult());
+        assertSame(result1, Query.result());
         // second use of query
         for (Select<String> each: query) {
             each.yield = each.element.length() == 3;
         }
         Collection<String> result2 = query.result();
         assertEquals("[The, fox, the, dog]", result2.toString());
-        assertSame(result2, Query.getResult());
+        assertSame(result2, Query.result());
         assertNotSame(result2, result1);
     }
 

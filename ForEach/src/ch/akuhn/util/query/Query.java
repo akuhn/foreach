@@ -33,7 +33,7 @@ public class Query {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T getResult() {
+    public static <T> T result() {
         return (T) result.get();
     }
     

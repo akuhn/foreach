@@ -13,7 +13,7 @@ public class DetectTest {
         for (Detect<String> each: Query.detect(TestQueries.FOX)) {
             each.yield = each.element.length() == 4;
         }
-        assertEquals("over", Query.getResult().toString());
+        assertEquals("over", Query.result().toString());
     }
     
     @Test
@@ -34,14 +34,14 @@ public class DetectTest {
         }
         String result1 = query.result();
         assertEquals("over", result1.toString());
-        assertSame(result1, Query.getResult());
+        assertSame(result1, Query.result());
         // second use of query
         for (Detect<String> each: query) {
             each.yield = each.element.length() == 5;
         }
         String result2 = query.result();
         assertEquals("quick", result2.toString());
-        assertSame(result2, Query.getResult());
+        assertSame(result2, Query.result());
         assertNotSame(result2, result1);
     }
 
