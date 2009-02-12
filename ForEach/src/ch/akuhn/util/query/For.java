@@ -17,9 +17,9 @@
 //  
 package ch.akuhn.util.query;
 
-import static ch.akuhn.util.query.State.STOPPED;
 import static ch.akuhn.util.query.State.EACH;
 import static ch.akuhn.util.query.State.FIRST;
+import static ch.akuhn.util.query.State.STOPPED;
 
 import java.util.Iterator;
 
@@ -38,7 +38,7 @@ public abstract class For<Each,This extends For<Each,This>> implements Iterable<
 
     private final class Iter implements Iterator<This> {
 
-        private Iterator<Each> iterator = elements.iterator();
+        private Iterator<? extends Each> iterator = elements.iterator();
         
         //@Override
         public boolean hasNext() {
@@ -62,7 +62,7 @@ public abstract class For<Each,This extends For<Each,This>> implements Iterable<
 
     }
 
-    private Iterable<Each> elements;
+    private Iterable<? extends Each> elements;
     private State state = FIRST;
 
     protected final void abort() {
@@ -77,7 +77,7 @@ public abstract class For<Each,This extends For<Each,This>> implements Iterable<
 
     protected abstract void beforeLoop();
 
-    protected This with(Iterable<Each> elements) {
+    protected This with(Iterable<? extends Each> elements) {
         this.elements = elements;
         return (This) this;
     }

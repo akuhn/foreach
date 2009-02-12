@@ -1,9 +1,12 @@
 package examples;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
+
 import java.util.Collection;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import ch.akuhn.util.query.Query;
 import ch.akuhn.util.query.Select;

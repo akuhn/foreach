@@ -17,7 +17,6 @@
 //  
 package ch.akuhn.util.query;
 
-import java.util.Collection;
 
 /**
  * Returns the first elements for which a predicate yields true. This class is
@@ -77,7 +76,7 @@ public class Detect<Each> extends For<Each,Detect<Each>> {
     protected void beforeLoop() {
     }
 
-    public static <T> Detect<T> from(Iterable<T> elements) {
+    public static <T> Detect<T> from(Iterable<? extends T> elements) {
         return new Detect<T>().with(elements);
     }
 

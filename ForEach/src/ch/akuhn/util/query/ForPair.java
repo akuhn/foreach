@@ -1,8 +1,8 @@
 package ch.akuhn.util.query;
 
-import static ch.akuhn.util.query.State.STOPPED;
 import static ch.akuhn.util.query.State.EACH;
 import static ch.akuhn.util.query.State.FIRST;
+import static ch.akuhn.util.query.State.STOPPED;
 
 import java.util.Iterator;
 

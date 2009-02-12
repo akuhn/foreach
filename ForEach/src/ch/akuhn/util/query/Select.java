@@ -61,7 +61,7 @@ public class Select<Each> extends For<Each,Select<Each>> {
     public Each element;
     public boolean yield;
 
-    public static <E> Select<E> from(Iterable<E> elements) {
+    public static <E> Select<E> from(Iterable<? extends E> elements) {
         return new Select<E>().with(elements);
     }
 

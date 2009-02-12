@@ -1,6 +1,5 @@
 package ch.akuhn.util;
 
-import static java.lang.Math.abs;
 import static java.lang.Math.max;
 
 import java.util.Iterator;

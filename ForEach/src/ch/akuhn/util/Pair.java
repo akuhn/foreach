@@ -98,16 +98,19 @@ public class Pair<A,B> {
         this.snd = snd;
     }
 
+    @Override
     public boolean equals(Object other) {
         return other instanceof Pair && equals(fst, ((Pair<?,?>) other).fst) && equals(snd, ((Pair<?,?>) other).snd);
     }
 
+    @Override
     public int hashCode() {
         if (fst == null) return (snd == null) ? 0 : snd.hashCode() + 1;
         else if (snd == null) return fst.hashCode() + 2;
         else return fst.hashCode() * 17 + snd.hashCode();
     }
 
+    @Override
     public String toString() {
         return "Pair[" + fst + "," + snd + "]";
     }
