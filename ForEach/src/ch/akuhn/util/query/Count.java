@@ -1,5 +1,6 @@
 package ch.akuhn.util.query;
 
+
 public class Count<Each> extends For<Each,Count<Each>> {
 
     private int count;
@@ -26,5 +27,13 @@ public class Count<Each> extends For<Each,Count<Each>> {
     protected void beforeLoop() {
         count = 0;
     }
+
+	public static <T> Count<T> from(Iterable<? extends T> elements) {
+		return new Count<T>().with(elements);
+	}
+
+	public int result() {
+		return count;
+	}
 
 }

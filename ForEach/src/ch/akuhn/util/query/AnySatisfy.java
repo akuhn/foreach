@@ -17,6 +17,7 @@
 //  
 package ch.akuhn.util.query;
 
+
 /**
  * Checks if a predicate yields `true` for at least one element. This class is
  * to be used in a for-each loop as follows:
@@ -72,5 +73,13 @@ public class AnySatisfy<Each> extends For<Each,AnySatisfy<Each>> {
     @Override
     protected void beforeLoop() {
     }
+
+	public static <T> AnySatisfy<T> from(Iterable<? extends T> elements) {
+		return new AnySatisfy<T>().with(elements);
+	}
+
+	public boolean result() {
+		return yield;
+	}
 
 }
