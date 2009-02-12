@@ -49,12 +49,12 @@ public class Query {
         return new Cardinal<T>().with(elements);
     }
 
-    public static <T> Collect<T,T> collect(Iterable<T> elements) {
-        return new Collect<T,T>().with(elements);
+    public static <T> Collect<T> collect(Iterable<T> elements) {
+        return new Collect<T>().with(elements);
     }
 
-    public static <T,R> Collect<T,R> collect(Iterable<T> elements, Class<R> type) {
-        return new Collect<T,R>().with(elements);
+    public static <T,R> Collect2<T,R> collect(Iterable<T> elements, Class<R> type) {
+        return new Collect2<T,R>().with(elements);
     }
 
     public static <T> Count<T> count(Iterable<T> elements) {

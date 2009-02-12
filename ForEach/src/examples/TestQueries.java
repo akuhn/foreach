@@ -25,6 +25,7 @@ import ch.akuhn.util.query.AllSatisfy;
 import ch.akuhn.util.query.AnySatisfy;
 import ch.akuhn.util.query.Cardinal;
 import ch.akuhn.util.query.Collect;
+import ch.akuhn.util.query.Collect2;
 import ch.akuhn.util.query.Count;
 import ch.akuhn.util.query.CutPieces;
 import ch.akuhn.util.query.Detect;
@@ -122,7 +123,7 @@ public class TestQueries {
 
     @Test
     public void exampleCollect() {
-        for (Collect<String,Integer> each : collect(FOX, Integer.class)) {
+        for (Collect2<String,Integer> each : collect(FOX, Integer.class)) {
             each.yield = each.element.length();
         }
         puts($result());
@@ -131,7 +132,7 @@ public class TestQueries {
 
     @Test
     public void exampleCollect2() {
-        for (Collect<String,String> each : collect(FOX)) {
+        for (Collect<String> each : collect(FOX)) {
             each.yield = each.element.toUpperCase();
         }
         puts($result());

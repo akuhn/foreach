@@ -49,11 +49,11 @@ import java.util.Collection;
  * @author Adrian Kuhn
  * 
  */
-public class Collect<Each> extends For<Each,Collect<Each>> {
+public class Collect2<Each,R> extends For<Each,Collect2<Each,R>> {
 
-    private Collection<Each> copy;
+    private Collection<R> copy;
     public Each element;
-    public Each yield;
+    public R yield;
 
     @Override
     protected void afterEach() {
@@ -68,19 +68,23 @@ public class Collect<Each> extends For<Each,Collect<Each>> {
     @Override
     protected void beforeEach(Each each) {
         element = each;
-        yield = each;
+        yield = null;
     }
 
     @Override
     protected void beforeLoop() {
-        copy = new ArrayList<Each>();
+        copy = new ArrayList<R>();
     }
 
-    public static <T> Collect<T> from(Iterable<? extends T> elements) {
-        return new Collect<T>().with(elements);
+    public static <T,R> Collect2<T,R> from(Iterable<? extends T> elements, Class<R> returnType) {
+        return new Collect2<T,R>().with(elements);
     }
 
-    public Collection<Each> result() {
+    public static <T> Collect2<T,T> from(Iterable<? extends T> elements) {
+        return new Collect2<T,T>().with(elements);
+    }
+
+    public Collection<R> result() {
         return copy;
     }
 
