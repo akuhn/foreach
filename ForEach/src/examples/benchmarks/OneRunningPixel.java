@@ -36,7 +36,7 @@ public class OneRunningPixel implements Runnable, Iterable<Pixel> {
         public Pixel next() {
             x = x0;
             y = y0;
-            value = Math.random();
+            value = Benchmark.next();
             if (++x0 == LEN) { x0 = 0; ++y0; }
             return this;
         }

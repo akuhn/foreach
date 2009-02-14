@@ -42,7 +42,7 @@ public class OneBillionPixels implements Runnable, Iterable<Pixel> {
         }
 
         public Pixel next() {
-            Pixel p = new Pixel(x, y, Math.random());
+            Pixel p = new Pixel(x, y, Benchmark.next());
             if (++x == LEN) { x = 0; ++y; }
             return p;
         }
