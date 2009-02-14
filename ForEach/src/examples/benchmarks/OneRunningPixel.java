@@ -1,6 +1,10 @@
 package examples.benchmarks;
 
+import static examples.benchmarks.Benchmark.ARRAY;
+import static examples.benchmarks.Benchmark.BUSY;
 import static examples.benchmarks.Benchmark.LEN;
+import static examples.benchmarks.Benchmark.RANDOM;
+import static examples.benchmarks.Benchmark.next;
 
 import java.util.Iterator;
 
@@ -13,7 +17,9 @@ public class OneRunningPixel implements Runnable, Iterable<Pixel> {
         ben.begin();
         long tally = 0;
         for (Pixel each: this) {
-            if (each.value > 0.8) tally++;
+            double value = each.value;
+            if (BUSY) value = Math.sqrt(Math.pow(each.x-value,2) + Math.pow(each.y-value,2));
+            if (value > 0.8) tally++;
         }
         ben.end();
         System.out.println(tally);
@@ -36,7 +42,7 @@ public class OneRunningPixel implements Runnable, Iterable<Pixel> {
         public Pixel next() {
             x = x0;
             y = y0;
-            value = Benchmark.next();
+            value = ARRAY ? RANDOM[x][y] : Benchmark.next();
             if (++x0 == LEN) { x0 = 0; ++y0; }
             return this;
         }

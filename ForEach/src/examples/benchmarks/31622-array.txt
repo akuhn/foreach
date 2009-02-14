@@ -1,0 +1,15 @@
+For each pixel in 999950884 do nothing and retrieve values from an array:
+examples.benchmarks.PlainForLoop@82ba41
+# time = 9.61159823
+198491294
+examples.benchmarks.OneRunningPixel@130c19b
+# time = 21.82747477
+198491294
+examples.benchmarks.OneBillionPixels@11b86e7
+198491294
+# time = 38.530357481
+examples.benchmarks.OneBillionFinalPixels@9cab16
+198491294
+# time = 38.995708953
+[Accumulated GC generation 0 time 5.5086843 secs, 91816 GC's, avg GC time 0.0000600]
+[Accumulated GC generation 1 time 0.0000000 secs, 0 GC's, avg GC time -1.#IND000]

@@ -1,0 +1,15 @@
+For each pixel in 999950884 do dist((x,y),(value,value)):
+examples.benchmarks.TightLoop@82ba41
+999950883
+# time = 117.194328275
+examples.benchmarks.OneRunningPixel@130c19b
+999950883
+# time = 149.874413124
+examples.benchmarks.OneBillionPixels@11b86e7
+999950883
+# time = 174.943785609
+examples.benchmarks.OneBillionFinalPixels@9cab16
+999950883
+# time = 166.589349319
+[Accumulated GC generation 0 time 9.7394413 secs, 91814 GC's, avg GC time 0.0001061]
+[Accumulated GC generation 1 time 0.0000000 secs, 0 GC's, avg GC time -1.#IND000]

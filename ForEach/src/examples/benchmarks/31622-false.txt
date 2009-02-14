@@ -1,0 +1,15 @@
+For each pixel in 999950884 do nothing:
+examples.benchmarks.TightLoop@82ba41
+# time = 5.239648268
+999950884
+examples.benchmarks.OneRunningPixel@130c19b
+# time = 21.256612989
+999950884
+examples.benchmarks.OneBillionPixels@11b86e7
+999950884
+# time = 40.038759384
+examples.benchmarks.OneBillionFinalPixels@9cab16
+999950884
+# time = 39.041511689
+[Accumulated GC generation 0 time 5.2419991 secs, 91814 GC's, avg GC time 0.0000571]
+[Accumulated GC generation 1 time 0.0000000 secs, 0 GC's, avg GC time -1.#IND000]

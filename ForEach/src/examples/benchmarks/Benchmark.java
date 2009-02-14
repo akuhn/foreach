@@ -1,10 +1,14 @@
 package examples.benchmarks;
 
 
+
 public class Benchmark {
 
-    //public static final int LEN = 31622;
-    public static final int LEN = 3162;
+    public static final int LEN = 31622;
+    //public static final int LEN = 3162;
+    //public static final boolean BUSY = true;
+    public static final boolean BUSY = false;
+    public static final boolean ARRAY = true; 
     
     public static void main(String... args) {
 
@@ -14,12 +18,15 @@ public class Benchmark {
         // -XX:+TraceGen0Time
         // -XX:+TraceGen1Time
         
-        System.err.println("For each pixel in " + LEN*LEN + ":");
-        new TightLoop().run();
+        System.err.println("For each pixel in " 
+                + LEN*LEN + " do "
+                + (BUSY ? "dist((x,y),(value,value))" : "nothing") 
+                + (ARRAY ? " and retrieve values from an array" : "") 
+                + ":");
+        new PlainForLoop().run();
         new OneRunningPixel().run();
         new OneBillionPixels().run();
         new OneBillionFinalPixels().run();
-        new BusyLoop().run();
         
     }
 
@@ -44,14 +51,19 @@ public class Benchmark {
         System.err.println("# time = " + (System.nanoTime() - time) / 1e9);
     }
 
-    //private static final double[] RANDOM = new double[100];
-    //static { for (int n = 0; n < 100; n++) RANDOM[n] = Math.random(); }
-    //private static int index = 0;
+    static final double[][] RANDOM = new double[LEN][];
+    static { 
+        if (ARRAY) {
+            double[] row = new double[LEN];
+            for (int n = 0; n < LEN; n++) {
+                row[n] = Math.random();
+                RANDOM[n] = row;
+            }
+        }
+    }
     private static double n = Math.PI;
     public static double next() {
-        //return System.currentTimeMillis();
-        //if (index == 100) index = 0;
-        return n += 1e-8;//RANDOM[index++];
+        return n += 1e-3;
     }
     
 }
