@@ -22,16 +22,16 @@ public class TestCutPieces {
         query = Query.cutPieces(elements).iterator();
         assertEquals(true, query.hasNext());
         each = query.next();
-        assertEquals(1, each.prev);
-        assertEquals(2, each.next);
+        assertEquals(1, (int)each.prev);
+        assertEquals(2, (int)each.next);
         assertEquals(true, query.hasNext());
         each = query.next();
-        assertEquals(2, each.prev);
-        assertEquals(3, each.next);
+        assertEquals(2, (int)each.prev);
+        assertEquals(3, (int)each.next);
         assertEquals(true, query.hasNext());
         each = query.next();
-        assertEquals(3, each.prev);
-        assertEquals(4, each.next);
+        assertEquals(3, (int)each.prev);
+        assertEquals(4, (int)each.next);
         assertEquals(false, query.hasNext());
     }
 

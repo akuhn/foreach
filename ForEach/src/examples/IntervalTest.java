@@ -18,11 +18,11 @@ public class IntervalTest {
         Interval range = range(3);
         Iterator<Integer> it = range.iterator();
         assertEquals(true, it.hasNext());
-        assertEquals(0, it.next());
+        assertEquals(0, (int)it.next());
         assertEquals(true, it.hasNext());
-        assertEquals(1, it.next());
+        assertEquals(1, (int)it.next());
         assertEquals(true, it.hasNext());
-        assertEquals(2, it.next());
+        assertEquals(2, (int)it.next());
         assertEquals(false, it.hasNext());
     }
     
@@ -31,7 +31,7 @@ public class IntervalTest {
         Interval range = range(1);
         Iterator<Integer> it = range.iterator();
         assertEquals(true, it.hasNext());
-        assertEquals(0, it.next());
+        assertEquals(0, (int)it.next());
         assertEquals(false, it.hasNext());
     }
 
@@ -53,7 +53,7 @@ public class IntervalTest {
     public void testBeyondRange1() {
         Interval range = range(1);
         Iterator<Integer> it = range.iterator();
-        assertEquals(0, it.next());
+        assertEquals(0, (int)it.next());
         it.next();
     }
     
