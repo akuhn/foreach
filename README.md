@@ -20,7 +20,7 @@ Instead, here is a small DSL that pimps ye old Java foreach loop for you:
 	  each.yield = each.value.charAt(0).isUppercase();
 	}
 	Collection<String> names = ForEach.result();
-	for (AnySatisfy<String> each: ForEach.anySatisfy(words)) {
+	for (Any<String> each: ForEach.Any(words)) {
 	  each.yield = each.value.length() > 7;
 	}
 	boolean bool = ForEach.result();
@@ -41,18 +41,18 @@ The same technique is used in the two other examples. #anySatisfy checks if all 
 
 The list of currently supported queries includes
 
-- [All](blob/master/ForEach/src/ch/akuhn/foreach/All.java)
-- [Any](blob/master/ForEach/src/ch/akuhn/foreach/Any.java)
-- [Collect](blob/master/ForEach/src/ch/akuhn/foreach/Collect.java)
-- [Count](blob/master/ForEach/src/ch/akuhn/foreach/Count.java)
-- [CutPieces](blob/master/ForEach/src/ch/akuhn/foreach/CutPieces.java)
-- [Detect](blob/master/ForEach/src/ch/akuhn/foreach/Detect.java)
-- [Fold](blob/master/ForEach/src/ch/akuhn/foreach/Fold.java)
-- [GroupedBy](blob/master/ForEach/src/ch/akuhn/foreach/GroupedBy.java)
-- [IndexOf](blob/master/ForEach/src/ch/akuhn/foreach/IndexOf.java)
-- [Inject](blob/master/ForEach/src/ch/akuhn/foreach/Inject.java)
-- [Reject](blob/master/ForEach/src/ch/akuhn/foreach/Reject.java)
-- [Select](blob/master/ForEach/src/ch/akuhn/foreach/Select.java)
+- [All](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/All.java)
+- [Any](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Any.java)
+- [Collect](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Collect.java)
+- [Count](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Count.java)
+- [CutPieces](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/CutPieces.java)
+- [Detect](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Detect.java)
+- [Fold](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Fold.java)
+- [GroupedBy](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/GroupedBy.java)
+- [IndexOf](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/IndexOf.java)
+- [Inject](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Inject.java)
+- [Reject](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Reject.java)
+- [Select](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Select.java)
 
 If you need more, you can subclass For<Each> and implement your own query. As an example, I shall leave the implementation of Count here:
 
