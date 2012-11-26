@@ -52,7 +52,7 @@ public class GroupedBy<Each> extends For<Each> {
 				each.yield = each.value.length();
 			}
 
-			Map groups = Query.result();
+			Map groups = ForEach.result();
 			assertEquals("[The, fox, the, dog]", groups.get(3).toString());
 			assertEquals("[over, lazy]", groups.get(4).toString());
 			assertEquals("[quick, brown, jumps]", groups.get(5).toString());

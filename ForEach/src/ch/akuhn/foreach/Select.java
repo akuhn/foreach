@@ -40,10 +40,10 @@ public class Select<Each> extends For<Each> {
 		@Test
 		public void shouldIncludeShortWords() {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
-			for (Select<String> each: Query.with(new Select<String>(), words)) {
+			for (Select<String> each: ForEach.select(words)) {
 				each.yield = each.value.length() < 4;
 			}
-			assertEquals("[The, fox, the, dog]", Query.result().toString());
+			assertEquals("[The, fox, the, dog]", ForEach.result().toString());
 		}
 
 	}

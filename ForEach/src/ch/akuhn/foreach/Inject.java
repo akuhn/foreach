@@ -39,10 +39,10 @@ public class Inject<Each, Result> extends For<Each> {
 		public void shouldSumSquaredLength() {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
-			for (Inject<String, Integer> each: Query.with(new Inject<String, Integer>(0), Arrays.asList(words))) {
+			for (Inject<String, Integer> each: ForEach.inject(0, words)) {
 				each.yield += each.value.length();
 			}
-			assertEquals(35, Query.result());
+			assertEquals(35, ForEach.result());
 		}
 
 	}

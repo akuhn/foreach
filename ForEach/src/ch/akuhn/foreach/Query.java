@@ -3,6 +3,7 @@ package ch.akuhn.foreach;
 import java.util.Arrays;
 import java.util.Iterator;
 
+@SuppressWarnings("hiding")
 public class Query<Each, ForEach extends For<Each>> implements Iterable<ForEach> {
 
 	private ForEach each;
@@ -28,7 +29,7 @@ public class Query<Each, ForEach extends For<Each>> implements Iterable<ForEach>
 
 	private static ThreadLocal $result = new ThreadLocal();
 
-	public static <Result> Result result() {
+	protected static <Result> Result result() {
 		return (Result) $result.get();
 	}
 

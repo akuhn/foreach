@@ -36,13 +36,13 @@ public class Any<Each> extends For<Each> {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 			int count = 0;
 
-			for (Any<String> each: Query.with(new Any<String>(), words)) {
+			for (Any<String> each: ForEach.any(words)) {
 				each.yield = each.value.equals("over");
 				count++;
 			}
 
 			assertEquals(6, count);
-			assertEquals(true, Query.result());
+			assertEquals(true, ForEach.result());
 		}
 
 	}

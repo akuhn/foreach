@@ -6,11 +6,11 @@ public class ForEach {
 		return Query.result();
 	}
 
-	public static <T> Query<T, All<T>> allSatisfy(Iterable<T> all) {
+	public static <T> Query<T, All<T>> all(Iterable<T> all) {
 		return Query.with(new All<T>(), all);
 	}
 
-	public static <T> Query<T, Any<T>> anySatisfy(Iterable<T> all) {
+	public static <T> Query<T, Any<T>> any(Iterable<T> all) {
 		return Query.with(new Any<T>(), all);
 	}
 
@@ -46,23 +46,31 @@ public class ForEach {
 		return Query.with(new Reject<T>(), all);
 	}
 
+	public static <T> Query<T, Select<T>> select(Iterable<T> all) {
+		return Query.with(new Select<T>(), all);
+	}
+
+	public static <T> Query<T, Sum<T>> sum(Iterable<T> all) {
+		return Query.with(new Sum<T>(), all);
+	}
+
 	public static <T> Query<T, CutPieces<T>> cutPieces(Iterable<T> all) {
 		throw new UnsupportedOperationException();
 	}
 
-	public static <T> Query<T, All<T>> allSatisfy(T[] all) {
+	public static <T> Query<T, All<T>> all(T[] all) {
 		return Query.with(new All<T>(), all);
 	}
 
-	public static <T> Query<T, Any<T>> anySatisfy(T[] all) {
+	public static <T> Query<T, Any<T>> any(T[] all) {
 		return Query.with(new Any<T>(), all);
 	}
 
-	public static <T> Query<T, Collect<T, T>> collect(T[] all) {
-		return Query.with(new Collect<T, T>(), all);
+	public static <T> Query<T, Collect1<T>> collect1(T[] all) {
+		return Query.with(new Collect1<T>(), all);
 	}
 
-	public static <T, K> Query<T, Collect<T, K>> collect2(Class<K> key, T[] all) {
+	public static <T, K> Query<T, Collect<T, K>> collect(Class<K> key, T[] all) {
 		return Query.with(new Collect<T, K>(), all);
 	}
 
@@ -88,6 +96,14 @@ public class ForEach {
 
 	public static <T> Query<T, Reject<T>> reject(T[] all) {
 		return Query.with(new Reject<T>(), all);
+	}
+
+	public static <T> Query<T, Select<T>> select(T[] all) {
+		return Query.with(new Select<T>(), all);
+	}
+
+	public static <T> Query<T, Sum<T>> sum(T[] all) {
+		return Query.with(new Sum<T>(), all);
 	}
 
 	public static <T> Query<T, CutPieces<T>> cutPieces(T[] all) {

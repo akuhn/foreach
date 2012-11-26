@@ -38,11 +38,11 @@ public class Count<Each> extends For<Each> {
 		public void shouldIncludeShortWords() {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
-			for (Count<String> each: Query.with(new Count<String>(), words)) {
+			for (Count<String> each: ForEach.count(words)) {
 				each.yield = each.value.length() == 3;
 			}
 
-			assertEquals(4, Query.result());
+			assertEquals(4, ForEach.result());
 		}
 
 	}

@@ -2,8 +2,6 @@ package ch.akuhn.foreach;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 
 public class Sum<Each> extends For<Each> {
@@ -36,10 +34,10 @@ public class Sum<Each> extends For<Each> {
 		public void shouldSumSquaredLength() {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
-			for (Sum<String> each: Query.with(new Sum<String>(), Arrays.asList(words))) {
+			for (Sum<String> each: ForEach.sum(words)) {
 				each.sum += each.value.length();
 			}
-			assertEquals(35, Query.result());
+			assertEquals(35, ForEach.result());
 		}
 
 	}

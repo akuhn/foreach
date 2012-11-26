@@ -39,13 +39,13 @@ public class IndexOf<Each> extends For<Each> {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 			int count = 0;
 
-			for (IndexOf<String> each: Query.with(new IndexOf<String>(), words)) {
+			for (IndexOf<String> each: ForEach.indexOf(words)) {
 				each.yield = each.value.length() == 4;
 				count++;
 			}
 
 			assertEquals(6, count);
-			assertEquals(5, Query.result());
+			assertEquals(5, ForEach.result());
 		}
 
 	}

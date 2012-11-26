@@ -3,7 +3,6 @@ package ch.akuhn.foreach;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Test;
@@ -72,10 +71,10 @@ public class Collect<Each, Result> extends For<Each> {
 		public void shouldMapLength() {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
-			for (Collect<String, Integer> each: Query.with(new Collect<String, Integer>(), Arrays.asList(words))) {
+			for (Collect<String, Integer> each: ForEach.collect(Integer.class, words)) {
 				each.yield = each.value.length();
 			}
-			assertEquals("[3, 5, 5, 3, 5, 4, 3, 4, 3]", Query.result().toString());
+			assertEquals("[3, 5, 5, 3, 5, 4, 3, 4, 3]", ForEach.result().toString());
 		}
 
 	}

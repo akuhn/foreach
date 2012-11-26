@@ -42,11 +42,11 @@ public class Reject<Each> extends For<Each> {
 		public void shouldExcludeShortWords() {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
-			for (Reject<String> each: Query.with(new Reject<String>(), words)) {
+			for (Reject<String> each: ForEach.reject(words)) {
 				each.yield = each.value.length() < 4;
 			}
 
-			assertEquals("[quick, brown, jumps, over, lazy]", Query.result().toString());
+			assertEquals("[quick, brown, jumps, over, lazy]", ForEach.result().toString());
 		}
 
 	}

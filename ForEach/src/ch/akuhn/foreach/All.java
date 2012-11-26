@@ -37,12 +37,12 @@ public class All<Each> extends For<Each> {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 			int count = 0;
 
-			for (All<String> each: Query.with(new All<String>(), words)) {
+			for (All<String> each: ForEach.all(words)) {
 				each.yield = each.value.equals("The");
 				count++;
 			}
 
-			assertEquals(false, Query.result());
+			assertEquals(false, ForEach.result());
 			assertEquals(2, count);
 		}
 

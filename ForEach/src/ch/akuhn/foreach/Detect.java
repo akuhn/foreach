@@ -36,13 +36,13 @@ public class Detect<Each> extends For<Each> {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 			int count = 0;
 
-			for (Detect<String> each: Query.with(new Detect<String>(), words)) {
+			for (Detect<String> each: ForEach.detect(words)) {
 				each.yield = each.value.length() == 4;
 				count++;
 			}
 
 			assertEquals(6, count);
-			assertEquals("over", Query.result());
+			assertEquals("over", ForEach.result());
 		}
 
 	}
