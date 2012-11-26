@@ -41,18 +41,18 @@ The same technique is used in the two other examples. #anySatisfy checks if all 
 
 The list of currently supported queries includes
 
-- AllSatisfy
-- AnySatisfy
-- Collect
-- Count
-- CutPieces
-- Detect
-- Fold
-- GroupedBy
-- IndexOf
-- Inject
-- Reject
-- Select
+- [All](blob/master/ForEach/src/ch/akuhn/foreach/All.java)
+- [Any](blob/master/ForEach/src/ch/akuhn/foreach/Any.java)
+- [Collect](blob/master/ForEach/src/ch/akuhn/foreach/Collect.java)
+- [Count](blob/master/ForEach/src/ch/akuhn/foreach/Count.java)
+- [CutPieces](blob/master/ForEach/src/ch/akuhn/foreach/CutPieces.java)
+- [Detect](blob/master/ForEach/src/ch/akuhn/foreach/Detect.java)
+- [Fold](blob/master/ForEach/src/ch/akuhn/foreach/Fold.java)
+- [GroupedBy](blob/master/ForEach/src/ch/akuhn/foreach/GroupedBy.java)
+- [IndexOf](blob/master/ForEach/src/ch/akuhn/foreach/IndexOf.java)
+- [Inject](blob/master/ForEach/src/ch/akuhn/foreach/Inject.java)
+- [Reject](blob/master/ForEach/src/ch/akuhn/foreach/Reject.java)
+- [Select](blob/master/ForEach/src/ch/akuhn/foreach/Select.java)
 
 If you need more, you can subclass For<Each> and implement your own query. As an example, I shall leave the implementation of Count here:
 
