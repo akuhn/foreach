@@ -63,7 +63,7 @@ public class Example {
 			for (CutPieces<FileVersion> each: ForEach.cutPieces(history.fileVersions()))
 				each.yield = each.element.week() != each.next.week();
 			Collection<Collection<FileVersion>> weeks = ForEach.result();
-			for (GroupedBy<Collection<FileVersion>, Integer> week: ForEach.groupedBy(Integer.class, weeks)) {
+			for (GroupedBy<Collection<FileVersion>> week: ForEach.groupedBy(weeks)) {
 				for (Collect2<FileVersion, String> each: ForEach.collect2(String.class, week.element))
 					each.yield = each.element.author();
 				Collection<String> authors = ForEach.result();

@@ -3,19 +3,18 @@ package ch.akuhn.foreach;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
 
-public class GroupedBy<Each, Key> extends For<Each> {
+public class GroupedBy<Each> extends For<Each> {
 
 	public Each element;
-	public Key yield;
+	public Object yield;
 
-	private Map<Key, List<Each>> groups;
+	private Map<Object, List<Each>> groups;
 
 	@Override
 	protected void afterEach() {
@@ -35,7 +34,7 @@ public class GroupedBy<Each, Key> extends For<Each> {
 
 	@Override
 	protected void beforeLoop() {
-		groups = new HashMap<Key, List<Each>>();
+		groups = new HashMap<Object, List<Each>>();
 	}
 
 	@Override
@@ -49,7 +48,7 @@ public class GroupedBy<Each, Key> extends For<Each> {
 		public void shouldGroupByLength() {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
-			for (GroupedBy<String, Integer> each: Query.with(new GroupedBy<String, Integer>(), Arrays.asList(words))) {
+			for (GroupedBy<String> each: ForEach.groupedBy(words)) {
 				each.yield = each.element.length();
 			}
 
