@@ -35,7 +35,7 @@ public class Count<Each> extends For<Each> {
 	public static class Examples {
 
 		@Test
-		public void shouldIncludeShortWords() {
+		public void shouldCountShortWords() {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
 			for (Count<String> each: ForEach.count(words)) {
