@@ -6,8 +6,9 @@ import org.junit.Test;
 
 public class IndexOf<Each> extends For<Each> {
 
-	public Each element;
+	public Each value;
 	public boolean yield;
+
 	private int index;
 
 	@Override
@@ -18,7 +19,7 @@ public class IndexOf<Each> extends For<Each> {
 
 	@Override
 	protected void beforeEach(Each each) {
-		element = each;
+		value = each;
 	}
 
 	@Override
@@ -39,7 +40,7 @@ public class IndexOf<Each> extends For<Each> {
 			int count = 0;
 
 			for (IndexOf<String> each: Query.with(new IndexOf<String>(), words)) {
-				each.yield = each.element.length() == 4;
+				each.yield = each.value.length() == 4;
 				count++;
 			}
 

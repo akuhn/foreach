@@ -6,20 +6,20 @@ public class ForEach {
 		return Query.result();
 	}
 
-	public static <T> Query<T, AllSatisfy<T>> allSatisfy(Iterable<T> all) {
-		return Query.with(new AllSatisfy<T>(), all);
+	public static <T> Query<T, All<T>> allSatisfy(Iterable<T> all) {
+		return Query.with(new All<T>(), all);
 	}
 
-	public static <T> Query<T, AnySatisfy<T>> anySatisfy(Iterable<T> all) {
-		return Query.with(new AnySatisfy<T>(), all);
+	public static <T> Query<T, Any<T>> anySatisfy(Iterable<T> all) {
+		return Query.with(new Any<T>(), all);
 	}
 
-	public static <T> Query<T, Collect2<T, T>> collect(Iterable<T> all) {
-		return Query.with(new Collect2<T, T>(), all);
+	public static <T> Query<T, Collect1<T>> collect1(Iterable<T> all) {
+		return Query.with(new Collect1<T>(), all);
 	}
 
-	public static <T, K> Query<T, Collect2<T, K>> collect2(Class<K> key, Iterable<T> all) {
-		return Query.with(new Collect2<T, K>(), all);
+	public static <T, K> Query<T, Collect<T, K>> collect(Class<K> key, Iterable<T> all) {
+		return Query.with(new Collect<T, K>(), all);
 	}
 
 	public static <T> Query<T, Detect<T>> detect(Iterable<T> all) {
@@ -50,20 +50,20 @@ public class ForEach {
 		throw new UnsupportedOperationException();
 	}
 
-	public static <T> Query<T, AllSatisfy<T>> allSatisfy(T[] all) {
-		return Query.with(new AllSatisfy<T>(), all);
+	public static <T> Query<T, All<T>> allSatisfy(T[] all) {
+		return Query.with(new All<T>(), all);
 	}
 
-	public static <T> Query<T, AnySatisfy<T>> anySatisfy(T[] all) {
-		return Query.with(new AnySatisfy<T>(), all);
+	public static <T> Query<T, Any<T>> anySatisfy(T[] all) {
+		return Query.with(new Any<T>(), all);
 	}
 
-	public static <T> Query<T, Collect2<T, T>> collect(T[] all) {
-		return Query.with(new Collect2<T, T>(), all);
+	public static <T> Query<T, Collect<T, T>> collect(T[] all) {
+		return Query.with(new Collect<T, T>(), all);
 	}
 
-	public static <T, K> Query<T, Collect2<T, K>> collect2(Class<K> key, T[] all) {
-		return Query.with(new Collect2<T, K>(), all);
+	public static <T, K> Query<T, Collect<T, K>> collect2(Class<K> key, T[] all) {
+		return Query.with(new Collect<T, K>(), all);
 	}
 
 	public static <T> Query<T, Detect<T>> detect(T[] all) {

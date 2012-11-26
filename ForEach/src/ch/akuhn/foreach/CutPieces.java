@@ -50,7 +50,7 @@ package ch.akuhn.foreach;
  */
 public abstract class CutPieces<Each> extends For<Each> {
 
-	public Each element;
+	public Each value;
 	public Each next;
 	public boolean yield;
 

@@ -4,20 +4,19 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class AllSatisfy<Each> extends For<Each> {
+public class Any<Each> extends For<Each> {
 
-	public Each element;
+	public Each value;
 	public boolean yield;
 
 	@Override
 	protected void afterEach() {
-		if (yield) ;
-		else abort();
+		if (yield) abort();
 	}
 
 	@Override
 	protected void beforeEach(Each each) {
-		element = each;
+		value = each;
 		yield = false;
 	}
 
@@ -33,17 +32,17 @@ public class AllSatisfy<Each> extends For<Each> {
 	public static class Examples {
 
 		@Test
-		public void shouldAbortWhenNotMatchingAll() {
+		public void shouldAbortOnFirstMatch() {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 			int count = 0;
 
-			for (AllSatisfy<String> each: Query.with(new AllSatisfy<String>(), words)) {
-				each.yield = each.element.equals("The");
+			for (Any<String> each: Query.with(new Any<String>(), words)) {
+				each.yield = each.value.equals("over");
 				count++;
 			}
 
-			assertEquals(false, Query.result());
-			assertEquals(2, count);
+			assertEquals(6, count);
+			assertEquals(true, Query.result());
 		}
 
 	}

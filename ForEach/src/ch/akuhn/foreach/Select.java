@@ -9,20 +9,19 @@ import org.junit.Test;
 
 public class Select<Each> extends For<Each> {
 
-	public Each element;
-
+	public Each value;
 	public boolean yield;
 
 	private Collection<Each> result;
 
 	@Override
 	protected void afterEach() {
-		if (yield) result.add(element);
+		if (yield) result.add(value);
 	}
 
 	@Override
 	protected void beforeEach(Each each) {
-		element = each;
+		value = each;
 		yield = false;
 	}
 
@@ -42,7 +41,7 @@ public class Select<Each> extends For<Each> {
 		public void shouldIncludeShortWords() {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 			for (Select<String> each: Query.with(new Select<String>(), words)) {
-				each.yield = each.element.length() < 4;
+				each.yield = each.value.length() < 4;
 			}
 			assertEquals("[The, fox, the, dog]", Query.result().toString());
 		}

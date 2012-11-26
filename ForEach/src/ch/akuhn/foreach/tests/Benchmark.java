@@ -27,7 +27,7 @@ public class Benchmark {
 		long start = System.currentTimeMillis();
 		for (int n = 0; n < 10; n++) {
 			for (Count<Struct> each: ForEach.count($data)) {
-				each.yield = (each.element.a != null && each.element.b != null && each.element.c != null);
+				each.yield = (each.value.a != null && each.value.b != null && each.value.c != null);
 			}
 			$count = ForEach.result();
 		}

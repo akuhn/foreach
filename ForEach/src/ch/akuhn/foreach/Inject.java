@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class Inject<Each, Result> extends For<Each> {
 
-	public Each element;
+	public Each value;
 	public Result yield;
 
 	public Inject(Result initial) {
@@ -26,7 +26,7 @@ public class Inject<Each, Result> extends For<Each> {
 
 	@Override
 	protected void beforeEach(Each each) {
-		element = each;
+		value = each;
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class Inject<Each, Result> extends For<Each> {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
 			for (Inject<String, Integer> each: Query.with(new Inject<String, Integer>(0), Arrays.asList(words))) {
-				each.yield += each.element.length();
+				each.yield += each.value.length();
 			}
 			assertEquals(35, Query.result());
 		}

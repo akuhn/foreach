@@ -9,8 +9,7 @@ import org.junit.Test;
 
 public class Reject<Each> extends For<Each> {
 
-	public Each element;
-
+	public Each value;
 	public boolean yield;
 
 	private Collection<Each> result;
@@ -18,12 +17,12 @@ public class Reject<Each> extends For<Each> {
 	@Override
 	protected void afterEach() {
 		if (yield) ;
-		else result.add(element);
+		else result.add(value);
 	}
 
 	@Override
 	protected void beforeEach(Each each) {
-		element = each;
+		value = each;
 		yield = false;
 	}
 
@@ -44,7 +43,7 @@ public class Reject<Each> extends For<Each> {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
 			for (Reject<String> each: Query.with(new Reject<String>(), words)) {
-				each.yield = each.element.length() < 4;
+				each.yield = each.value.length() < 4;
 			}
 
 			assertEquals("[quick, brown, jumps, over, lazy]", Query.result().toString());

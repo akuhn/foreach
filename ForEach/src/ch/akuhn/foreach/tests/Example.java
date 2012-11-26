@@ -3,7 +3,7 @@ package ch.akuhn.foreach.tests;
 import java.util.Collection;
 import java.util.Map;
 
-import ch.akuhn.foreach.Collect2;
+import ch.akuhn.foreach.Collect;
 import ch.akuhn.foreach.CutPieces;
 import ch.akuhn.foreach.ForEach;
 import ch.akuhn.foreach.GroupedBy;
@@ -61,11 +61,11 @@ public class Example {
 		Bag<Integer> bag = null;
 		for (FileHistory history: project.fileHistories()) {
 			for (CutPieces<FileVersion> each: ForEach.cutPieces(history.fileVersions()))
-				each.yield = each.element.week() != each.next.week();
+				each.yield = each.value.week() != each.next.week();
 			Collection<Collection<FileVersion>> weeks = ForEach.result();
 			for (GroupedBy<Collection<FileVersion>> week: ForEach.groupedBy(weeks)) {
-				for (Collect2<FileVersion, String> each: ForEach.collect2(String.class, week.element))
-					each.yield = each.element.author();
+				for (Collect<FileVersion, String> each: ForEach.collect(String.class, week.value))
+					each.yield = each.value.author();
 				Collection<String> authors = ForEach.result();
 				week.yield = authors.size();
 			}

@@ -8,8 +8,7 @@ import org.junit.Test;
 
 public class Sum<Each> extends For<Each> {
 
-	public Each element;
-
+	public Each value;
 	public int sum;
 
 	@Override
@@ -23,7 +22,7 @@ public class Sum<Each> extends For<Each> {
 
 	@Override
 	protected void beforeEach(Each each) {
-		this.element = each;
+		this.value = each;
 	}
 
 	@Override
@@ -38,7 +37,7 @@ public class Sum<Each> extends For<Each> {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
 			for (Sum<String> each: Query.with(new Sum<String>(), Arrays.asList(words))) {
-				each.sum += each.element.length();
+				each.sum += each.value.length();
 			}
 			assertEquals(35, Query.result());
 		}

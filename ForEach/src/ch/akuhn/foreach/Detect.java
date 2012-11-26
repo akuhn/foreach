@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class Detect<Each> extends For<Each> {
 
-	public Each element;
+	public Each value;
 	public boolean yield;
 
 	@Override
@@ -16,7 +16,7 @@ public class Detect<Each> extends For<Each> {
 
 	@Override
 	protected void beforeEach(Each each) {
-		element = each;
+		value = each;
 		yield = false;
 	}
 
@@ -26,7 +26,7 @@ public class Detect<Each> extends For<Each> {
 
 	@Override
 	protected Object afterLoop() {
-		return element;
+		return value;
 	}
 
 	public static class Examples {
@@ -37,7 +37,7 @@ public class Detect<Each> extends For<Each> {
 			int count = 0;
 
 			for (Detect<String> each: Query.with(new Detect<String>(), words)) {
-				each.yield = each.element.length() == 4;
+				each.yield = each.value.length() == 4;
 				count++;
 			}
 

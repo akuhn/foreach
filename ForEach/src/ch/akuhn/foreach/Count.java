@@ -6,9 +6,10 @@ import org.junit.Test;
 
 public class Count<Each> extends For<Each> {
 
-	private int count;
-	public Each element;
+	public Each value;
 	public boolean yield;
+
+	private int count;
 
 	@Override
 	protected void afterEach() {
@@ -22,7 +23,7 @@ public class Count<Each> extends For<Each> {
 
 	@Override
 	protected void beforeEach(Each each) {
-		element = each;
+		value = each;
 		yield = false;
 	}
 
@@ -38,7 +39,7 @@ public class Count<Each> extends For<Each> {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
 			for (Count<String> each: Query.with(new Count<String>(), words)) {
-				each.yield = each.element.length() == 3;
+				each.yield = each.value.length() == 3;
 			}
 
 			assertEquals(4, Query.result());

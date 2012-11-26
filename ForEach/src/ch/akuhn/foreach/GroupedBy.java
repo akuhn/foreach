@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class GroupedBy<Each> extends For<Each> {
 
-	public Each element;
+	public Each value;
 	public Object yield;
 
 	private Map<Object, List<Each>> groups;
@@ -23,12 +23,12 @@ public class GroupedBy<Each> extends For<Each> {
 		if (group == null) {
 			groups.put(yield, group = new ArrayList<Each>());
 		}
-		group.add(element);
+		group.add(value);
 	}
 
 	@Override
 	protected void beforeEach(Each each) {
-		element = each;
+		value = each;
 		yield = null;
 	}
 
@@ -49,7 +49,7 @@ public class GroupedBy<Each> extends For<Each> {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
 			for (GroupedBy<String> each: ForEach.groupedBy(words)) {
-				each.yield = each.element.length();
+				each.yield = each.value.length();
 			}
 
 			Map groups = Query.result();

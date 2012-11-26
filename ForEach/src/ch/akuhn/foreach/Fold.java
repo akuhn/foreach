@@ -1,9 +1,11 @@
 package ch.akuhn.foreach;
 
-public class Fold<Each, Result> extends Inject<Each, Result> {
+public abstract class Fold<Each> extends Inject<Each, Each> {
 
-	public Fold(Result initial) {
-		super(initial);
+	public Fold() {
+		super(null);
 	}
+
+	// TODO need an each_cons(2) query class first!
 
 }
