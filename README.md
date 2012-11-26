@@ -16,15 +16,27 @@ There are workarounds. Typically, anonymous inner-classes are (ab)used as closur
 
 Instead, here is a small DSL that pimps ye old Java foreach loop for you:
 
+Given a collection of words,
+
+	Collection<String> words = // read words from a file ...
+
+you may select all proper names,
+
 	for (Select<String> each: ForEach.select(words)) {
 	  each.yield = each.value.charAt(0).isUppercase();
 	}
 	Collection<String> names = ForEach.result();
-	for (Any<String> each: ForEach.Any(words)) {
-	  each.yield = each.value.length() > 7;
+
+or group words by length,
+	
+	for (GroupedBy<String> each: ForEach.groupBy(words)) {
+	  each.yield = each.value.length();
 	}
-	boolean bool = ForEach.result();
-	for (Inject<Integer,String> each: ForEach.inject(0,words)) {
+	Map<Integer,String> groups = ForEach.result();
+	
+or sum up total length of all words,
+	
+	for (Sum<String> each: ForEach.sum(0,words)) {
 	  each.yield += each.value.length();
 	}
 	int length = ForEach.result();
