@@ -6,7 +6,7 @@ import java.util.Map;
 import ch.akuhn.foreach.Collect;
 import ch.akuhn.foreach.CutPieces;
 import ch.akuhn.foreach.ForEach;
-import ch.akuhn.foreach.GroupedBy;
+import ch.akuhn.foreach.GroupBy;
 
 /**
  * Random piece of Smalltalk code, rewritten in Java using ForEach DSL.
@@ -63,7 +63,7 @@ public class Example {
 			for (CutPieces<FileVersion> each: ForEach.cutPieces(history.fileVersions()))
 				each.yield = each.value.week() != each.next.week();
 			Collection<Collection<FileVersion>> weeks = ForEach.result();
-			for (GroupedBy<Collection<FileVersion>> week: ForEach.groupedBy(weeks)) {
+			for (GroupBy<Collection<FileVersion>> week: ForEach.groupBy(weeks)) {
 				for (Collect<FileVersion, String> each: ForEach.collect(String.class, week.value))
 					each.yield = each.value.author();
 				Collection<String> authors = ForEach.result();

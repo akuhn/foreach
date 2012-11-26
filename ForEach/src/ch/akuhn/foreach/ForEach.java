@@ -30,8 +30,8 @@ public class ForEach {
 		return Query.with(new Count<T>(), all);
 	}
 
-	public static <T> Query<T, GroupedBy<T>> groupedBy(Iterable<T> all) {
-		return Query.with(new GroupedBy<T>(), all);
+	public static <T> Query<T, GroupBy<T>> groupBy(Iterable<T> all) {
+		return Query.with(new GroupBy<T>(), all);
 	}
 
 	public static <T> Query<T, IndexOf<T>> indexOf(Iterable<T> all) {
@@ -82,8 +82,8 @@ public class ForEach {
 		return Query.with(new Count<T>(), all);
 	}
 
-	public static <T> Query<T, GroupedBy<T>> groupedBy(T[] all) {
-		return Query.with(new GroupedBy<T>(), all);
+	public static <T> Query<T, GroupBy<T>> groupBy(T[] all) {
+		return Query.with(new GroupBy<T>(), all);
 	}
 
 	public static <T> Query<T, IndexOf<T>> indexOf(T[] all) {

@@ -9,7 +9,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-public class GroupedBy<Each> extends For<Each> {
+public class GroupBy<Each> extends For<Each> {
 
 	public Each value;
 	public Object yield;
@@ -48,7 +48,7 @@ public class GroupedBy<Each> extends For<Each> {
 		public void shouldGroupByLength() {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
-			for (GroupedBy<String> each: ForEach.groupedBy(words)) {
+			for (GroupBy<String> each: ForEach.groupBy(words)) {
 				each.yield = each.value.length();
 			}
 
