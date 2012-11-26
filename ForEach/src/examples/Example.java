@@ -1,81 +1,79 @@
 package examples;
 
-import static ch.akuhn.util.query.Query.$result;
-import static ch.akuhn.util.query.Query.cardinal;
-import static ch.akuhn.util.query.Query.cutPieces;
-import static ch.akuhn.util.query.Query.groupedBy;
-
 import java.util.Collection;
 import java.util.Map;
 
-import ch.akuhn.util.query.Cardinal;
+import ch.akuhn.util.ForEach;
+import ch.akuhn.util.query.Collect2;
 import ch.akuhn.util.query.CutPieces;
 import ch.akuhn.util.query.GroupedBy;
 
 /**
  * Random piece of Smalltalk code, rewritten in Java using ForEach DSL.
  * 
+ * <pre>
+ * | bag |
+ * bag := Bag new.
+ *   self fileHistories do: [ :history |
+ *   | weeks groups |
+ *   weeks := history fileVersions piecesCutWhere: [ :a :b |
+ *     (a timestamp dayOfYear / 7) ~= (b timestamp dayOfYear / 7) ].
+ *     groups := weeks groupedBy: [ :week |
+ *       (week collectAsSet: #author) size ] affect: #size.
+ *     groups keysAndValuesDo: [ :key :value |
+ *       bag add: key withOccurrences: value ]].
+ *   ^bag associations
+ * </pre>
+ * 
  * @author akuhn
  * 
  */
 public class Example {
 
-    // | bag |
-    // bag := Bag new.
-    // self fileHistories do: [ :history |
-    // | weeks groups |
-    // weeks := history fileVersions piecesCutWhere: [ :a :b |
-    // (a timestamp dayOfYear / 7) ~= (b timestamp dayOfYear / 7) ].
-    // groups := weeks groupedBy: [ :week |
-    // (week collectAsSet: #author) size ] affect: #size.
-    // groups keysAndValuesDo: [ :key :value |
-    // bag add: key withOccurrences: value ]].
-    // ^bag associations
+	interface Bag<A> {
 
-    interface Bag<A> {
+		void add(A value, int occurrences);
 
-        void add(A value, int occurrences);
+	}
 
-    }
+	interface FileHistory {
 
-    interface FileHistory {
+		Collection<FileVersion> fileVersions();
 
-        Collection<FileVersion> fileVersions();
+	}
 
-    }
+	interface FileVersion {
 
-    interface FileVersion {
+		String author();
 
-        String author();
+		int week();
 
-        int week();
+	}
 
-    }
+	interface Project {
 
-    interface Project {
+		Collection<FileHistory> fileHistories();
 
-        Collection<FileHistory> fileHistories();
+	}
 
-    }
-
-    @SuppressWarnings("null")
-    public Bag<Integer> howManyAuthorsPerWeekAndFile(Project project) {
-        Bag<Integer> bag = null;
-        for (FileHistory history : project.fileHistories()) {
-            for (CutPieces<FileVersion> each : cutPieces(history.fileVersions()))
-                each.yield = each.prev.week() != each.next.week();
-            Collection<Collection<FileVersion>> weeks = $result();
-            for (GroupedBy<Collection<FileVersion>> week : groupedBy(weeks)) {
-                for (Cardinal<FileVersion> each : cardinal(week.element))
-                    each.yield = each.element.author();
-                week.yield = $result();
-            }
-            Map<Integer,Collection<FileVersion>> groups = $result();
-            for (Integer key : groups.keySet()) {
-                bag.add(key, groups.get(key).size());
-            }
-        }
-        return bag;
-    }
-
+	@SuppressWarnings("null")
+	public Bag<Integer> howManyAuthorsPerWeekAndFile(Project project) {
+		Bag<Integer> bag = null;
+		for (FileHistory history: project.fileHistories()) {
+			for (CutPieces<FileVersion> each: ForEach.cutPieces(history.fileVersions()))
+				each.yield = each.element.week() != each.next.week();
+			Collection<Collection<FileVersion>> weeks = ForEach.result();
+			for (GroupedBy<Collection<FileVersion>, Integer> week: ForEach.groupedBy(Integer.class, weeks)) {
+				for (Collect2<FileVersion, String> each: ForEach.collect2(String.class, week.element))
+					each.yield = each.element.author();
+				Collection<String> authors = ForEach.result();
+				week.yield = authors.size();
+			}
+			Map<Integer, Collection<FileVersion>> groups = ForEach.result();
+			for (Integer key: groups.keySet()) {
+				bag.add(key, groups.get(key).size());
+			}
+		}
+		return bag;
+	}
 }

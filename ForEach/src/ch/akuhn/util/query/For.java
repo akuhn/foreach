@@ -1,83 +1,143 @@
 package ch.akuhn.util.query;
 
-import java.util.Collection;
+import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
-import ch.akuhn.util.query.For.Each;
+import org.junit.Test;
 
-public abstract class For<E, X extends Each<E>> implements Iterator<X>, Iterable<X> {
+public abstract class For<Each> {
 
-	private enum State {
-		UNUSED, READY, NEXT, DEAD, ABORT
+	protected abstract void afterEach();
+
+	protected abstract void beforeEach(Each each);
+
+	protected abstract void beforeLoop();
+
+	protected abstract Object afterLoop();
+
+	protected void abort() {
+		throw new Abortion();
 	}
 
-	public static class Each<T> {
+	public static class Examples {
 
+		@Test
+		public void shouldGoThroughAllStates() {
+
+			class Example extends For<Integer> {
+
+				public StringBuilder buf = new StringBuilder();
+
+				@Override
+				public void afterEach() {
+					buf.append(')');
+				}
+
+				@Override
+				public void beforeEach(Integer each) {
+					buf.append('(');
+				}
+
+				@Override
+				public void beforeLoop() {
+					buf.append('^');
+				}
+
+				@Override
+				public Object afterLoop() {
+					buf.append('$');
+					return buf.toString();
+				}
+
+			};
+
+			List<Integer> list = Arrays.asList(1, 2, 3);
+			for (Example each: Query.with(new Example(), list)) {
+				each.buf.append('.');
+			};
+
+			assertEquals("^(.)(.)(.)$", Query.result());
+
+		}
 	}
 
-	protected X each;
-	private final Iterator<E> iter;
-	private State state = State.UNUSED;
+}
 
-	public For(Collection<E> source) {
-		this.iter = source.iterator();
-		this.state = State.UNUSED;
-		this.initialize();
+@SuppressWarnings("serial")
+class Abortion extends RuntimeException {
+
+}
+
+class Iter<Each, ForEach extends For<Each>> implements Iterator<ForEach> {
+
+	private ForEach each;
+	private Iterator<Each> iterator;
+
+	public static final int BEFORE_LOOP = 0;
+	public static final int BEFORE_EACH = 1;
+	public static final int AFTER_EACH = 2;
+	public static final int AFTER_LOOP = 3;
+
+	private int state;
+
+	public Iter(ForEach each, Iterator<Each> iterator) {
+		this.each = each;
+		this.iterator = iterator;
+		state = BEFORE_LOOP;
 	}
 
 	@Override
 	public boolean hasNext() {
-		assert state != State.UNUSED;
-		if (state == State.DEAD) return false;
-		if (state == State.NEXT) {
-			this.apply();
-			if (state == State.ABORT) {
-				Query.offer(this.getResult());
-				state = State.DEAD;
+		switch (state) {
+		case BEFORE_LOOP:
+			each.beforeLoop();
+			state = BEFORE_EACH;
+			break;
+		case AFTER_EACH:
+			try {
+				each.afterEach();
+				state = BEFORE_EACH;
+			} catch (Abortion ex) {
+				state = AFTER_LOOP;
+				Object result = each.afterLoop();
+				Query.offer(result);
 				return false;
 			}
-			state = State.READY;
+			break;
+		case AFTER_LOOP:
+			return false;
 		}
-		boolean hasNext = iter.hasNext();
-		if (!hasNext && state != State.DEAD) {
-			Query.offer(this.getResult());
-			state = State.DEAD;
+		boolean hasNext = iterator.hasNext();
+		if (!hasNext) {
+			state = AFTER_LOOP;
+			Object result = each.afterLoop();
+			Query.offer(result);
 		}
 		return hasNext;
 	}
 
 	@Override
-	public Iterator<X> iterator() {
-		assert state == State.UNUSED;
-		state = State.READY;
-		return this;
-	}
-
-	@Override
-	public X next() {
-		assert state == State.READY;
-		if (state == State.DEAD) throw new NoSuchElementException();
-		each = nextEach(iter.next());
-		state = State.NEXT;
-		return each;
+	public ForEach next() {
+		switch (state) {
+		case BEFORE_EACH:
+			Each element = iterator.next();
+			each.beforeEach(element);
+			state = AFTER_EACH;
+			return each;
+		case AFTER_LOOP:
+			throw new NoSuchElementException();
+		default:
+			throw new IllegalStateException();
+		}
 	}
 
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException();
-	}
-
-	protected abstract void initialize();
-
-	protected abstract X nextEach(E next);
-
-	protected abstract Object getResult();
-
-	public abstract void apply();
-
-	public void abort() {
-		state = State.ABORT;
 	}
 
 }

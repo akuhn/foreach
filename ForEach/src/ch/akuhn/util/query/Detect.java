@@ -1,49 +1,48 @@
 package ch.akuhn.util.query;
 
-import java.util.Collection;
+import static org.junit.Assert.assertEquals;
 
-public class Detect<E> extends For.Each<E> {
+import org.junit.Test;
 
-	public E value;
+public class Detect<Each> extends For<Each> {
+
+	public Each element;
 	public boolean yield;
 
-	public static <E> Query<E> query(Collection<E> collection) {
-		return new Query<E>(collection);
+	@Override
+	protected void afterEach() {
+		if (yield) abort();
 	}
 
-	public static class Query<E> extends For<E, Detect<E>> {
+	@Override
+	protected void beforeEach(Each each) {
+		element = each;
+		yield = false;
+	}
 
-		protected Detect<E> each;
-		private E result;
+	@Override
+	protected void beforeLoop() {
+	}
 
-		private Query(Collection<E> source) {
-			super(source);
-		}
+	@Override
+	protected Object afterLoop() {
+		return element;
+	}
 
-		@Override
-		public void apply() {
-			if (each.yield) {
-				result = each.value;
-				this.abort();
+	public static class Examples {
+
+		@Test
+		public void shouldFindMatchingElement() {
+			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
+			int count = 0;
+
+			for (Detect<String> each: Query.with(new Detect<String>(), words)) {
+				each.yield = each.element.length() == 4;
+				count++;
 			}
-		}
 
-		@Override
-		protected void initialize() {
-			each = new Detect<E>();
-			result = null;
-		}
-
-		@Override
-		protected Detect<E> nextEach(E next) {
-			each.value = next;
-			each.yield = false;
-			return each;
-		}
-
-		@Override
-		protected Object getResult() {
-			return result;
+			assertEquals(6, count);
+			assertEquals("over", Query.result());
 		}
 
 	}

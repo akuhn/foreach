@@ -1,9 +1,5 @@
 package ch.akuhn.util.query;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-
 /**
  * Breaks the collection into pieces. Evaluates the loop for successive pairs of
  * the collection's elements, breaking the collection into pieces between
@@ -52,42 +48,12 @@ import java.util.LinkedList;
  * @author Adrian Kuhn
  * 
  */
-public class CutPieces<Each> extends ForPair<Each, CutPieces<Each>> {
+public abstract class CutPieces<Each> extends For<Each> {
 
-	private Collection<Each> current;
+	public Each element;
 	public Each next;
-	public Each prev;
-
-	private Collection<Collection<Each>> result;
 	public boolean yield;
 
-	@Override
-	protected void afterEach() {
-		if (yield) {
-			current = new ArrayList<Each>();
-			result.add(current);
-		}
-		current.add(next);
-	}
-
-	@Override
-	protected Object afterLoop() {
-		return result;
-	}
-
-	@Override
-	protected void beforeEach(Each previous, Each element) {
-		prev = previous;
-		next = element;
-		yield = false;
-	}
-
-	@Override
-	protected void beforeLoop(Each first) {
-		result = new LinkedList<Collection<Each>>();
-		current = new ArrayList<Each>();
-		result.add(current);
-		current.add(first);
-	}
+	// TODO need an each_cons(2) query class first!
 
 }

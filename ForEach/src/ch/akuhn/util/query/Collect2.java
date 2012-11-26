@@ -1,9 +1,12 @@
 package ch.akuhn.util.query;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
-import ch.akuhn.util.query.For.Each;
+import org.junit.Test;
 
 /**
  * Evaluates an expression for each element of a collection, returning a new
@@ -34,20 +37,20 @@ import ch.akuhn.util.query.For.Each;
  * @author Adrian Kuhn
  * 
  */
-public class Collect2<Each, R> extends For<Each, Collect2<Each, R>> {
+public class Collect2<Each, Result> extends For<Each> {
 
-	private Collection<R> copy;
+	private Collection<Result> result;
 	public Each element;
-	public R yield;
+	public Result yield;
 
 	@Override
 	protected void afterEach() {
-		copy.add(yield);
+		result.add(yield);
 	}
 
 	@Override
 	protected Object afterLoop() {
-		return copy;
+		return result;
 	}
 
 	@Override
@@ -58,19 +61,21 @@ public class Collect2<Each, R> extends For<Each, Collect2<Each, R>> {
 
 	@Override
 	protected void beforeLoop() {
-		copy = new ArrayList<R>();
+		result = new ArrayList<Result>();
 	}
 
-	public static <T, R> Collect2<T, R> from(Iterable<? extends T> elements, Class<R> returnType) {
-		return new Collect2<T, R>().with(elements);
-	}
+	public static class Examples {
 
-	public static <T> Collect2<T, T> from(Iterable<? extends T> elements) {
-		return new Collect2<T, T>().with(elements);
-	}
+		@Test
+		public void shouldMapLength() {
+			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
-	public Collection<R> result() {
-		return copy;
+			for (Collect2<String, Integer> each: Query.with(new Collect2<String, Integer>(), Arrays.asList(words))) {
+				each.yield = each.element.length();
+			}
+			assertEquals("[3, 5, 5, 3, 5, 4, 3, 4, 3]", Query.result().toString());
+		}
+
 	}
 
 }

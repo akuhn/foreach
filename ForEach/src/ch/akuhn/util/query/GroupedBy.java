@@ -1,56 +1,65 @@
 package ch.akuhn.util.query;
 
-import java.util.Collection;
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
-public class GroupedBy<A, E> extends For.Each<E> {
+import org.junit.Test;
 
-	public E value;
-	public A yield;
+public class GroupedBy<Each, Key> extends For<Each> {
 
-	public static class Query<A, E> extends For<E, GroupedBy<A, E>> {
+	public Each element;
+	public Key yield;
 
-		protected GroupedBy<A, E> each;
-		private Map<A, Collection<E>> result;
+	private Map<Key, List<Each>> groups;
 
-		private Query(Collection<E> source) {
-			super(source);
+	@Override
+	protected void afterEach() {
+		if (yield == null) throw new NullPointerException();
+		List<Each> group = groups.get(yield);
+		if (group == null) {
+			groups.put(yield, group = new ArrayList<Each>());
 		}
-
-		@Override
-		public void apply() {
-			Collection<E> group = result.get(each.yield);
-			if (group == null) {
-				group = new LinkedList<E>();
-				result.put(each.yield, group);
-			}
-			group.add(each.value);
-		}
-
-		@Override
-		protected void initialize() {
-			each = new GroupedBy<A, E>();
-			result = new HashMap<A, Collection<E>>();
-		}
-
-		@Override
-		protected GroupedBy<A, E> nextEach(E next) {
-			each.value = next;
-			each.yield = null;
-			return each;
-		}
-
-		@Override
-		protected Object getResult() {
-			return result;
-		}
-
+		group.add(element);
 	}
 
-	public static <A, E> Query<A, E> query(Class<A> type, Collection<E> sample) {
-		return new Query<A, E>(sample);
+	@Override
+	protected void beforeEach(Each each) {
+		element = each;
+		yield = null;
+	}
+
+	@Override
+	protected void beforeLoop() {
+		groups = new HashMap<Key, List<Each>>();
+	}
+
+	@Override
+	protected Object afterLoop() {
+		return groups;
+	}
+
+	public static class Examples {
+
+		@Test
+		public void shouldGroupByLength() {
+			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
+
+			for (GroupedBy<String, Integer> each: Query.with(new GroupedBy<String, Integer>(), Arrays.asList(words))) {
+				each.yield = each.element.length();
+			}
+
+			Map groups = Query.result();
+			assertEquals("[The, fox, the, dog]", groups.get(3).toString());
+			assertEquals("[over, lazy]", groups.get(4).toString());
+			assertEquals("[quick, brown, jumps]", groups.get(5).toString());
+			assertEquals(3, groups.size());
+		}
+
 	}
 
 }

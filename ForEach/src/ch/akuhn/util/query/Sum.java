@@ -1,10 +1,15 @@
 package ch.akuhn.util.query;
 
-import ch.akuhn.util.query.For.Each;
+import static org.junit.Assert.assertEquals;
 
-public class Sum<Each> extends For<Each, Sum<Each>> {
+import java.util.Arrays;
+
+import org.junit.Test;
+
+public class Sum<Each> extends For<Each> {
 
 	public Each element;
+
 	public int sum;
 
 	@Override
@@ -24,6 +29,20 @@ public class Sum<Each> extends For<Each, Sum<Each>> {
 	@Override
 	protected void beforeLoop() {
 		sum = 0;
+	}
+
+	public static class Examples {
+
+		@Test
+		public void shouldSumSquaredLength() {
+			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
+
+			for (Sum<String> each: Query.with(new Sum<String>(), Arrays.asList(words))) {
+				each.sum += each.element.length();
+			}
+			assertEquals(35, Query.result());
+		}
+
 	}
 
 }

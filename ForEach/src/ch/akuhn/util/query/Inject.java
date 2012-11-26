@@ -1,11 +1,19 @@
 package ch.akuhn.util.query;
 
-import ch.akuhn.util.query.For.Each;
+import static org.junit.Assert.assertEquals;
 
-public class Inject<Each, R> extends For<Each, Inject<Each, R>> {
+import java.util.Arrays;
+
+import org.junit.Test;
+
+public class Inject<Each, Result> extends For<Each> {
 
 	public Each element;
-	public R yield;
+	public Result yield;
+
+	public Inject(Result initial) {
+		yield = initial;
+	}
 
 	@Override
 	protected void afterEach() {
@@ -25,9 +33,18 @@ public class Inject<Each, R> extends For<Each, Inject<Each, R>> {
 	protected void beforeLoop() {
 	}
 
-	protected Inject<Each, R> initial(R value) {
-		yield = value;
-		return this;
+	public static class Examples {
+
+		@Test
+		public void shouldSumSquaredLength() {
+			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
+
+			for (Inject<String, Integer> each: Query.with(new Inject<String, Integer>(0), Arrays.asList(words))) {
+				each.yield += each.element.length();
+			}
+			assertEquals(35, Query.result());
+		}
+
 	}
 
 }

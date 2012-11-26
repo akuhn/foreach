@@ -1,47 +1,50 @@
 package ch.akuhn.util.query;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Select<E> extends For.Each<E> {
+import org.junit.Test;
 
-	public E value;
+public class Select<Each> extends For<Each> {
+
+	public Each element;
+
 	public boolean yield;
 
-	public static <E> Query<E> query(Collection<E> collection) {
-		return new Query<E>(collection);
+	private Collection<Each> result;
+
+	@Override
+	protected void afterEach() {
+		if (yield) result.add(element);
 	}
 
-	public static class Query<E> extends For<E, Select<E>> {
+	@Override
+	protected void beforeEach(Each each) {
+		element = each;
+		yield = false;
+	}
 
-		protected Select<E> each;
-		private ArrayList<E> result;
+	@Override
+	protected void beforeLoop() {
+		result = new ArrayList<Each>();
+	}
 
-		private Query(Collection<E> source) {
-			super(source);
-		}
+	@Override
+	protected Object afterLoop() {
+		return result;
+	}
 
-		@Override
-		public void apply() {
-			if (each.yield) result.add(each.value);
-		}
+	public static class Examples {
 
-		@Override
-		protected void initialize() {
-			each = new Select<E>();
-			result = new ArrayList<E>();
-		}
-
-		@Override
-		protected Select<E> nextEach(E next) {
-			each.value = next;
-			each.yield = false;
-			return each;
-		}
-
-		@Override
-		protected Object getResult() {
-			return result;
+		@Test
+		public void shouldIncludeShortWords() {
+			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
+			for (Select<String> each: Query.with(new Select<String>(), words)) {
+				each.yield = each.element.length() < 4;
+			}
+			assertEquals("[The, fox, the, dog]", Query.result().toString());
 		}
 
 	}

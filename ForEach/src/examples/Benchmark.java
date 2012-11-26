@@ -1,67 +1,66 @@
 package examples;
 
-import static ch.akuhn.util.query.Query.$result;
-import static ch.akuhn.util.query.Query.count;
-
 import java.util.LinkedList;
+import java.util.List;
 
+import ch.akuhn.util.ForEach;
 import ch.akuhn.util.query.Count;
 
-@SuppressWarnings( { "unchecked", "serial" })
 public class Benchmark {
 
-    public static class Struct {
+	public static int $count;
 
-        public Object a, b, c;
+	@SuppressWarnings("serial")
+	public static final List<Struct> $data = new LinkedList<Struct>() {
+		{
+			for (int n = 0; n < 1000 * 1000; n++) {
+				Struct s = new Struct();
+				if (n % 3 == 0) s.a = new Object();
+				if (n % 5 == 0) s.b = new Object();
+				if (n % 7 == 0) s.c = new Object();
+				add(s);
+			}
+		}
+	};
 
-    }
+	private static void benchmarkForEach() {
+		long start = System.currentTimeMillis();
+		for (int n = 0; n < 10; n++) {
+			for (Count<Struct> each: ForEach.count($data)) {
+				each.yield = (each.element.a != null && each.element.b != null && each.element.c != null);
+			}
+			$count = ForEach.result();
+		}
+		System.out.print(System.currentTimeMillis() - start);
+		System.out.print('\t');
+	}
 
-    public static int $count;
+	private static void benchmarkPlainJava() {
+		long start = System.currentTimeMillis();
+		for (int n = 0; n < 10; n++) {
+			int count = 0;
+			for (Struct each: $data) {
+				if (each.a != null && each.b != null && each.c != null) count++;
+			}
+			$count = count;
+		}
+		System.out.print(System.currentTimeMillis() - start);
+		System.out.print('\t');
+	}
 
-    public static final Iterable<Struct> $data = new LinkedList() {
-        {
-            for (int n = 0; n < 1000 * 1000; n++) {
-                Struct s = new Struct();
-                if (n % 3 == 0) s.a = new Object();
-                if (n % 5 == 0) s.b = new Object();
-                if (n % 7 == 0) s.c = new Object();
-                add(s);
-            }
-        }
-    };
+	public static void main(String[] args) {
 
-    private static void benchmarkForEach() {
-        long start = System.currentTimeMillis();
-        for (int n = 0; n < 10; n++) {
-            for (Count<Struct> each : count($data)) {
-                each.yield = (each.element.a != null && each.element.b != null && each.element.c != null);
-            }
-            $count = $result();
-        }
-        System.out.print(System.currentTimeMillis() - start);
-        System.out.print('\t');
-    }
+		for (int n = 0; n < 10; n++) {
+			benchmarkForEach();
+			benchmarkPlainJava();
+			System.out.println();
+		}
 
-    private static void benchmarkPlainJava() {
-        long start = System.currentTimeMillis();
-        for (int n = 0; n < 10; n++) {
-            int count = 0;
-            for (Struct each : $data) {
-                if (each.a != null && each.b != null && each.c != null) count++;
-            }
-            $count = count;
-        }
-        System.out.print(System.currentTimeMillis() - start);
-        System.out.print('\t');
-    }
+	}
+}
 
-    public static void main(String[] args) {
+class Struct {
 
-        for (int n = 0; n < 10; n++) {
-            benchmarkForEach();
-            benchmarkPlainJava();
-            System.out.println();
-        }
+	public Object a, b, c;
 
-    }
 }

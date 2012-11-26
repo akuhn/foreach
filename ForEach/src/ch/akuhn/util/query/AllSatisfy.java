@@ -1,49 +1,49 @@
 package ch.akuhn.util.query;
 
-import java.util.Collection;
+import static org.junit.Assert.assertEquals;
 
-public class AllSatisfy<E> extends For.Each<E> {
+import org.junit.Test;
 
-	public E value;
+public class AllSatisfy<Each> extends For<Each> {
+
+	public Each element;
 	public boolean yield;
 
-	public static <E> Query<E> query(Collection<E> collection) {
-		return new Query<E>(collection);
+	@Override
+	protected void afterEach() {
+		if (yield) ;
+		else abort();
 	}
 
-	public static class Query<E> extends For<E, AllSatisfy<E>> {
+	@Override
+	protected void beforeEach(Each each) {
+		element = each;
+		yield = false;
+	}
 
-		protected AllSatisfy<E> each;
-		private Boolean result;
+	@Override
+	protected void beforeLoop() {
+	}
 
-		private Query(Collection<E> source) {
-			super(source);
-		}
+	@Override
+	protected Object afterLoop() {
+		return yield;
+	}
 
-		@Override
-		public void apply() {
-			if (!each.yield) {
-				result = Boolean.FALSE;
-				this.abort();
+	public static class Examples {
+
+		@Test
+		public void shouldAbortWhenNotMatchingAll() {
+			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
+			int count = 0;
+
+			for (AllSatisfy<String> each: Query.with(new AllSatisfy<String>(), words)) {
+				each.yield = each.element.equals("The");
+				count++;
 			}
-		}
 
-		@Override
-		protected void initialize() {
-			each = new AllSatisfy<E>();
-			result = Boolean.TRUE;
-		}
-
-		@Override
-		protected AllSatisfy<E> nextEach(E next) {
-			each.value = next;
-			each.yield = false;
-			return each;
-		}
-
-		@Override
-		protected Object getResult() {
-			return result;
+			assertEquals(false, Query.result());
+			assertEquals(2, count);
 		}
 
 	}
