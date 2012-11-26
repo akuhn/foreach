@@ -37,22 +37,22 @@ In the first example, #select is a static method that wraps the given collection
 
 While running the loop, all elements for which the loop yields true are copied into a new collection. Upon terminating the loop, this collection is assigned to $result. To keep things thread-safe, the result is stored in a ThreadLocal variable .
 
-The same technique is used in the two other examples. #anySatisfy checks if all iterations of the loop yield true. #inject combines all elements by injecting an accumulator value into each iteration of the loop.
+The same technique is used in the two other examples. `#any` checks if all iterations of the loop yield true. `#inject` combines all elements by injecting an accumulator value into each iteration of the loop.
 
 The list of currently supported queries includes
 
-- [All](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/All.java)
-- [Any](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Any.java)
-- [Collect](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Collect.java)
-- [Count](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Count.java)
-- [CutPieces](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/CutPieces.java)
-- [Detect](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Detect.java)
-- [Fold](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Fold.java)
-- [GroupedBy](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/GroupedBy.java)
-- [IndexOf](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/IndexOf.java)
-- [Inject](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Inject.java)
-- [Reject](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Reject.java)
-- [Select](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Select.java)
+- [All](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/All.java) returns true if all elements match a given predicate.
+- [Any](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Any.java) return true if at least one element matches a given predicate.
+- [Collect](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Collect.java) applies a given expression to all elements and collects the results.
+- [Count](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Count.java) counts how many elements match a given predicate. 
+- [CutPieces](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/CutPieces.java) splits a collection based on a given predicate.
+- [Detect](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Detect.java) finds the first element that matches a given predicate.
+- [Fold](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Fold.java) returns the result of applying a given expression on each element and the intermediate result, starting with the first two elements. 
+- [GroupedBy](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/GroupedBy.java) groups element by the result of applying an expression.
+- [IndexOf](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/IndexOf.java) returns the index of the first element that matches a given predicate.
+- [Inject](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Inject.java) returns the result of applying a given expression on each element and the intermediate result, starting with a seed value and the first elements. 
+- [Reject](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Reject.java) returns all elements that are *not* matching a given predicate.
+- [Select](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Select.java) returns all elements that match a given predicate. 
 
 If you need more, you can subclass For<Each> and implement your own query. As an example, I shall leave the implementation of Count here:
 
