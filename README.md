@@ -37,7 +37,7 @@ How does it work?
 
 Behind the scenes, Java’s foreach loop operates on an instance of Iterable. Thus we can hook a custom object into the loop and get called back upon starting and terminating the loop, as well as before and after each iteration.
 
-In the first example, `#select` is a static method that wraps the given collection in a custom object. The custom object is of type `Iterable&lt;Select&gt;`, where `Select` has two fields. One field is used a input parameter, the other as output parameter. Before each iteration of the loop, value is populated with the current element. After each iteration, yield is polled for a boolean value. In between, the loop is executed.
+In the first example, `#select` is a static method that wraps the given collection in a custom iterable. The custom object is of type `Iterable<Select>`, where `Select` has two fields. The `value` field is used a input parameter, the `yield` field as output parameter. Before each iteration of the loop, `value` is populated with the current element. After each iteration, `yield` is polled for a boolean value.
 
 While running the loop, all elements for which the loop yields true are copied into a new collection. Upon terminating the loop, this collection is assigned to `ForEach#result`. To keep things thread-safe, the result is stored in a ThreadLocal variable .
 
