@@ -1,24 +1,9 @@
-//  Copyright (c) 2008 Adrian Kuhn <akuhn(a)iam.unibe.ch>
-//  
-//  This file is part of "ForEach".
-//  
-//  "ForEach" is free software: you can redistribute it and/or modify it under
-//  the terms of the GNU Lesser General Public License as published by the Free
-//  Software Foundation, either version 3 of the License, or (at your option)
-//  any later version.
-//  
-//  "ForEach" is distributed in the hope that it will be useful, but WITHOUT ANY
-//  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-//  FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
-//  details.
-//  
-//  You should have received a copy of the GNU Lesser General Public License
-//  along with "ForEach". If not, see <http://www.gnu.org/licenses/>.
-//  
 package ch.akuhn.util.query;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import ch.akuhn.util.query.For.Each;
 
 /**
  * Evaluates an expression for each element of a collection, returning a new
@@ -49,43 +34,43 @@ import java.util.Collection;
  * @author Adrian Kuhn
  * 
  */
-public class Collect2<Each,R> extends For<Each,Collect2<Each,R>> {
+public class Collect2<Each, R> extends For<Each, Collect2<Each, R>> {
 
-    private Collection<R> copy;
-    public Each element;
-    public R yield;
+	private Collection<R> copy;
+	public Each element;
+	public R yield;
 
-    @Override
-    protected void afterEach() {
-        copy.add(yield);
-    }
+	@Override
+	protected void afterEach() {
+		copy.add(yield);
+	}
 
-    @Override
-    protected Object afterLoop() {
-        return copy;
-    }
+	@Override
+	protected Object afterLoop() {
+		return copy;
+	}
 
-    @Override
-    protected void beforeEach(Each each) {
-        element = each;
-        yield = null;
-    }
+	@Override
+	protected void beforeEach(Each each) {
+		element = each;
+		yield = null;
+	}
 
-    @Override
-    protected void beforeLoop() {
-        copy = new ArrayList<R>();
-    }
+	@Override
+	protected void beforeLoop() {
+		copy = new ArrayList<R>();
+	}
 
-    public static <T,R> Collect2<T,R> from(Iterable<? extends T> elements, Class<R> returnType) {
-        return new Collect2<T,R>().with(elements);
-    }
+	public static <T, R> Collect2<T, R> from(Iterable<? extends T> elements, Class<R> returnType) {
+		return new Collect2<T, R>().with(elements);
+	}
 
-    public static <T> Collect2<T,T> from(Iterable<? extends T> elements) {
-        return new Collect2<T,T>().with(elements);
-    }
+	public static <T> Collect2<T, T> from(Iterable<? extends T> elements) {
+		return new Collect2<T, T>().with(elements);
+	}
 
-    public Collection<R> result() {
-        return copy;
-    }
+	public Collection<R> result() {
+		return copy;
+	}
 
 }
