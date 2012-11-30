@@ -1,13 +1,13 @@
-package ch.akuhn.foreach.tests.benchmarks;
+package ch.akuhn.foreach.benchmarks;
 
-import static ch.akuhn.foreach.tests.benchmarks.Benchmark.ARRAY;
-import static ch.akuhn.foreach.tests.benchmarks.Benchmark.BUSY;
-import static ch.akuhn.foreach.tests.benchmarks.Benchmark.LEN;
-import static ch.akuhn.foreach.tests.benchmarks.Benchmark.RANDOM;
+import static ch.akuhn.foreach.benchmarks.Benchmark.ARRAY;
+import static ch.akuhn.foreach.benchmarks.Benchmark.BUSY;
+import static ch.akuhn.foreach.benchmarks.Benchmark.LEN;
+import static ch.akuhn.foreach.benchmarks.Benchmark.RANDOM;
 
 import java.util.Iterator;
 
-import ch.akuhn.foreach.tests.benchmarks.OneBillionPixels.Pixel;
+import ch.akuhn.foreach.benchmarks.OneBillionPixels.Pixel;
 
 
 public class OneBillionPixels implements Runnable, Iterable<Pixel> {

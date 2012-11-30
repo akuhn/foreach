@@ -1,4 +1,4 @@
-package ch.akuhn.foreach.tests.benchmarks;
+package ch.akuhn.foreach.benchmarks;
 
 
 

@@ -1,4 +1,4 @@
-package ch.akuhn.foreach.tests;
+package ch.akuhn.foreach.benchmarks;
 
 import static ch.akuhn.foreach.Interval.range;
 

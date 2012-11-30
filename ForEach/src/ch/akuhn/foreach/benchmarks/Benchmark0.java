@@ -1,4 +1,4 @@
-package ch.akuhn.foreach.tests;
+package ch.akuhn.foreach.benchmarks;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import ch.akuhn.foreach.Count;
 import ch.akuhn.foreach.ForEach;
 
-public class Benchmark {
+public class Benchmark0 {
 
 	public static int $count;
 
