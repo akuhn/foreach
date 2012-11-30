@@ -15,7 +15,7 @@ public abstract class For<Each> {
 
 	protected abstract void beforeEach(Each each);
 
-	protected abstract void afterEach();
+	protected abstract void afterEach() throws Abortion;
 
 	protected abstract Object afterLoop();
 
