@@ -1,5 +1,7 @@
 package ch.akuhn.foreach;
 
+import java.util.Arrays;
+
 public class ForEach {
 
 	public static <T> T result() {
@@ -54,8 +56,8 @@ public class ForEach {
 		return Query.with(new Sum<T>(), all);
 	}
 
-	public static <T> Query<T, CutPieces<T>> cutPieces(Iterable<T> all) {
-		throw new UnsupportedOperationException();
+	public static <T> Query<Pair<T, T>, Split<T>> split(Iterable<T> all) {
+		return Query.with(new Split<T>(), Iterators.cons(all));
 	}
 
 	public static <T> Query<T, All<T>> all(T[] all) {
@@ -106,8 +108,8 @@ public class ForEach {
 		return Query.with(new Sum<T>(), all);
 	}
 
-	public static <T> Query<T, CutPieces<T>> cutPieces(T[] all) {
-		throw new UnsupportedOperationException();
+	public static <T> Query<Pair<T, T>, Split<T>> split(T[] all) {
+		return ForEach.split(Arrays.asList(all));
 	}
 
 }

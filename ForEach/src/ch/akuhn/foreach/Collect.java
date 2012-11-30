@@ -28,7 +28,7 @@ import org.junit.Test;
  * variable).
  * <p>
  * 
- * @param value
+ * @param curr
  *            (in) current element of the collection.
  * @param yield
  *            (out) result of the expression. Defaults to <tt>null</tt> if not

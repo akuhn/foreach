@@ -9,10 +9,65 @@ import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
-public abstract class Each {
+public abstract class Iterators {
+
+	public static final <A, B> Iterable<Pair<A, B>> zip(final Iterable<A> fst, final Iterable<B> snd) {
+		return new Iterable<Pair<A, B>>() {
+			public Iterator<Pair<A, B>> iterator() {
+				return new Iterator<Pair<A, B>>() {
+					private final Iterator<A> a = fst.iterator();
+					private final Iterator<B> b = snd.iterator();
+	
+					public boolean hasNext() {
+						return a.hasNext() && b.hasNext();
+					}
+	
+					public Pair<A, B> next() {
+						if (!hasNext()) throw new NoSuchElementException();
+						return Pair.of(a.next(), b.next());
+					}
+	
+					public void remove() {
+						a.remove();
+						b.remove();
+					}
+				};
+			}
+		};
+	}
+
+	/**
+	 * Iterate over all consecutive pairs of <tt>elements</tt>.
+	 * 
+	 * @return if <tt>elements</tt> has less than two elements, the returned
+	 *         iterable is empty.
+	 */
+	public static final <E> Iterable<Pair<E, E>> cons(final Iterable<E> iterable) {
+		return new Iterable<Pair<E, E>>() {
+			public Iterator<Pair<E, E>> iterator() {
+				return new Iterator<Pair<E, E>>() {
+					private final Iterator<E> it = iterable.iterator();
+					private E prev = it.hasNext() ? it.next() : null;
+	
+					public boolean hasNext() {
+						return it.hasNext();
+					}
+	
+					public Pair<E, E> next() {
+						if (!hasNext()) throw new NoSuchElementException();
+						return Pair.of(prev, prev = it.next());
+					}
+	
+					public void remove() {
+						throw new UnsupportedOperationException();
+					}
+				};
+			}
+		};
+	}
 
 	public static <T> Iterable<List<T>> cons(int length, T[] all) {
-		return Each.cons(length, Arrays.asList(all));
+		return Iterators.cons(length, Arrays.asList(all));
 	}
 
 	public static <T> Iterable<List<T>> cons(final int length, final Iterable<T> all) {
@@ -58,7 +113,7 @@ public abstract class Each {
 	}
 
 	public static <T> Iterable<List<T>> slice(int length, T[] all) {
-		return Each.slice(length, Arrays.asList(all));
+		return Iterators.slice(length, Arrays.asList(all));
 	}
 
 	public static <T> Iterable<List<T>> slice(final int length, final Iterable<T> all) {
@@ -110,7 +165,7 @@ public abstract class Each {
 			String[] words = "A B C D E".split(" ");
 			StringBuffer buf = new StringBuffer();
 
-			for (List<String> each: Each.cons(3, words)) {
+			for (List<String> each: Iterators.cons(3, words)) {
 				buf.append(each);
 			}
 
@@ -122,7 +177,7 @@ public abstract class Each {
 			String[] words = "A B".split(" ");
 			StringBuffer buf = new StringBuffer();
 
-			for (List<String> each: Each.cons(3, words)) {
+			for (List<String> each: Iterators.cons(3, words)) {
 				buf.append(each);
 			}
 
@@ -134,7 +189,7 @@ public abstract class Each {
 			String[] words = "A B C D E F G H I J".split(" ");
 			StringBuffer buf = new StringBuffer();
 
-			for (List<String> each: Each.slice(3, words)) {
+			for (List<String> each: Iterators.slice(3, words)) {
 				buf.append(each);
 			}
 
@@ -146,7 +201,7 @@ public abstract class Each {
 			String[] words = "A B".split(" ");
 			StringBuffer buf = new StringBuffer();
 
-			for (List<String> each: Each.slice(3, words)) {
+			for (List<String> each: Iterators.slice(3, words)) {
 				buf.append(each);
 			}
 

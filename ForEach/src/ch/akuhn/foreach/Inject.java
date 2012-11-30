@@ -2,8 +2,6 @@ package ch.akuhn.foreach;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 
 public class Inject<Each, Result> extends For<Each> {
