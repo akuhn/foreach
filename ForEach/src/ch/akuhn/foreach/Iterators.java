@@ -42,7 +42,7 @@ public abstract class Iterators {
 	 * @return if <tt>elements</tt> has less than two elements, the returned
 	 *         iterable is empty.
 	 */
-	public static final <E> Iterable<Pair<E, E>> cons(final Iterable<E> iterable) {
+	public static final <E> Iterable<Pair<E, E>> pairs(final Iterable<E> iterable) {
 		return new Iterable<Pair<E, E>>() {
 			public Iterator<Pair<E, E>> iterator() {
 				return new Iterator<Pair<E, E>>() {
