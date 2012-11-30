@@ -37,12 +37,12 @@ import org.junit.Test;
  * @author akuhn
  * 
  */
-public class Collect<Each, Result> extends For<Each> {
+public class Collect<Each,Yield> extends For<Each> {
 
 	public Each value;
-	public Result yield;
+	public Yield yield;
 
-	private Collection<Result> result;
+	private Collection<Yield> result;
 
 	@Override
 	protected void afterEach() {
@@ -62,7 +62,7 @@ public class Collect<Each, Result> extends For<Each> {
 
 	@Override
 	protected void beforeLoop() {
-		result = new ArrayList<Result>();
+		result = new ArrayList<Yield>();
 	}
 
 	public static class Examples {
@@ -71,7 +71,7 @@ public class Collect<Each, Result> extends For<Each> {
 		public void shouldMapLength() {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
-			for (Collect<String, Integer> each: ForEach.collect(Integer.class, words)) {
+			for (Collect<String,Integer> each: ForEach.collect(Integer.class, words)) {
 				each.yield = each.value.length();
 			}
 			assertEquals("[3, 5, 5, 3, 5, 4, 3, 4, 3]", ForEach.result().toString());

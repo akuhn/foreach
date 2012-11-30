@@ -1,11 +1,13 @@
 package ch.akuhn.foreach;
 
+import static ch.akuhn.foreach.Result.ThreadLocal;
+
 import java.util.Arrays;
 
 public class ForEach {
 
 	public static <T> T result() {
-		return Query.result();
+		return ThreadLocal.result();
 	}
 
 	public static <T> Query<T,All<T>> all(Iterable<T> all) {

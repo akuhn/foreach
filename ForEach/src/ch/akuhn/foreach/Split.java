@@ -51,7 +51,7 @@ import org.junit.Test;
  * @return a value of type <tt>List&lt;List&ltEach&gt;&gt;
  * 
  */
-public class Split<Each> extends For<Pair<Each, Each>> {
+public class Split<Each> extends For<Pair<Each,Each>> {
 
 	public Each curr;
 	public Each next;
@@ -66,14 +66,14 @@ public class Split<Each> extends For<Pair<Each, Each>> {
 	}
 
 	@Override
-	protected void beforeEach(Pair<Each, Each> each) {
+	protected void beforeEach(Pair<Each,Each> each) {
 		this.curr = each.fst;
 		this.next = each.snd;
 		this.yield = false;
 	}
 
 	@Override
-	protected void afterEach() throws Abortion {
+	protected void afterEach() {
 		if (last == null) {
 			parts.add(last = new ArrayList());
 			last.add(this.curr);

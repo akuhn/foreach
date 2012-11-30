@@ -4,12 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class Inject<Each, Result> extends For<Each> {
+public class Inject<Each,Yield> extends For<Each> {
 
 	public Each value;
-	public Result yield;
+	public Yield yield;
 
-	public Inject(Result initial) {
+	public Inject(Yield initial) {
 		yield = initial;
 	}
 
@@ -37,7 +37,7 @@ public class Inject<Each, Result> extends For<Each> {
 		public void shouldSumSquaredLength() {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
-			for (Inject<String, Integer> each: ForEach.inject(0, words)) {
+			for (Inject<String,Integer> each: ForEach.inject(0, words)) {
 				each.yield += each.value.length();
 			}
 			assertEquals(35, ForEach.result());

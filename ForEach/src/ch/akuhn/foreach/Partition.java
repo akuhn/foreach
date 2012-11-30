@@ -28,7 +28,7 @@ public class Partition<Each> extends For<Each> {
 	}
 
 	@Override
-	protected void afterEach() throws Abortion {
+	protected void afterEach() {
 		(yield ? select : reject).add(value);
 	}
 

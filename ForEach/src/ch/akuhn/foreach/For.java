@@ -1,10 +1,11 @@
 package ch.akuhn.foreach;
 
+import static ch.akuhn.foreach.Result.ThreadLocal;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.junit.Test;
@@ -31,7 +32,7 @@ class Abortion extends RuntimeException {
 }
 
 @SuppressWarnings("hiding")
-class Iter<Each, ForEach extends For<Each>> implements Iterator<ForEach> {
+class Iter<Each,ForEach extends For<Each>> implements Iterator<ForEach> {
 
 	private ForEach each;
 	private Iterator<Each> iterator;
@@ -53,6 +54,7 @@ class Iter<Each, ForEach extends For<Each>> implements Iterator<ForEach> {
 	public boolean hasNext() {
 		switch (state) {
 		case BEFORE_LOOP:
+			ThreadLocal.reset();
 			each.beforeLoop();
 			state = BEFORE_EACH;
 			break;
@@ -63,7 +65,7 @@ class Iter<Each, ForEach extends For<Each>> implements Iterator<ForEach> {
 			} catch (Abortion abort) {
 				state = AFTER_LOOP;
 				Object result = each.afterLoop();
-				Query.offer(result);
+				ThreadLocal.offer(result);
 				return false;
 			}
 			break;
@@ -74,7 +76,7 @@ class Iter<Each, ForEach extends For<Each>> implements Iterator<ForEach> {
 		if (!hasNext) {
 			state = AFTER_LOOP;
 			Object result = each.afterLoop();
-			Query.offer(result);
+			ThreadLocal.offer(result);
 		}
 		return hasNext;
 	}
@@ -101,43 +103,58 @@ class Iter<Each, ForEach extends For<Each>> implements Iterator<ForEach> {
 
 	public static class Examples {
 
+		private static class Example extends For<Integer> {
+
+			public StringBuilder buf = new StringBuilder();
+
+			@Override
+			public void afterEach() {
+				buf.append(')');
+			}
+
+			@Override
+			public void beforeEach(Integer each) {
+				buf.append('(');
+			}
+
+			@Override
+			public void beforeLoop() {
+				buf.append('^');
+			}
+
+			@Override
+			public Object afterLoop() {
+				buf.append('$');
+				return buf.toString();
+			}
+
+		};
+
 		@Test
 		public void shouldGoThroughAllStates() {
 
-			class Example extends For<Integer> {
-
-				public StringBuilder buf = new StringBuilder();
-
-				@Override
-				public void afterEach() {
-					buf.append(')');
-				}
-
-				@Override
-				public void beforeEach(Integer each) {
-					buf.append('(');
-				}
-
-				@Override
-				public void beforeLoop() {
-					buf.append('^');
-				}
-
-				@Override
-				public Object afterLoop() {
-					buf.append('$');
-					return buf.toString();
-				}
-
-			};
-
-			List<Integer> list = Arrays.asList(1, 2, 3);
-			for (Example each: Query.with(new Example(), list)) {
+			for (Example each: Query.with(new Example(), 1, 2, 3)) {
 				each.buf.append('.');
 			};
 
-			assertEquals("^(.)(.)(.)$", Query.result());
+			assertEquals("^(.)(.)(.)$", ThreadLocal.result());
 
+		}
+
+		@Test
+		@SuppressWarnings("unused")
+		public void thouShallNotBreak() {
+
+			for (Example each: Query.with(new Example(), 1, 2, 3)) {
+				break;
+			};
+
+			try {
+				ThreadLocal.result();
+				fail();
+			} catch (NoSuchElementException ex) {
+				assertTrue(ex.getMessage().startsWith("Thou shall not break"));
+			}
 		}
 	}
 
