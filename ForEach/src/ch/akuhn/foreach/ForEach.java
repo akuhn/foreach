@@ -58,6 +58,14 @@ public class ForEach {
 		return Query.with(new Detect<T>(), all);
 	}
 
+	public static <T> Query<T,Find<T>> find(Iterable<T> all) {
+		return Query.with(new Find<T>(), all);
+	}
+
+	public static <T> Query<T,Find<T>> find(T[] all) {
+		return Query.with(new Find<T>(), all);
+	}
+
 	public static <T> Query<Pair<T,T>,Fold<T>> fold(Iterable<T> all) {
 		return Query.with(new Fold<T>(), Iterators.pairs(all));
 	}

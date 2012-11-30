@@ -45,14 +45,18 @@ public class Partition<Each> extends For<Each> {
 		return ((Pair<?,List<E>>) ForEach.result()).snd;
 	}
 
-	@Test
-	public void shouldPartitionByLength() {
-		String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
-		for (Partition<String> each: ForEach.partition(words)) {
-			each.yield = each.value.length() < 4;
+	public static class Examples {
+
+		@Test
+		public void shouldPartitionByLength() {
+			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
+			for (Partition<String> each: ForEach.partition(words)) {
+				each.yield = each.value.length() < 4;
+			}
+			assertEquals("[The, fox, the, dog]", Partition.selected().toString());
+			assertEquals("[quick, brown, jumps, over, lazy]", Partition.rejected().toString());
 		}
-		assertEquals("[The, fox, the, dog]", Partition.selected().toString());
-		assertEquals("[quick, brown, jumps, over, lazy]", Partition.rejected().toString());
+
 	}
 
 }

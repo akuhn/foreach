@@ -76,7 +76,7 @@ public class Interval implements Iterable<Integer> {
 		return array;
 	}
 
-	public static class IntervalTest {
+	public static class Tests {
 
 		@Test
 		public void testRange3() {

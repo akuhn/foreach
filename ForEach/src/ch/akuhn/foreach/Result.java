@@ -7,7 +7,6 @@ public class Result {
 	protected static final Result ThreadLocal = new Result();
 
 	private ThreadLocal $result = new ThreadLocal();
-
 	private Object NONE = new Object();
 
 	public Result() {

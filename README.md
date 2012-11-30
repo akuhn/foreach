@@ -49,14 +49,15 @@ The list of currently supported queries includes
 - [Any](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Any.java) return true if at least one element matches a given predicate.
 - [Collect](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Collect.java) applies a given expression to all elements and collects the results.
 - [Count](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Count.java) counts how many elements match a given predicate. 
-- [CutPieces](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/CutPieces.java) splits a collection based on a given predicate.
 - [Detect](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Detect.java) finds the first element that matches a given predicate.
 - [Fold](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Fold.java) returns the result of applying a given expression on each element and the intermediate result, starting with the first two elements. 
 - [GroupBy](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/GroupBy.java) groups element by the result of applying an expression.
 - [IndexOf](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/IndexOf.java) returns the index of the first element that matches a given predicate.
 - [Inject](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Inject.java) returns the result of applying a given expression on each element and the intermediate result, starting with a seed value and the first elements. 
+- [Partition](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Partition.java) returns two lists, the first with all elements that match a given predicate, the second with the rest.
 - [Reject](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Reject.java) returns all elements that are *not* matching a given predicate.
 - [Select](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Select.java) returns all elements that match a given predicate. 
+- [Split](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Split.java) splits a collection based on a given predicate.
 - [Sum](https://github.com/akuhn/foreach/blob/master/ForEach/src/ch/akuhn/foreach/Sum.java) same as `Inject` but accumulating the result into a numeric value.
 
 If you need more, subclass `For<Each>` and implement your own query. As an example, I shall leave the implementation of `Count` here:
