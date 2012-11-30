@@ -3,7 +3,8 @@ package ch.akuhn.foreach;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
@@ -13,36 +14,41 @@ import org.junit.Test;
  * be used in a for-each loop as follows:
  * 
  * <pre>
- * for (Collect2&lt;E,T&gt; each: ForEach.collect(T.class, elements)) {
- *     each.yield = // apply something to each.get
+ * for (Collect&lt;String&gt; each: ForEach.collect(words)) {
+ * 	each.yield = each.value.length();
  * }
- * Collection&lt;T&gt; result = ForEach.result();
+ * List&lt;Integer&gt; result = ForEach.result();
  * </pre>
  * <p>
  * The body of the loop should implement an expression. The current element is
  * provided in {@link Collect#value}. The result of the expression must be
- * stored to {@link Collect#yield}. The body of the loop is evaluated for each
+ * assigned to {@link Collect#yield}. The body of the loop is evaluated for each
  * element of the collection. The entire loop results in a new collection
  * containing the values yielded by the expression. Upon termination of the loop
- * the new collection is assigned to {@link ForEach#result()} (a thread local
+ * the new collection is available at {@link ForEach#result()} (a thread local
  * variable).
  * <p>
  * 
  * @param curr
  *            (in) current element of the collection.
  * @param yield
- *            (out) result of the expression. Defaults to <tt>null</tt> if not
+ *            (out) result of the expression, defaults to <tt>null</tt> if not
  *            assigned.
- *            <p>
- * @author akuhn
+ * 
+ * @return a new collection of type {@link List} containing the values assigned
+ *         to yield.
+ * 
+ * @throws NoSuchElementException
+ *             if the result is retrieved after exiting the loop with a
+ *             <tt>break</tt> statement.
  * 
  */
-public class Collect<Each,Yield> extends For<Each> {
+public class Collect<Each> extends For<Each> {
 
 	public Each value;
-	public Yield yield;
+	public Object yield;
 
-	private Collection<Yield> result;
+	private List result;
 
 	@Override
 	protected void afterEach() {
@@ -62,7 +68,7 @@ public class Collect<Each,Yield> extends For<Each> {
 
 	@Override
 	protected void beforeLoop() {
-		result = new ArrayList<Yield>();
+		result = new ArrayList();
 	}
 
 	public static class Examples {
@@ -71,7 +77,7 @@ public class Collect<Each,Yield> extends For<Each> {
 		public void shouldMapLength() {
 			String[] words = "The quick brown fox jumps over the lazy dog".split(" ");
 
-			for (Collect<String,Integer> each: ForEach.collect(Integer.class, words)) {
+			for (Collect<String> each: ForEach.collect(words)) {
 				each.yield = each.value.length();
 			}
 			assertEquals("[3, 5, 5, 3, 5, 4, 3, 4, 3]", ForEach.result().toString());

@@ -26,20 +26,12 @@ public class ForEach {
 		return Query.with(new Any<T>(), all);
 	}
 
-	public static <T,K> Query<T,Collect<T,K>> collect(Class<K> key, Iterable<T> all) {
-		return Query.with(new Collect<T,K>(), all);
+	public static <T> Query<T,Collect<T>> collect(Iterable<T> all) {
+		return Query.with(new Collect<T>(), all);
 	}
 
-	public static <T,K> Query<T,Collect<T,K>> collect(Class<K> key, T[] all) {
-		return Query.with(new Collect<T,K>(), all);
-	}
-
-	public static <T> Query<T,Collect1<T>> collect1(Iterable<T> all) {
-		return Query.with(new Collect1<T>(), all);
-	}
-
-	public static <T> Query<T,Collect1<T>> collect1(T[] all) {
-		return Query.with(new Collect1<T>(), all);
+	public static <T> Query<T,Collect<T>> collect(T[] all) {
+		return Query.with(new Collect<T>(), all);
 	}
 
 	public static <T> Query<T,Count<T>> count(Iterable<T> all) {
